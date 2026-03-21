@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Zone - Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Security: CSP -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://image.api.playstation.com; connect-src 'self' http://localhost:5001 http://127.0.0.1:5001 https://redzone-backend.onrender.com;">
+</head>
+
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-logo">
+                <i class="fas fa-gamepad"></i>
+                <h1>Red Zone</h1>
+                <p>لوحة التحكم</p>
+            </div>
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
+                    <input type="email" id="email" placeholder="admin@redzone.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> كلمة المرور</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                </button>
+                <p class="login-error" id="loginError"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-gamepad logo-icon"></i>
+                <h2>Red Zone</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="overview">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>نظرة عامة</span>
+                </a>
+                <a href="#" class="nav-item" data-section="games">
+                    <i class="fas fa-gamepad"></i>
+                    <span>الألعاب</span>
+                </a>
+                <a href="#" class="nav-item" data-section="users">
+                    <i class="fas fa-users"></i>
+                    <span>المستخدمين</span>
+                </a>
+                <a href="#" class="nav-item" data-section="orders">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>الطلبات</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>تسجيل الخروج</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-title">
+                    <h1 id="pageTitle">نظرة عامة</h1>
+                </div>
+                <div class="header-user">
+                    <span id="adminEmail">admin@redzone.com</span>
+                    <div class="user-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Overview Section -->
+            <section class="content-section active" id="overviewSection">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon games">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalGames">0</h3>
+                            <p>إجمالي الألعاب</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon users">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalUsers">0</h3>
+                            <p>المستخدمين</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orders">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalOrders">0</h3>
+                            <p>الطلبات</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalRevenue">0 ج.م</h3>
+                            <p>الإيرادات</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="orders-status-grid">
+                    <div class="status-card pending">
+                        <i class="fas fa-clock"></i>
+                        <h3 id="pendingOrders">0</h3>
+                        <p>قيد الإنتظار</p>
+                    </div>
+                    <div class="status-card paid">
+                        <i class="fas fa-check-circle"></i>
+                        <h3 id="paidOrders">0</h3>
+                        <p>مدفوع</p>
+                    </div>
+                    <div class="status-card canceled">
+                        <i class="fas fa-times-circle"></i>
+                        <h3 id="canceledOrders">0</h3>
+                        <p>ملغي</p>
+                    </div>
+                </div>
+
+                <div class="recent-orders">
+                    <h2><i class="fas fa-history"></i> آخر الطلبات</h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>رقم الطلب</th>
+                                    <th>المستخدم</th>
+                                    <th>المبلغ</th>
+                                    <th>الحالة</th>
+                                    <th>التاريخ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentOrdersTable">
+                                <tr>
+                                    <td colspan="5" class="loading">جاري التحميل...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Games Section -->
+            <section class="content-section" id="gamesSection">
+                <div class="section-header">
+                    <h2><i class="fas fa-gamepad"></i> إدارة الألعاب</h2>
+                    <button class="add-btn" id="addGameBtn">
+                        <i class="fas fa-plus"></i> إضافة لعبة
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>الصورة</th>
+                                <th>العنوان</th>
+                                <th>التصنيف</th>
+                                <th>المنصة</th>
+                                <th>الأسعار</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gamesTable">
+                            <tr>
+                                <td colspan="7" class="loading">جاري التحميل...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section class="content-section" id="usersSection">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> إدارة المستخدمين</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>البريد الإلكتروني</th>
+                                <th>الدور</th>
+                                <th>تاريخ التسجيل</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <tr>
+                                <td colspan="4" class="loading">جاري التحميل...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section class="content-section" id="ordersSection">
+                <div class="section-header">
+                    <h2><i class="fas fa-shopping-cart"></i> إدارة الطلبات</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>المستخدم</th>
+                                <th>المنتجات</th>
+                                <th>المبلغ</th>
+                                <th>الحالة</th>
+                                <th>التاريخ</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTable">
+                            <tr>
+                                <td colspan="7" class="loading">جاري التحميل...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Game Modal -->
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="gameModalTitle">إضافة لعبة جديدة</h2>
+                <button class="close-modal" id="closeGameModal">&times;</button>
+            </div>
+            <form id="gameForm">
+                <input type="hidden" id="gameId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gameTitle">عنوان اللعبة</label>
+                        <input type="text" id="gameTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gameCategory">التصنيف</label>
+                        <select id="gameCategory" required>
+                            <option value="Action">Action</option>
+                            <option value="Sports">Sports</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gamePlatform">المنصة</label>
+                        <select id="gamePlatform" required>
+                            <option value="PS5">PS5</option>
+                            <option value="PS4">PS4</option>
+                            <option value="PS5/PS4">PS5/PS4</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="gameRating">التقييم</label>
+                        <select id="gameRating">
+                            <option value="5">5 نجوم</option>
+                            <option value="4">4 نجوم</option>
+                            <option value="3">3 نجوم</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="gameImage">رابط الصورة</label>
+                    <input type="text" id="gameImage" placeholder="assets/images/game.jpg">
+                </div>
+                <div class="form-group">
+                    <label for="gameDesc">الوصف</label>
+                    <textarea id="gameDesc" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>الأسعار</label>
+                    <div id="pricesContainer">
+                        <div class="price-row">
+                            <input type="text" placeholder="النوع (مثال: Primary)" class="price-label">
+                            <input type="number" placeholder="السعر" class="price-value">
+                            <button type="button" class="remove-price-btn"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-price-btn" id="addPriceBtn">
+                        <i class="fas fa-plus"></i> إضافة سعر
+                    </button>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" id="cancelGameBtn">إلغاء</button>
+                    <button type="submit" class="save-btn">حفظ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">تم بنجاح</span>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

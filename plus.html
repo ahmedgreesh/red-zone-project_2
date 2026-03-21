@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Zone Plus | Tiers & Benefits</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .tiers-hero {
+            padding: 160px 0 100px;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('assets/images/plus-hero.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            margin-top: -80px;
+            /* Pull into header area for depth */
+        }
+
+        .plus-title {
+            font-size: 3.5rem;
+            font-weight: 950;
+            letter-spacing: -1px;
+            margin-bottom: 15px;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .plus-title span {
+            color: var(--accent-red);
+            position: relative;
+        }
+
+        .plus-tagline {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 60px 0;
+            align-items: stretch;
+        }
+
+        .tier-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .tier-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-red);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .tier-card.featured {
+            border: 2px solid var(--accent-red);
+            box-shadow: 0 0 30px var(--accent-glow);
+            background: linear-gradient(135deg, rgba(255, 18, 63, 0.05) 0%, transparent 100%), var(--surface);
+        }
+
+        .tier-card.premium {
+            background: linear-gradient(135deg, rgba(255, 18, 63, 0.1) 0%, #000 100%), var(--surface);
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+        }
+
+        .tier-card.premium .tier-badge {
+            background: #ffd700;
+            color: #000;
+        }
+
+        .tier-card.premium .tier-name {
+            color: #ffd700;
+        }
+
+        .tier-header {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .tier-badge {
+            background: var(--accent-red);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .tier-name {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .tier-price {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+        }
+
+        .tier-price span {
+            color: white;
+            font-weight: 700;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-bottom: 30px;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .tier-features li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .tier-features li i {
+            color: var(--accent-red);
+            margin-top: 4px;
+            font-size: 0.9rem;
+        }
+
+        .tier-card.premium .tier-features li i {
+            color: #ffd700;
+        }
+
+        .tier-features li b {
+            color: white;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            transition: var(--transition-fast);
+        }
+
+        .back-link:hover {
+            color: var(--accent-red);
+        }
+
+        /* Light Mode specific adjustments for Plus Page */
+        .light-mode .tiers-hero {
+            background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.6)), url('assets/images/plus-hero-light.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .light-mode .plus-title {
+            color: #1a1a1a;
+            text-shadow: none;
+        }
+
+        .light-mode .plus-tagline {
+            color: #444;
+            text-shadow: none;
+        }
+
+        .light-mode .plus-title {
+            color: #1a1a1a;
+        }
+
+        .light-mode .plus-tagline {
+            color: #666666;
+        }
+
+        .light-mode .tier-card {
+            background: #ffffff;
+            border-color: #e5e5e5;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .light-mode .tier-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent-red);
+        }
+
+        .light-mode .tier-name {
+            color: #1a1a1a;
+        }
+
+        .light-mode .tier-price {
+            color: #666666;
+        }
+
+        .light-mode .tier-price span {
+            color: #1a1a1a;
+        }
+
+        .light-mode .tier-features li {
+            color: #555555;
+        }
+
+        .light-mode .tier-features li b {
+            color: #1a1a1a;
+        }
+
+        .light-mode .back-link {
+            color: #666666;
+        }
+
+        .light-mode .back-link:hover {
+            color: var(--accent-red);
+        }
+
+        .light-mode .tier-card.premium {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, #ffffff 100%);
+            border-color: #ffd700;
+        }
+
+        .light-mode .tier-card.premium .tier-name {
+            color: #b8860b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <a href="red.html" class="logo-text">RED <span>ZONE</span></a>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="red.html#hero" data-i18n="nav_home">Home</a></li>
+                <li><a href="red.html#games" data-i18n="nav_games">Games</a></li>
+                <li><a href="#" id="play-styles-trigger" data-i18n="nav_styles">Play Styles</a></li>
+                <li><a href="#" onclick="openModal(document.getElementById('support-modal'))" data-i18n="nav_support">Support</a></li>
+            </ul>
+
+            <div class="nav-icons">
+                <button class="icon-btn" id="sound-toggle" title="Toggle Sound Mood"><i
+                        class="fas fa-volume-mute"></i></button>
+                <button class="icon-btn" id="theme-toggle"><i class="fas fa-moon"></i></button>
+                <button class="icon-btn" id="search-btn"><i class="fas fa-search"></i></button>
+                <button class="icon-btn" id="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="icon-btn lang-toggle" id="lang-toggle" title="تغيير اللغة">AR</button>
+                <button class="icon-btn" id="login-btn"><i class="fas fa-user"></i></button>
+                <button class="icon-btn mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 100px;">
+        <section class="tiers-hero">
+            <a href="red.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Store</a>
+            <h1 class="plus-title">RED ZONE <span>PLUS</span> TIERS</h1>
+            <p class="plus-tagline">Choose the membership that's right for you. Change or cancel anytime.</p>
+        </section>
+
+        <section class="tiers-grid">
+            <!-- Essential Tier -->
+            <div class="tier-card">
+                <div class="tier-header">
+                    <span class="tier-badge">The Core Experience</span>
+                    <h2 class="tier-name">ESSENTIAL</h2>
+                    <div class="tier-price attractive-price"><span>VIEW REGIONAL PRICE</span></div>
+                </div>
+                <ul class="tier-features">
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Online Multiplayer:</b> Play with friends and the global community.</div>
+                    </li>
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Monthly Games:</b> Two PS4 and one PS5 game every month.</div>
+                    </li>
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Exclusive Discounts:</b> Special member-only prices.</div>
+                    </li>
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Cloud Storage:</b> 100GB of storage for your game saves.</div>
+                    </li>
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Share Play:</b> Let friends watch you play or take control.</div>
+                    </li>
+                </ul>
+                <button class="cta-btn full-width" onclick="window.openDetailedPlusModal(101)">View Price</button>
+            </div>
+
+            <!-- Extra Tier -->
+            <div class="tier-card featured">
+                <div class="tier-header">
+                    <span class="tier-badge">Best Value</span>
+                    <h2 class="tier-name">EXTRA</h2>
+                    <div class="tier-price attractive-price"><span>VIEW REGIONAL PRICE</span></div>
+                </div>
+                <ul class="tier-features">
+                    <li><i class="fas fa-plus"></i>
+                        <div><b>All Essential Benefits:</b> Everything in Essential is yours.</div>
+                    </li>
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Game Catalog:</b> Access up to 400 blockbuster PS4 & PS5 games.</div>
+                    </li>
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Ubisoft+ Classics:</b> Play iconic titles like Assassin's Creed.</div>
+                    </li>
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Download & Play:</b> All catalog games available for download.</div>
+                    </li>
+                </ul>
+                <button class="cta-btn full-width" onclick="window.openDetailedPlusModal(102)">View Price</button>
+            </div>
+
+            <!-- Premium Tier -->
+            <div class="tier-card premium">
+                <div class="tier-header">
+                    <span class="tier-badge">The Ultimate Experience</span>
+                    <h2 class="tier-name">PREMIUM</h2>
+                    <div class="tier-price attractive-price"><span>VIEW REGIONAL PRICE</span></div>
+                </div>
+                <ul class="tier-features">
+                    <li><i class="fas fa-plus"></i>
+                        <div><b>All Extra & Essential:</b> Every benefit from other tiers.</div>
+                    </li>
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Classics Catalog:</b> Hundreds of games from original PS, PS2, PSP & PS3.</div>
+                    </li>
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Game Trials:</b> Try selected blockbusters before you buy.</div>
+                    </li>
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Cloud Streaming:</b> Stream PS5 titles from the catalog.</div>
+                    </li>
+                    <li><i class="fas fa-check"></i>
+                        <div><b>Sony Pictures Core:</b> Access a selection of premium movies.</div>
+                    </li>
+                </ul>
+                <button class="cta-btn full-width" onclick="window.openDetailedPlusModal(103)"
+                    style="border-color: #ffd700; color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);">View
+                    Price</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Shared Components -->
+    <div id="search-overlay" class="overlay">
+        <div class="overlay-content">
+            <button class="close-overlay">&times;</button>
+            <input type="text" id="global-search" placeholder="Search for games...">
+            <div id="search-results" class="search-results-container"></div>
+        </div>
+    </div>
+
+    <div id="cart-sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>Your Cart (<span id="cart-total-count">0</span>)</h3>
+            <button class="close-sidebar">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items-container">
+            <p class="empty-cart-msg">Your cart is empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>Total:</span>
+                <span id="cart-total-price">$0.00</span>
+            </div>
+            <button class="cta-btn full-width" id="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
+    <div id="login-modal" class="modal">
+        <div class="modal-content login-content">
+            <span class="close-modal" id="close-login">&times;</span>
+
+            <!-- Login View -->
+            <div id="login-view">
+                <h2>Welcome Back</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="cta-btn full-width">Sign In</button>
+                </form>
+                <p class="auth-switch">Don't have an account? <a href="#" id="to-signup">Sign Up</a></p>
+            </div>
+
+            <!-- Sign Up View (Hidden by default) -->
+            <div id="signup-view" style="display: none;">
+                <h2>Join Red Zone</h2>
+                <div class="social-signup">
+                    <button class="social-btn gmail-btn" id="gmail-signup-trigger">
+                        <i class="fab fa-google"></i> Sign up with Gmail
+                    </button>
+                    <button class="social-btn fb-btn" id="fb-signup-trigger">
+                        <i class="fab fa-facebook-f"></i> Sign up with Facebook
+                    </button>
+                    <button class="social-btn icloud-btn" id="icloud-signup-trigger">
+                        <i class="fab fa-apple"></i> Sign up with iCloud
+                    </button>
+                </div>
+
+                <div class="separator">
+                    <span>OR</span>
+                </div>
+
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="signup-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Create Password</label>
+                        <input type="password" id="signup-password" placeholder="At least 8 characters" required
+                            minlength="8">
+                    </div>
+                    <button type="submit" class="cta-btn full-width">Sign Up with Email</button>
+                </form>
+                <p class="auth-switch">Already have an account? <a href="#" id="to-login">Sign In</a></p>
+            </div>
+
+            <!-- Gmail Login View -->
+            <div id="gmail-view" style="display: none;">
+                <div class="social-header gmail">
+                    <i class="fab fa-google"></i>
+                    <h2>Gmail Sign In</h2>
+                </div>
+                <form id="gmail-login-form">
+                    <div class="form-group">
+                        <label>Gmail Address</label>
+                        <input type="email" id="gmail-email" placeholder="example@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="gmail-password" placeholder="Enter your google password" required>
+                    </div>
+                    <div id="gmail-error" class="auth-error-msg"></div>
+                    <button type="submit" class="cta-btn full-width gmail-btn">Sign In with Google</button>
+                </form>
+                <button class="secondary-btn full-width back-to-auth">Back</button>
+            </div>
+
+            <!-- Facebook Login View -->
+            <div id="fb-view" style="display: none;">
+                <div class="social-header facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    <h2>Facebook Login</h2>
+                </div>
+                <form id="fb-login-form">
+                    <div class="form-group">
+                        <label>Email or Phone</label>
+                        <input type="text" id="fb-email" placeholder="Email or phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="fb-password" placeholder="Enter your facebook password" required>
+                    </div>
+                    <div id="fb-error" class="auth-error-msg"></div>
+                    <button type="submit" class="cta-btn full-width fb-btn">Log In</button>
+                </form>
+                <button class="secondary-btn full-width back-to-auth">Back</button>
+            </div>
+
+            <!-- iCloud Login View -->
+            <div id="icloud-view" style="display: none;">
+                <div class="social-header icloud">
+                    <i class="fab fa-apple"></i>
+                    <h2>Apple ID</h2>
+                </div>
+                <form id="icloud-login-form">
+                    <div class="form-group">
+                        <label>Apple ID</label>
+                        <input type="email" id="icloud-email" placeholder="example@icloud.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="icloud-password" placeholder="Enter your iCloud password" required>
+                    </div>
+                    <div id="icloud-error" class="auth-error-msg"></div>
+                    <button type="submit" class="cta-btn full-width icloud-btn">Sign In with Apple</button>
+                </form>
+                <button class="secondary-btn full-width back-to-auth">Back</button>
+            </div>
+
+            <!-- Verification View (Simulated API Check) -->
+            <div id="verification-view" style="display: none;">
+                <div class="verification-container">
+                    <div class="loader-ring">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <h2 id="verification-status">Verifying Account...</h2>
+                    <p id="verification-details">Connecting to secure servers</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="verification-progress"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile / Account View (For logged in users) -->
+            <div id="profile-view" style="display: none;">
+                <div style="text-align: center;">
+                    <div id="profile-icon-container">
+                        <i class="fas fa-user-circle"
+                            style="font-size: 4rem; color: var(--accent-red); margin-bottom: 20px;"></i>
+                    </div>
+                    <h2 id="user-display-email" style="margin-bottom: 10px;">User Name</h2>
+                    <p id="user-display-status" style="color: var(--text-muted); margin-bottom: 30px;">Premium
+                        PlayStation Member</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <button id="my-library-btn" class="cta-btn full-width">My Library</button>
+                        <button id="logout-btn" class="secondary-btn full-width"
+                            style="border-color: #ff123f; color: #ff123f; margin-top: 10px;">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="play-styles-modal" class="modal">
+        <div class="modal-content style-modal-content">
+            <span class="close-modal" id="close-play-styles">&times;</span>
+            <h2>Discover Your <span style="color: var(--accent-red)">Play Style</span></h2>
+        </div>
+    </div>
+
+    <div id="support-modal" class="modal">
+        <div class="modal-content support-modal-content">
+            <span class="close-modal" onclick="closeModal(this.closest('.modal'))">&times;</span>
+            <h2>Customer Support</h2>
+            <a href="https://www.facebook.com/share/1ECJvC7qop/?mibextid=wwXIfr" target="_blank" class="cta-btn">Contact
+                on Facebook</a>
+        </div>
+    </div>
+
+    <!-- Plus Pricing Modal -->
+    <div id="plus-pricing-modal" class="modal">
+        <div class="modal-content pricing-modal-content">
+            <span class="close-modal" id="close-plus-pricing">&times;</span>
+            <div id="plus-pricing-content">
+                <!-- Content injected via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay-backdrop" class="backdrop"></div>
+
+    <footer class="main-footer">
+        <div class="container footer-top">
+            <div class="footer-grid">
+                <!-- Brand Column -->
+                <div class="footer-col brand-col">
+                    <div class="logo">RED <span>ZONE</span></div>
+                    <p class="footer-desc" data-i18n="footer_desc">An independent platform acting as a mediator in digital gaming services. We facilitate the process of obtaining PlayStation Plus subscriptions, digital games, and accounts through official and certified channels.</p>
+                    <span class="founded-date" data-i18n="footer_founded">Founded in 2024</span>
+                </div>
+                
+                <!-- Services Column -->
+                <div class="footer-col">
+                    <h3 data-i18n="footer_services_title">Services</h3>
+                    <ul class="footer-links-list">
+                        <li data-i18n="footer_s1">PlayStation Plus Subscriptions</li>
+                        <li data-i18n="footer_s2">Digital Games</li>
+                        <li data-i18n="footer_s3">Game Accounts</li>
+                        <li data-i18n="footer_s4">Gift Cards</li>
+                    </ul>
+                </div>
+                
+                <!-- Support Column -->
+                <div class="footer-col">
+                    <h3 data-i18n="footer_support_title">Support</h3>
+                    <ul class="footer-links-list">
+                        <li data-i18n="footer_support_whatsapp">WhatsApp Support</li>
+                        <li data-i18n="footer_support_technical">Technical Help</li>
+                        <li data-i18n="footer_support_followup">Post-delivery follow-up</li>
+                        <li><a href="policy.html" data-i18n="footer_support_warranty">Warranty Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-middle">
+            <div class="container">
+                <div class="footer-legal-links">
+                    <a href="#" data-i18n="footer_sup1">Refund Policy</a>
+                    <span class="separator">|</span>
+                    <a href="policy.html" data-i18n="footer_sup2">Usage & Warranty Policy</a>
+                    <span class="separator">|</span>
+                    <a href="#" data-i18n="footer_sup3">Legal Notice</a>
+                    <span class="separator">|</span>
+                    <a href="#" data-i18n="footer_sup4">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="footer-disclaimer" data-i18n="footer_disclaimer">Red Zone is not officially affiliated with or endorsed by Sony Interactive Entertainment or any hardware/software manufacturer. All mentioned trademarks belong to their respective owners.</p>
+                <p class="copyright" data-i18n="footer_copyright">© Red Zone 2026. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
