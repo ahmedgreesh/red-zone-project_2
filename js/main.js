@@ -1885,9 +1885,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function filterAndRender(term, category) {
+        const platformFilter = document.getElementById('platform-filter');
+        const priceFilter = document.getElementById('price-filter');
+        
+        const selectedPlatform = platformFilter ? platformFilter.value : 'All';
+        const maxPrice = priceFilter ? parseInt(priceFilter.value) : 3000;
+
         const filtered = games.filter(game => {
             const matchesSearch = game.title.toLowerCase().includes(term);
-            // Case-insensitive match for robustness
             const normalizedGameCat = game.category.toUpperCase();
             const normalizedFilter = category.toUpperCase();
 
@@ -1895,10 +1900,49 @@ document.addEventListener('DOMContentLoaded', () => {
             if (normalizedGameCat === 'SUBSCRIPTION') return false;
 
             const matchesCategory = category === '' || category === 'All' || normalizedFilter === 'ALL' || normalizedGameCat === normalizedFilter;
-            return matchesSearch && matchesCategory;
+            
+            // Platform
+            let matchesPlatform = true;
+            if (selectedPlatform !== 'All') {
+                matchesPlatform = game.platform && game.platform.includes(selectedPlatform);
+            }
+
+            // Price
+            let minGamePrice = game.price || Infinity;
+            if (game.prices && game.prices.length > 0) {
+                minGamePrice = Math.min(...game.prices.map(p => p.value));
+            }
+            if(minGamePrice === Infinity || minGamePrice === 0) {
+                 // if no price info or price is 0 (view price), still show it
+                 minGamePrice = 0;
+            }
+
+            const matchesPrice = minGamePrice <= maxPrice;
+
+            return matchesSearch && matchesCategory && matchesPlatform && matchesPrice;
         });
         renderGames(filtered);
     }
+
+    // Attach listeners dynamically just in case they exist
+    setTimeout(() => {
+        const pF = document.getElementById('platform-filter');
+        const prF = document.getElementById('price-filter');
+        const prD = document.getElementById('price-display');
+        const sI = document.querySelector('.search-input');
+
+        if (pF) {
+            pF.addEventListener('change', () => {
+                filterAndRender(sI ? sI.value.toLowerCase() : '', currentCategory);
+            });
+        }
+        if (prF) {
+            prF.addEventListener('input', (e) => {
+                if (prD) prD.innerText = e.target.value;
+                filterAndRender(sI ? sI.value.toLowerCase() : '', currentCategory);
+            });
+        }
+    }, 100);
 
     window.updateCartUI = () => {
         // Update Badges

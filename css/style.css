@@ -798,6 +798,63 @@ header {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Advanced Filters */
+.advanced-filters-bar {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 18, 63, 0.15);
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    backdrop-filter: blur(10px);
+}
+
+.adv-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 200px;
+}
+
+.adv-filter-group label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.adv-filter-group label span {
+    color: var(--accent-red);
+    font-weight: 700;
+}
+
+.adv-select {
+    background: var(--surface);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 18, 63, 0.3);
+    padding: 10px 15px;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: var(--transition-fast);
+}
+
+.adv-select:focus, .adv-select:hover {
+    border-color: var(--accent-red);
+    box-shadow: 0 0 10px rgba(255, 18, 63, 0.2);
+}
+
+.adv-range {
+    width: 100%;
+    accent-color: var(--accent-red);
+    cursor: pointer;
     flex-wrap: wrap;
     gap: 1rem;
 }

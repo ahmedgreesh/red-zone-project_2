@@ -105,6 +105,22 @@
                 <input type="text" class="search-input" placeholder="Search games..." data-i18n="search_placeholder">
             </div>
 
+            <!-- Advanced Filters -->
+            <div class="advanced-filters-bar">
+                <div class="adv-filter-group">
+                    <label for="platform-filter"><i class="fas fa-gamepad"></i> المنصة (Platform)</label>
+                    <select id="platform-filter" class="adv-select">
+                        <option value="All">الكل (All)</option>
+                        <option value="PS5">PlayStation 5</option>
+                        <option value="PS4">PlayStation 4</option>
+                    </select>
+                </div>
+                <div class="adv-filter-group" style="flex:1;">
+                    <label for="price-filter"><i class="fas fa-tag"></i> أعلى سعر (Max Price): <span id="price-display">3000</span> EGP</label>
+                    <input type="range" id="price-filter" class="adv-range" min="100" max="3000" step="50" value="3000">
+                </div>
+            </div>
+
             <!-- Grid -->
             <div class="games-grid" id="games-grid">
                 <!-- Javascript will populate this -->
