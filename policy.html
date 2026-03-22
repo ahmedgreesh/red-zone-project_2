@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ريد زون | سياسة الاستخدام والضمان</title>
-    <link rel="stylesheet" href="css/style.css?v=2.1">
+    <link rel="stylesheet" href="css/style.css?v=2.2">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -52,10 +52,23 @@
             background: var(--red);
             border-color: var(--red);
             transform: translateX(-5px);
+            color: #fff;
+        }
+
+        .light-mode .back-link {
+            color: var(--text-main);
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .light-mode .back-link:hover {
+            color: #fff;
+            background: var(--red);
+            border-color: var(--red);
         }
 
         /* ===================== HERO ===================== */
-        .hero {
+        .policy-hero {
             height: 55vh;
             display: flex;
             align-items: center;
@@ -67,7 +80,7 @@
             border-bottom: 1px solid rgba(255, 18, 63, 0.1);
         }
 
-        .hero::before {
+        .policy-hero::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -115,7 +128,7 @@
             box-shadow: 0 5px 15px rgba(255, 18, 63, 0.1);
         }
 
-        .hero h1 {
+        .policy-hero h1 {
             font-size: 3.5rem;
             font-weight: 900;
             color: var(--text-main);
@@ -124,15 +137,16 @@
             text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 0, 0, 0.8);
         }
 
-        .light-mode .hero h1 {
-            text-shadow: 0 1px 15px rgba(255, 255, 255, 0.8);
+        .light-mode .policy-hero h1 {
+            color: var(--text-main);
+            text-shadow: 0 1px 15px rgba(255, 255, 255, 0.8), 0 0 5px rgba(255, 255, 255, 0.5);
         }
 
-        .hero h1 span {
+        .policy-hero h1 span {
             color: var(--red);
         }
 
-        .hero p {
+        .policy-hero p {
             font-size: 1.1rem;
             color: rgba(255, 255, 255, 0.88);
             max-width: 650px;
@@ -142,7 +156,7 @@
             text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
         }
 
-        .light-mode .hero p {
+        .light-mode .policy-hero p {
             color: var(--text-muted);
             text-shadow: none;
         }
@@ -448,7 +462,7 @@
     </header>
 
     <!-- HERO -->
-    <div class="hero">
+    <div class="policy-hero">
         <div class="hero-grid"></div>
         <div class="hero-inner">
             <div class="hero-badge" data-i18n="policy_hero_badge">Legal Notice</div>
