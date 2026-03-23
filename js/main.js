@@ -375,6 +375,7 @@ const translations = {
 };
 
 let currentLang = localStorage.getItem('site_lang') || 'en';
+let currentCategory = 'All'; // Initialize currentCategory
 
 window.setLanguage = function (lang) {
     currentLang = lang;
@@ -424,7 +425,77 @@ window.setLanguage = function (lang) {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    window.showToast = function(message, isError = false) {
+    /* ----------------------------------------------------
+       DOM ELEMENTS
+       ---------------------------------------------------- */
+    const grid = document.getElementById('games-grid');
+    const searchInput = document.querySelector('.search-input'); // In-page filter
+    const filterButtons = document.querySelectorAll('.filter-tabs button');
+    const platformFilter = document.getElementById('platform-filter');
+    const priceFilter = document.getElementById('price-filter');
+    const priceDisplay = document.getElementById('price-display');
+
+    // Auth Modal
+    const loginModal = document.getElementById('login-modal');
+    const loginBtn = document.getElementById('login-btn');
+    const closeLogin = document.getElementById('close-login');
+    const loginForm = document.getElementById('login-form');
+
+    // Product Modal
+    const productModal = document.getElementById('product-modal');
+    const closeProduct = document.getElementById('close-product');
+    const confirmBuyBtn = document.getElementById('confirm-buy-btn');
+    const cancelBuyBtn = document.getElementById('cancel-btn');
+
+    // Cart Sidebar
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartBtn = document.getElementById('cart-btn');
+    const closeSidebar = document.querySelector('.close-sidebar');
+    const backdrop = document.getElementById('overlay-backdrop');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartTotalCount = document.querySelector('.cart-count');
+    const cartSidebarCount = document.getElementById('cart-total-count');
+    const cartTotalPrice = document.getElementById('cart-total-price');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    // Search Overlay
+    const searchOverlay = document.getElementById('search-overlay');
+    const searchBtn = document.getElementById('search-btn');
+    const closeOverlay = document.querySelector('.close-overlay');
+    const globalSearchInput = document.getElementById('global-search');
+
+    // Smart Picker
+    const smartPickerModal = document.getElementById('smart-picker-modal');
+    const smartPickerBtn = document.getElementById('smart-picker-btn');
+    const closePicker = document.getElementById('close-picker');
+    const pickerWizard = document.getElementById('picker-wizard');
+    const pickerBack = document.getElementById('picker-back');
+    const pickerProgress = document.getElementById('picker-progress');
+
+    // Theme Toggle
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
+
+    // Mobile Menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const navLinksContainer = document.getElementById('main-nav');
+
+    // Advanced Filter Listeners
+    if (platformFilter && priceFilter) {
+        platformFilter.addEventListener('change', () => {
+            filterAndRender(searchInput ? searchInput.value.toLowerCase() : '', currentCategory);
+        });
+
+        priceFilter.addEventListener('input', (e) => {
+            const val = e.target.value;
+            if (priceDisplay) priceDisplay.textContent = val;
+            filterAndRender(searchInput ? searchInput.value.toLowerCase() : '', currentCategory);
+        });
+    }
+
+    // showToast Definition
+
+    window.showToast = function (message, isError = false) {
         let toast = document.getElementById('toast');
         let toastMessage = null;
         if (!toast) {
@@ -438,10 +509,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const icon = toast.querySelector('i');
         if (isError) {
             toast.classList.add('error');
-            if(icon) icon.className = 'fas fa-exclamation-circle';
+            if (icon) icon.className = 'fas fa-exclamation-circle';
         } else {
             toast.classList.remove('error');
-            if(icon) icon.className = 'fas fa-check-circle';
+            if (icon) icon.className = 'fas fa-check-circle';
         }
         toastMessage.textContent = message;
         toast.classList.add('show');
@@ -479,6 +550,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Global
+
+    function applyAllFilters() {
+        const platform = platformFilter ? platformFilter.value : 'All';
+        const maxPrice = priceFilter ? parseInt(priceFilter.value) : 3000;
+        const category = document.querySelector('.active-filter')?.dataset.category || 'All';
+        const searchTerm = document.querySelector('.search-input')?.value.toLowerCase() || '';
+
+        const filtered = games.filter(game => {
+            const matchesCategory = category === 'All' || game.category === category;
+            const matchesPlatform = platform === 'All' || game.platform.includes(platform);
+            const matchesSearch = game.title.toLowerCase().includes(searchTerm);
+
+            // Check if ANY price option is below or equal to maxPrice
+            const matchesPrice = game.prices.some(p => p.value <= maxPrice);
+
+            return matchesCategory && matchesPlatform && matchesSearch && matchesPrice;
+        });
+
+        renderGames(filtered);
+    }
+
+    // Update the existing filterNav to use the unified filter function
+    window.filterNav = function (category) {
+        const buttons = document.querySelectorAll('.filter-tabs .cta-btn');
+        buttons.forEach(btn => {
+            if (btn.dataset.category === category) {
+                btn.classList.add('active-filter');
+            } else {
+                btn.classList.remove('active-filter');
+            }
+        });
+        applyAllFilters();
+    };
+
+    // Update the existing search listener
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            applyAllFilters();
+        });
+    }
     // Global Policy Link Listener
     document.addEventListener('click', (e) => {
         if (e.target && (e.target.id === 'usage-policy-link' || e.target.classList.contains('policy-trigger') || e.target.closest('.policy-trigger'))) {
@@ -612,9 +724,9 @@ document.addEventListener('DOMContentLoaded', () => {
             styles: ["Story"],
             desc: "Embark on an epic journey as the Destined One. Confront your destiny in this Action RPG rooted in Chinese mythology.",
             prices: [
-                { label: "Primary", value: 1699 },
-                { label: "Secondary", value: 1199 },
-                { label: "Full Account", value: 2699 }
+                { label: "Primary", value: 1325 },
+                { label: "Secondary", value: 899 },
+                { label: "Full Account", value: 2099 }
             ],
             tags: ["Action", "Story"],
             playStyle: ["Solo"],
@@ -632,9 +744,9 @@ document.addEventListener('DOMContentLoaded', () => {
             styles: ["Online", "Co-op", "Story"],
             desc: "Forced to go rogue. Hunted from within. This is Call of Duty: Black Ops 6. A signature Black Ops cinematic single-player Campaign, a best-in-class Multiplayer experience, and the epic return of Round-Based Zombies.",
             prices: [
-                { label: "Primary PS5", value: 1199 },
-                { label: "Secondary", value: 599 },
-                { label: "Primary PS4", value: 549 }
+                { label: "Primary PS5", value: 799 },
+                { label: "Secondary", value: 549 },
+                { label: "Primary PS4", value: 449 }
             ],
             tags: ["Action", "Competitive", "Story"],
             playStyle: ["Solo", "Online", "Co-op"],
@@ -653,8 +765,8 @@ document.addEventListener('DOMContentLoaded', () => {
             desc: "Fimbulwinter is here. Kratos and Atreus must journey to each of the Nine Realms in search of answers as Aesir forces prepare for a prophesied battle that will end the world.",
             prices: [
                 { label: "Primary PS5", value: 699 },
-                { label: "Secondary", value: 500 },
-                { label: "Primary PS4", value: 549 }
+                { label: "Secondary", value: 449 },
+                { label: "Primary PS4", value: 449 }
             ],
             tags: ["Action", "Story"],
             playStyle: ["Solo"],
@@ -672,9 +784,9 @@ document.addEventListener('DOMContentLoaded', () => {
             styles: ["Story"],
             desc: "America, 1899. The end of the wild west era has begun as lawmen hunt down the last remaining outlaw gangs. Those who will not surrender or succumb are killed.",
             prices: [
-                { label: "Primary PS5", value: 399 },
-                { label: "Secondary", value: 249 },
-                { label: "Primary PS4", value: 299 }
+                { label: "Primary PS5", value: 425 },
+                { label: "Secondary", value: 275 },
+                { label: "Primary PS4", value: 279 }
             ],
             tags: ["Story", "Open World"],
             playStyle: ["Solo", "Online"],
@@ -692,8 +804,8 @@ document.addEventListener('DOMContentLoaded', () => {
             styles: ["Online", "Co-op"],
             desc: "A free-to-play, third-person, PvPvE extraction shooter set in a lethal future earth. Resist ARC.",
             prices: [
-                { label: "Primary PS5", value: 1099 },
-                { label: "Secondary PS5", value: 589 }
+                { label: "Primary PS5", value: 1299 },
+                { label: "Secondary PS5", value: 699 }
             ],
             tags: ["Action", "Competitive"],
             playStyle: ["Online", "Co-op"],
@@ -730,8 +842,8 @@ document.addEventListener('DOMContentLoaded', () => {
             styles: ["Story", "Horror"],
             desc: "In his restless dreams, he sees that town... Experience the psychological horror masterpiece, rebuilt for PS5.",
             prices: [
-                { label: "Primary PS5", value: 1850 },
-                { label: "Secondary PS5", value: 1450 }
+                { label: "Primary PS5", value: 999 },
+                { label: "Secondary PS5", value: 599 }
             ],
             tags: ["Story"],
             playStyle: ["Solo"],
@@ -809,9 +921,9 @@ document.addEventListener('DOMContentLoaded', () => {
             styles: ["Online", "Co-op"],
             desc: "The next evolution of the World's Game. Featuring the most advanced gameplay innovations and authentic football experience.",
             prices: [
-                { label: "Primary PS5", value: 1100 },
-                { label: "Primary PS4", value: 600 },
-                { label: "Secondary", value: 500 }
+                { label: "Primary PS5", value: 899 },
+                { label: "Primary PS4", value: 419 },
+                { label: "Secondary", value: 349 }
             ],
             tags: ["Competitive"],
             playStyle: ["Solo", "Online", "Co-op"],
@@ -888,9 +1000,9 @@ document.addEventListener('DOMContentLoaded', () => {
             styles: ["Online", "Co-op", "Story"],
             desc: "The next generation of all-out warfare. Experience massive battles, dynamic destruction, and the return of epic combined arms combat.",
             prices: [
-                { label: "Primary PS5", value: 1599 },
-                { label: "Secondary", value: 899 },
-                { label: "Full Account", value: 2299 }
+                { label: "Primary PS5", value: 1399 },
+                { label: "Secondary", value: 799 },
+                { label: "Full Account", value: 2149 }
             ],
             tags: ["Action", "Competitive"],
             playStyle: ["Solo", "Online", "Co-op"],
@@ -906,8 +1018,8 @@ document.addEventListener('DOMContentLoaded', () => {
             platform: "PS5",
             desc: "Drive the latest 2025 cars from the official F1 lineup and experience the next generation of racing excellence.",
             prices: [
-                { label: "Primary PS5", value: 1699 },
-                { label: "Secondary PS5", value: 1099 }
+                { label: "Primary PS5", value: 849 },
+                { label: "Secondary PS5", value: 549 }
             ],
             tags: ["Competitive"],
             playStyle: ["Solo", "Online", "Co-op"],
@@ -1087,9 +1199,9 @@ document.addEventListener('DOMContentLoaded', () => {
             styles: ["Online", "Co-op", "Story"],
             desc: "Cross the lines. Black Ops 7 delivers the most cinematic and gritty experience yet, with a gripping campaign, next-gen multiplayer, and the most ambitious Zombies mode to date.",
             prices: [
-                { label: "Primary PS5", value: 1999 },
-                { label: "Primary PS4", value: 699 },
-                { label: "Secondary", value: 1199 }
+                { label: "Primary PS5", value: 1299 },
+                { label: "Primary PS4", value: 429 },
+                { label: "Secondary", value: 679 }
             ],
             tags: ["Action", "Competitive", "FPS"],
             playStyle: ["Solo", "Online", "Co-op"],
@@ -1147,8 +1259,8 @@ document.addEventListener('DOMContentLoaded', () => {
             styles: ["Story", "Adventure"],
             desc: "A new Ghost story awaits. In 1603, Atsu sets out on a journey in the lands surrounding Mount Yōtei.",
             prices: [
-                { label: "Primary PS5", value: 2149 },
-                { label: "Secondary PS5", value: 1399 },
+                { label: "Primary PS5", value: 1949 },
+                { label: "Secondary PS5", value: 1449 },
                 { label: "Full Account", value: 3299 }
             ],
             tags: ["Action", "Story", "Open World"],
@@ -1209,7 +1321,7 @@ document.addEventListener('DOMContentLoaded', () => {
             desc: "Embark on the craziest journey of your life in It Takes Two. Invite a friend to join for free with Friend’s Pass and work together across a huge variety of glefully disruptive gameplay challenges.",
             prices: [
                 { label: "Primary PS5", value: 349 },
-                { label: "Primary PS4", value: 299 },
+                { label: "Primary PS4", value: 149 },
                 { label: "Secondary", value: 199 }
             ],
             tags: ["Action", "Story", "Co-op"],
@@ -1228,8 +1340,8 @@ document.addEventListener('DOMContentLoaded', () => {
             styles: ["Story", "Adventure", "Stealth"],
             desc: "Live the intertwined stories of Naoe, an adept shinobi Assassin from Iga Province, and Yasuke, the powerful African samurai of historical legend.",
             prices: [
-                { label: "Primary PS5", value: 1399 },
-                { label: "Secondary PS5", value: 989 }
+                { label: "Primary PS5", value: 899 },
+                { label: "Secondary PS5", value: 649 }
             ],
             tags: ["Action", "Story", "Open World"],
             playStyle: ["Solo"],
@@ -1537,58 +1649,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentCategory = 'All';
 
     /* ----------------------------------------------------
-       DOM ELEMENTS
-       ---------------------------------------------------- */
-    const grid = document.getElementById('games-grid');
-    const searchInput = document.querySelector('.search-input'); // In-page filter
-    const filterButtons = document.querySelectorAll('.filter-tabs button');
-
-    // Auth Modal
-    const loginModal = document.getElementById('login-modal');
-    const loginBtn = document.getElementById('login-btn');
-    const closeLogin = document.getElementById('close-login');
-    const loginForm = document.getElementById('login-form');
-
-    // Product Modal
-    const productModal = document.getElementById('product-modal');
-    const closeProduct = document.getElementById('close-product');
-    const confirmBuyBtn = document.getElementById('confirm-buy-btn');
-    const cancelBuyBtn = document.getElementById('cancel-btn');
-
-    // Cart Sidebar
-    const cartSidebar = document.getElementById('cart-sidebar');
-    const cartBtn = document.getElementById('cart-btn');
-    const closeSidebar = document.querySelector('.close-sidebar');
-    const backdrop = document.getElementById('overlay-backdrop');
-    const cartItemsContainer = document.getElementById('cart-items-container');
-    const cartTotalCount = document.querySelector('.cart-count');
-    const cartSidebarCount = document.getElementById('cart-total-count');
-    const cartTotalPrice = document.getElementById('cart-total-price');
-    const checkoutBtn = document.getElementById('checkout-btn');
-
-    // Search Overlay
-    const searchOverlay = document.getElementById('search-overlay');
-    const searchBtn = document.getElementById('search-btn');
-    const closeOverlay = document.querySelector('.close-overlay');
-    const globalSearchInput = document.getElementById('global-search');
-
-    // Smart Picker
-    const smartPickerModal = document.getElementById('smart-picker-modal');
-    const smartPickerBtn = document.getElementById('smart-picker-btn');
-    const closePicker = document.getElementById('close-picker');
-    const pickerWizard = document.getElementById('picker-wizard');
-    const pickerBack = document.getElementById('picker-back');
-    const pickerProgress = document.getElementById('picker-progress');
-
-    // Theme Toggle
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const themeIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
-
-    // Mobile Menu
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const navLinksContainer = document.getElementById('main-nav');
-
-    /* ----------------------------------------------------
        THEME FUNCTIONS
        ---------------------------------------------------- */
 
@@ -1885,9 +1945,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function filterAndRender(term, category) {
-        const platformFilter = document.getElementById('platform-filter');
-        const priceFilter = document.getElementById('price-filter');
-        
         const selectedPlatform = platformFilter ? platformFilter.value : 'All';
         const maxPrice = priceFilter ? parseInt(priceFilter.value) : 3000;
 
@@ -1900,7 +1957,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (normalizedGameCat === 'SUBSCRIPTION') return false;
 
             const matchesCategory = category === '' || category === 'All' || normalizedFilter === 'ALL' || normalizedGameCat === normalizedFilter;
-            
+
             // Platform
             let matchesPlatform = true;
             if (selectedPlatform !== 'All') {
@@ -1910,11 +1967,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Price
             let minGamePrice = game.price || Infinity;
             if (game.prices && game.prices.length > 0) {
+                // Get the lowest price among options for this game
                 minGamePrice = Math.min(...game.prices.map(p => p.value));
             }
-            if(minGamePrice === Infinity || minGamePrice === 0) {
-                 // if no price info or price is 0 (view price), still show it
-                 minGamePrice = 0;
+            if (minGamePrice === Infinity || minGamePrice === 0) {
+                minGamePrice = 0; // fallback
             }
 
             const matchesPrice = minGamePrice <= maxPrice;
@@ -1924,25 +1981,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderGames(filtered);
     }
 
-    // Attach listeners dynamically just in case they exist
-    setTimeout(() => {
-        const pF = document.getElementById('platform-filter');
-        const prF = document.getElementById('price-filter');
-        const prD = document.getElementById('price-display');
-        const sI = document.querySelector('.search-input');
-
-        if (pF) {
-            pF.addEventListener('change', () => {
-                filterAndRender(sI ? sI.value.toLowerCase() : '', currentCategory);
-            });
-        }
-        if (prF) {
-            prF.addEventListener('input', (e) => {
-                if (prD) prD.innerText = e.target.value;
-                filterAndRender(sI ? sI.value.toLowerCase() : '', currentCategory);
-            });
-        }
-    }, 100);
 
     window.updateCartUI = () => {
         // Update Badges

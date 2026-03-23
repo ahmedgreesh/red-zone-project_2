@@ -13,9 +13,9 @@ const games = [
         styles: ["Story"],
         desc: "Embark on an epic journey as the Destined One. Confront your destiny in this Action RPG rooted in Chinese mythology.",
         prices: [
-            { label: "Primary", value: 1699 },
-            { label: "Secondary", value: 1199 },
-            { label: "Full Account", value: 2699 }
+            { label: "Primary", value: 1325 },
+            { label: "Secondary", value: 899 },
+            { label: "Full Account", value: 2099 }
         ],
         tags: ["Action", "Story"],
         playStyle: ["Solo"],
@@ -32,9 +32,9 @@ const games = [
         styles: ["Online", "Co-op", "Story"],
         desc: "Forced to go rogue. Hunted from within. This is Call of Duty: Black Ops 6.",
         prices: [
-            { label: "Primary PS5", value: 1199 },
-            { label: "Secondary", value: 599 },
-            { label: "Primary PS4", value: 549 }
+            { label: "Primary PS5", value: 799 },
+            { label: "Secondary", value: 549  },
+            { label: "Primary PS4", value: 449  }
         ],
         tags: ["Action", "Competitive", "Story"],
         playStyle: ["Solo", "Online", "Co-op"],
@@ -52,8 +52,8 @@ const games = [
         desc: "Fimbulwinter is here. Kratos and Atreus must journey to each of the Nine Realms.",
         prices: [
             { label: "Primary PS5", value: 699 },
-            { label: "Secondary", value: 500 },
-            { label: "Primary PS4", value: 549 }
+            { label: "Secondary", value: 449 },
+            { label: "Primary PS4", value: 449 }
         ],
         tags: ["Action", "Story"],
         playStyle: ["Solo"],
@@ -70,9 +70,9 @@ const games = [
         styles: ["Story"],
         desc: "America, 1899. The end of the wild west era has begun.",
         prices: [
-            { label: "Primary PS5", value: 399 },
-            { label: "Secondary", value: 249 },
-            { label: "Primary PS4", value: 299 }
+            { label: "Primary PS5", value: 425 },
+            { label: "Secondary", value: 275 },
+            { label: "Primary PS4", value: 279 }
         ],
         tags: ["Story", "Open World"],
         playStyle: ["Solo", "Online"],
@@ -89,8 +89,8 @@ const games = [
         styles: ["Online", "Co-op"],
         desc: "A free-to-play, third-person, PvPvE extraction shooter.",
         prices: [
-            { label: "Primary PS5", value: 1099 },
-            { label: "Secondary PS5", value: 589 }
+            { label: "Primary PS5", value: 1299 },
+            { label: "Secondary PS5", value: 699 }
         ],
         tags: ["Action", "Competitive"],
         playStyle: ["Online", "Co-op"],
@@ -125,8 +125,8 @@ const games = [
         styles: ["Story", "Horror"],
         desc: "Experience the psychological horror masterpiece, rebuilt for PS5.",
         prices: [
-            { label: "Primary PS5", value: 1850 },
-            { label: "Secondary PS5", value: 1450 }
+            { label: "Primary PS5", value: 999 },
+            { label: "Secondary PS5", value: 599 }
         ],
         tags: ["Story"],
         playStyle: ["Solo"],
@@ -198,9 +198,9 @@ const games = [
         styles: ["Online", "Co-op"],
         desc: "The next evolution of the World's Game.",
         prices: [
-            { label: "Primary PS5", value: 1100 },
-            { label: "Primary PS4", value: 600 },
-            { label: "Secondary", value: 500 }
+            { label: "Primary PS5", value: 899 },
+            { label: "Primary PS4", value: 419 },
+            { label: "Secondary", value: 349 }
         ],
         tags: ["Competitive"],
         playStyle: ["Solo", "Online", "Co-op"],
@@ -273,9 +273,9 @@ const games = [
         styles: ["Online", "Co-op", "Story"],
         desc: "The next generation of all-out warfare.",
         prices: [
-            { label: "Primary PS5", value: 1599 },
-            { label: "Secondary", value: 899 },
-            { label: "Full Account", value: 2299 }
+            { label: "Primary PS5", value: 1399 },
+            { label: "Secondary", value: 799 },
+            { label: "Full Account", value: 2149 }
         ],
         tags: ["Action", "Competitive"],
         playStyle: ["Solo", "Online", "Co-op"],
@@ -291,8 +291,8 @@ const games = [
         rating: 4,
         desc: "Drive the latest 2025 cars.",
         prices: [
-            { label: "Primary PS5", value: 1699 },
-            { label: "Secondary PS5", value: 1099 }
+            { label: "Primary PS5", value: 849 },
+            { label: "Secondary PS5", value: 549 }
         ],
         tags: ["Competitive"],
         playStyle: ["Solo", "Online", "Co-op"],
@@ -386,9 +386,9 @@ const games = [
         styles: ["Online", "Co-op", "Story"],
         desc: "Cross the lines.",
         prices: [
-            { label: "Primary PS5", value: 1999 },
-            { label: "Primary PS4", value: 699 },
-            { label: "Secondary", value: 1199 }
+            { label: "Primary PS5", value: 1299 },
+            { label: "Primary PS4", value: 429 },
+            { label: "Secondary", value: 799 }
         ],
         tags: ["Action", "Competitive", "FPS"],
         playStyle: ["Solo", "Online", "Co-op"],
@@ -519,8 +519,8 @@ const games = [
         styles: ["Story", "Adventure"],
         desc: "A new Ghost story awaits. In 1603, Atsu sets out on a journey in the lands surrounding Mount Yōtei.",
         prices: [
-            { label: "Primary PS5", value: 2149 },
-            { label: "Secondary PS5", value: 1399 },
+            { label: "Primary PS5", value: 1949 },
+            { label: "Secondary PS5", value: 1449 },
             { label: "Full Account", value: 3299 }
         ],
         tags: ["Action", "Story", "Open World"],
@@ -578,7 +578,7 @@ const games = [
         desc: "Embark on the craziest journey of your life in It Takes Two. Invite a friend to join for free.",
         prices: [
             { label: "Primary PS5", value: 349 },
-            { label: "Primary PS4", value: 299 },
+            { label: "Primary PS4", value: 149 },
             { label: "Secondary", value: 199 }
         ],
         tags: ["Action", "Story", "Co-op"],
@@ -596,8 +596,8 @@ const games = [
         styles: ["Story", "Adventure", "Stealth"],
         desc: "Live the intertwined stories of Naoe, an adept shinobi Assassin, and Yasuke, the powerful African samurai.",
         prices: [
-            { label: "Primary PS5", value: 1399 },
-            { label: "Secondary PS5", value: 989 }
+            { label: "Primary PS5", value: 899 },
+            { label: "Secondary PS5", value: 649 }
         ],
         tags: ["Action", "Story", "Open World"],
         playStyle: ["Solo"],

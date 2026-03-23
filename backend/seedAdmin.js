@@ -8,7 +8,7 @@ const seedAdmin = async () => {
 
         // Get the specific admin user by email
         const adminEmail = 'admin@redzone.com';
-        const adminPassword = 'aa3692053';
+        const adminPassword = 'redzoneaa3692053';
 
         const [user, created] = await User.findOrCreate({
             where: { email: adminEmail },
