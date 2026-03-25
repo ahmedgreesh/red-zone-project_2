@@ -41,6 +41,29 @@ const getDashboardStats = async (req, res) => {
     }
 };
 
+const jwt = require('jsonwebtoken');
+
+// @desc    Admin Login
+// @route   POST /api/admin/login
+// @access  Public
+const loginAdmin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        // Validate temporary credentials (username: admin, password: 1234)
+        if ((email === 'admin' || email === 'admin@redzone.com') && password === '1234') {
+            const token = jwt.sign(
+                { id: 'admin_temp', role: 'admin' }, 
+                process.env.JWT_SECRET || 'temporary_secret_key_123', 
+                { expiresIn: '1d' }
+            );
+            return res.json({ token, role: 'admin', email: 'admin' });
+        }
+        return res.status(401).json({ message: 'Invalid credentials' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // @desc    Get all users
 // @route   GET /api/admin/users
 // @access  Private/Admin
@@ -189,6 +212,7 @@ const getAllGames = async (req, res) => {
 };
 
 module.exports = {
+    loginAdmin,
     getDashboardStats,
     getAllUsers,
     deleteUser,

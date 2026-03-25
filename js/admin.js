@@ -35,7 +35,7 @@ const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
 
 // Auth State
-let authToken = localStorage.getItem('adminToken');
+let authToken = localStorage.getItem('token');
 let currentUser = JSON.parse(localStorage.getItem('adminUser') || 'null');
 
 // Initialize
@@ -93,7 +93,7 @@ async function handleLogin(e) {
     try {
         if (loginError) loginError.textContent = 'جاري تسجيل الدخول...';
         
-        const response = await fetch(`${API_URL}/users/login`, {
+        const response = await fetch(`${API_URL}/admin/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -115,7 +115,7 @@ async function handleLogin(e) {
         authToken = data.token;
         currentUser = data;
 
-        localStorage.setItem('adminToken', authToken);
+        localStorage.setItem('token', authToken);
         localStorage.setItem('adminUser', JSON.stringify(currentUser));
 
         showDashboard();
@@ -130,7 +130,7 @@ async function handleLogin(e) {
 function handleLogout() {
     authToken = null;
     currentUser = null;
-    localStorage.removeItem('adminToken');
+    localStorage.removeItem('token');
     localStorage.removeItem('adminUser');
     showLogin();
 }

@@ -259,21 +259,6 @@
             <!-- Sign Up View (Hidden by default) -->
             <div id="signup-view" style="display: none;">
                 <h2 data-i18n="signup_title">Join Red Zone</h2>
-                <div class="social-signup">
-                    <button class="social-btn gmail-btn" id="gmail-signup-trigger">
-                        <i class="fab fa-google"></i> <span data-i18n="signup_gmail">Sign up with Gmail</span>
-                    </button>
-                    <button class="social-btn fb-btn" id="fb-signup-trigger">
-                        <i class="fab fa-facebook-f"></i> <span data-i18n="signup_fb">Sign up with Facebook</span>
-                    </button>
-                    <button class="social-btn icloud-btn" id="icloud-signup-trigger">
-                        <i class="fab fa-apple"></i> <span data-i18n="signup_icloud">Sign up with iCloud</span>
-                    </button>
-                </div>
-
-                <div class="separator">
-                    <span>OR</span>
-                </div>
 
                 <form id="signup-form">
                     <div class="form-group">
@@ -288,86 +273,6 @@
                     <button type="submit" class="cta-btn full-width" data-i18n="signup_btn">Sign Up with Email</button>
                 </form>
                 <p class="auth-switch" data-i18n="signup_have_account">Already have an account? <a href="#" id="to-login">Sign In</a></p>
-            </div>
-
-            <!-- Gmail Login View -->
-            <div id="gmail-view" style="display: none;">
-                <div class="social-header gmail">
-                    <i class="fab fa-google"></i>
-                    <h2>Gmail Sign In</h2>
-                </div>
-                <form id="gmail-login-form">
-                    <div class="form-group">
-                        <label>Gmail Address</label>
-                        <input type="email" id="gmail-email" placeholder="example@gmail.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" id="gmail-password" placeholder="Enter your google password" required>
-                    </div>
-                    <div id="gmail-error" class="auth-error-msg"></div>
-                    <button type="submit" class="cta-btn full-width gmail-btn">Sign In with Google</button>
-                </form>
-                <button class="secondary-btn full-width back-to-auth">Back</button>
-            </div>
-
-            <!-- Facebook Login View -->
-            <div id="fb-view" style="display: none;">
-                <div class="social-header facebook">
-                    <i class="fab fa-facebook-f"></i>
-                    <h2>Facebook Login</h2>
-                </div>
-                <form id="fb-login-form">
-                    <div class="form-group">
-                        <label>Email or Phone</label>
-                        <input type="text" id="fb-email" placeholder="Email or phone number" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" id="fb-password" placeholder="Enter your facebook password" required>
-                    </div>
-                    <div id="fb-error" class="auth-error-msg"></div>
-                    <button type="submit" class="cta-btn full-width fb-btn">Log In</button>
-                </form>
-                <button class="secondary-btn full-width back-to-auth">Back</button>
-            </div>
-
-            <!-- iCloud Login View -->
-            <div id="icloud-view" style="display: none;">
-                <div class="social-header icloud">
-                    <i class="fab fa-apple"></i>
-                    <h2>Apple ID</h2>
-                </div>
-                <form id="icloud-login-form">
-                    <div class="form-group">
-                        <label>Apple ID</label>
-                        <input type="email" id="icloud-email" placeholder="example@icloud.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" id="icloud-password" placeholder="Enter your iCloud password" required>
-                    </div>
-                    <div id="icloud-error" class="auth-error-msg"></div>
-                    <button type="submit" class="cta-btn full-width icloud-btn">Sign In with Apple</button>
-                </form>
-                <button class="secondary-btn full-width back-to-auth">Back</button>
-            </div>
-
-            <!-- Verification View (Simulated API Check) -->
-            <div id="verification-view" style="display: none;">
-                <div class="verification-container">
-                    <div class="loader-ring">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <h2 id="verification-status">Verifying Account...</h2>
-                    <p id="verification-details">Connecting to secure servers</p>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" id="verification-progress"></div>
-                    </div>
-                </div>
             </div>
 
             <!-- Profile / Account View (For logged in users) -->

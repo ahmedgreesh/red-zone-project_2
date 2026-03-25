@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { protect, admin } = require('../middleware/authMiddleware');
 const {
+    loginAdmin,
     getDashboardStats,
     getAllUsers,
     deleteUser,
@@ -14,7 +15,10 @@ const {
     getAllGames
 } = require('../controllers/adminController');
 
-// All routes are protected and require admin role
+// Public route for Admin login
+router.post('/login', loginAdmin);
+
+// All other routes are protected and require admin role
 router.use(protect);
 router.use(admin);
 
