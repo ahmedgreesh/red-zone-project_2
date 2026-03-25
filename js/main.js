@@ -59,6 +59,7 @@ const translations = {
         profile_status: "Premium PlayStation Member",
         profile_library: "My Library",
         profile_settings: "Account Settings",
+        profile_admin: "Admin Dashboard",
         profile_logout: "Logout",
         // Play Styles
         styles_title: 'Discover Your <span style="color: var(--accent-red)">Play Style</span>',
@@ -278,6 +279,7 @@ const translations = {
         profile_status: "عضو بلايستيشن متميز",
         profile_library: "مكتبتي",
         profile_settings: "إعدادات الحساب",
+        profile_admin: "لوحة التحكم الإدارية",
         profile_logout: "خروج",
         // Play Styles
         styles_title: 'اكتشف <span style="color: var(--accent-red)">أسلوب لعبك</span>',
@@ -672,11 +674,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Determine API URL based on environment
-    const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '';
+    const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '' || window.location.hostname.startsWith('192.168.');
 
     // TODO: Replace 'redzone-backend.onrender.com' with your actual Render URL after deployment
     const PRODUCTION_API_URL = 'https://redzone-backend.onrender.com/api';
-    const LOCAL_API_URL = 'http://127.0.0.1:5001/api';
+    const LOCAL_API_URL = `http://${window.location.hostname || '127.0.0.1'}:5001/api`;
 
     // Auto-detect environment: Use production URL if not on localhost or running from a file
     const API_URL = isDevelopment ? LOCAL_API_URL : PRODUCTION_API_URL;
@@ -692,9 +694,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 if (res.status === 401) {
                     logout();
-                    showToast("Session expired. Please log in again.", true);
+                    showToast("انتهت الجلسة أو الحساب غير موجود. يرجى تسجيل الدخول مجدداً.", true);
                     openModal(loginModal);
-                    throw new Error('Unauthorized');
+                    throw new Error('يرجى تسجيل الدخول مجدداً لإتمام العملية');
                 }
                 if (!res.ok) throw new Error(`API Error: ${res.status}`);
                 return res.json();
@@ -724,9 +726,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (res.status === 401) {
                     logout();
-                    showToast("Session expired. Please log in again.", true);
+                    showToast("انتهت الجلسة أو الحساب غير موجود. يرجى تسجيل الدخول مجدداً.", true);
                     openModal(loginModal);
-                    throw new Error('Unauthorized');
+                    throw new Error('يرجى تسجيل الدخول مجدداً لإتمام العملية');
                 }
                 if (!res.ok) {
                     throw new Error(data.message || `API Error: ${res.status}`);
@@ -1847,6 +1849,24 @@ document.addEventListener('DOMContentLoaded', () => {
             if (profileIconContainer) {
                 const avatarIcon = user.avatar || 'user-circle';
                 profileIconContainer.innerHTML = `<i class="fas fa-${avatarIcon}" style="font-size: 4rem; color: var(--accent-red); margin-bottom: 20px;"></i>`;
+            }
+
+            // Show Admin Dashboard button if user is admin or using admin email/username
+            const adminDashboardBtn = document.getElementById('admin-dashboard-btn');
+            if (adminDashboardBtn) {
+                const isAdmin = (user.role && user.role.toLowerCase() === 'admin') || 
+                                (user.email && user.email.toLowerCase().includes('admin')) ||
+                                (user.username && user.username.toLowerCase() === 'admin');
+                
+                if (isAdmin) {
+                    adminDashboardBtn.style.setProperty('display', 'block', 'important');
+                    adminDashboardBtn.onclick = (e) => {
+                        e.preventDefault();
+                        window.location.href = 'admin.html';
+                    };
+                } else {
+                    adminDashboardBtn.style.setProperty('display', 'none', 'important');
+                }
             }
 
             // If modal is open, show profile view
@@ -2996,7 +3016,8 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const order = await api.post('/orders', {
                     orderItems,
-                    totalPrice
+                    totalPrice,
+                    status: 'paid'
                 });
 
                 const orderIdShort = order && order.id ? order.id.substring(0, 8) : 'NEW';

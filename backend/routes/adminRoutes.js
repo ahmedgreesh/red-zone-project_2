@@ -12,7 +12,9 @@ const {
     createGame,
     updateGame,
     deleteGame,
-    getAllGames
+    getAllGames,
+    resetSales,
+    resetUsers
 } = require('../controllers/adminController');
 
 // Public route for Admin login
@@ -24,8 +26,10 @@ router.use(admin);
 
 // Dashboard
 router.get('/stats', getDashboardStats);
+router.delete('/sales/reset', resetSales);
 
 // Users management
+router.delete('/users/reset', resetUsers);
 router.get('/users', getAllUsers);
 router.delete('/users/:id', deleteUser);
 router.put('/users/:id/role', updateUserRole);

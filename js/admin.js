@@ -1,11 +1,11 @@
 // Admin Dashboard JavaScript - Red Zone
 
 // Determine API URL based on environment
-const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '';
+const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '' || window.location.hostname.startsWith('192.168.');
 
 // TODO: Replace 'redzone-backend.onrender.com' with your actual Render URL after deployment
 const PRODUCTION_API_URL = 'https://redzone-backend.onrender.com/api';
-const LOCAL_API_URL = 'http://127.0.0.1:5001/api';
+const LOCAL_API_URL = `http://${window.location.hostname || '127.0.0.1'}:5001/api`;
 
 // Auto-detect environment
 const API_URL = isDevelopment ? LOCAL_API_URL : PRODUCTION_API_URL; 
@@ -231,6 +231,10 @@ async function loadDashboardData() {
         document.getElementById('totalOrders').textContent = stats.totalOrders;
         const revenue = (stats && stats.totalRevenue) ? stats.totalRevenue : 0;
         document.getElementById('totalRevenue').textContent = `${revenue.toLocaleString()} ج.م`;
+        const todaySales = (stats && stats.todaySales) ? stats.todaySales : 0;
+        document.getElementById('todaySales').textContent = `${todaySales.toLocaleString()} ج.م`;
+        const monthSales = (stats && stats.monthSales) ? stats.monthSales : 0;
+        document.getElementById('monthSales').textContent = `${monthSales.toLocaleString()} ج.م`;
         document.getElementById('pendingOrders').textContent = stats.pendingOrders;
         document.getElementById('paidOrders').textContent = stats.paidOrders;
         document.getElementById('canceledOrders').textContent = stats.canceledOrders;
@@ -536,5 +540,38 @@ function showToast(message, isError = false) {
 // Make functions globally accessible
 window.editGame = editGame;
 window.deleteGame = deleteGame;
+
+// Reset Sales Button Handler
+const resetSalesBtn = document.getElementById('resetSalesBtn');
+if (resetSalesBtn) {
+    resetSalesBtn.addEventListener('click', async () => {
+        if (!confirm('هل أنت متأكد أنك تريد مسح جميع المبيعات والطلبات الوهمية وتصفير اللوحة؟')) return;
+        try {
+            await apiRequest('/admin/sales/reset', { method: 'DELETE' });
+            showToast('تم تصفير المبيعات بنجاح');
+            loadDashboardData();
+            loadOrders();
+        } catch (error) {
+            showToast('حدث خطأ أثناء تصفير المبيعات', true);
+        }
+    });
+}
+
+// Reset Users Button Handler
+const resetUsersBtn = document.getElementById('resetUsersBtn');
+if (resetUsersBtn) {
+    resetUsersBtn.addEventListener('click', async () => {
+        if (!confirm('هل أنت متأكد أنك تريد مسح جميع الحسابات والمستخدمين الوهميين من لوحة التحكم؟')) return;
+        try {
+            await apiRequest('/admin/users/reset', { method: 'DELETE' });
+            showToast('تم مسح جميع المستخدمين الوهميين بنجاح');
+            loadDashboardData();
+            loadUsers();
+        } catch (error) {
+            showToast('حدث خطأ أثناء مسح المستخدمين', true);
+        }
+    });
+}
+
 window.deleteUser = deleteUser;
 window.updateOrderStatus = updateOrderStatus;

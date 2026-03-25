@@ -4,7 +4,7 @@ const Order = require('../models/Order');
 // @route   POST /api/orders
 // @access  Private
 const addOrderItems = async (req, res) => {
-    const { orderItems, totalPrice } = req.body;
+    const { orderItems, totalPrice, status } = req.body;
 
     if (orderItems && orderItems.length === 0) {
         res.status(400).json({ message: 'No order items' });
@@ -14,7 +14,8 @@ const addOrderItems = async (req, res) => {
             const order = await Order.create({
                 userId: req.user.id,
                 items: orderItems,
-                totalPrice
+                totalPrice,
+                status: status || 'pending'
             });
             res.status(201).json(order);
         } catch (error) {

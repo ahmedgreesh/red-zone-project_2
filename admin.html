@@ -127,6 +127,24 @@
                             <p>الإيرادات</p>
                         </div>
                     </div>
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="todaySales">0 ج.م</h3>
+                            <p>مبيعات اليوم</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="monthSales">0 ج.م</h3>
+                            <p>مبيعات الشهر</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="orders-status-grid">
@@ -148,8 +166,12 @@
                 </div>
 
                 <div class="recent-orders">
-                    <h2><i class="fas fa-history"></i> آخر الطلبات</h2>
-                    <div class="table-container">
+                    <div class="overview-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 class="section-title" style="margin-bottom: 0;"><i class="fas fa-chart-line"></i> نظرة عامة</h2>
+                    <button id="resetSalesBtn" class="primary-btn" style="background-color: var(--accent-red); padding: 5px 15px; font-size: 0.9rem;"><i class="fas fa-trash"></i> تصفير المبيعات</button>
+                </div>
+
+                <div class="table-container">
                         <table>
                             <thead>
                                 <tr>
@@ -204,6 +226,9 @@
             <section class="content-section" id="usersSection">
                 <div class="section-header">
                     <h2><i class="fas fa-users"></i> إدارة المستخدمين</h2>
+                    <button class="add-btn" id="resetUsersBtn" style="background-color: var(--accent-red);">
+                        <i class="fas fa-trash"></i> تصفير المستخدمين
+                    </button>
                 </div>
                 <div class="table-container">
                     <table>

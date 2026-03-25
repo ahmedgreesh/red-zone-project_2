@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const Game = require('../models/Game');
 const Order = require('../models/Order');
+const { Op } = require('sequelize');
+const jwt = require('jsonwebtoken');
 
 // @desc    Get dashboard statistics
 // @route   GET /api/admin/stats
@@ -19,6 +21,27 @@ const getDashboardStats = async (req, res) => {
         // Calculate total revenue from paid orders
         const totalRevenue = await Order.sum('totalPrice', { where: { status: 'paid' } }) || 0;
 
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+
+        const startOfMonth = new Date();
+        startOfMonth.setDate(1);
+        startOfMonth.setHours(0, 0, 0, 0);
+
+        const todaySales = await Order.sum('totalPrice', {
+            where: {
+                status: 'paid',
+                createdAt: { [Op.gte]: startOfDay }
+            }
+        }) || 0;
+
+        const monthSales = await Order.sum('totalPrice', {
+            where: {
+                status: 'paid',
+                createdAt: { [Op.gte]: startOfMonth }
+            }
+        }) || 0;
+
         // Recent orders
         const recentOrders = await Order.findAll({
             limit: 5,
@@ -34,6 +57,8 @@ const getDashboardStats = async (req, res) => {
             paidOrders,
             canceledOrders,
             totalRevenue,
+            todaySales,
+            monthSales,
             recentOrders
         });
     } catch (error) {
@@ -41,7 +66,6 @@ const getDashboardStats = async (req, res) => {
     }
 };
 
-const jwt = require('jsonwebtoken');
 
 // @desc    Admin Login
 // @route   POST /api/admin/login
@@ -49,16 +73,44 @@ const jwt = require('jsonwebtoken');
 const loginAdmin = async (req, res) => {
     try {
         const { email, password } = req.body;
-        // Validate temporary credentials (username: admin, password: 1234)
-        if ((email === 'admin' || email === 'admin@redzone.com') && password === '1234') {
+
+        // 1. Check Database first
+        const user = await User.findOne({ where: { email } });
+        if (user && user.role === 'admin') {
+            const isMatch = await user.comparePassword(password);
+            if (isMatch) {
+                const token = jwt.sign(
+                    { id: user.id, role: 'admin' }, 
+                    process.env.JWT_SECRET || 'temporary_secret_key_123', 
+                    { expiresIn: '1d' }
+                );
+                return res.json({ token, role: 'admin', email: user.email });
+            }
+        }
+
+        // 2. Emergency/Temporary Fallback (email: admin@redzone.com, pass: redzoneaa3692053)
+        if ((email === 'admin' || email === 'admin@redzone.com') && password === 'redzoneaa3692053') {
             const token = jwt.sign(
                 { id: 'admin_temp', role: 'admin' }, 
                 process.env.JWT_SECRET || 'temporary_secret_key_123', 
                 { expiresIn: '1d' }
             );
-            return res.json({ token, role: 'admin', email: 'admin' });
+            return res.json({ token, role: 'admin', email: 'admin@redzone.com' });
         }
-        return res.status(401).json({ message: 'Invalid credentials' });
+
+        return res.status(401).json({ message: 'البريد أو كلمة المرور غير صحيحة' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Reset all sales data (DELETE orders)
+// @route   DELETE /api/admin/sales/reset
+// @access  Private/Admin
+const resetSales = async (req, res) => {
+    try {
+        await Order.destroy({ where: {} });
+        res.json({ message: 'تم تصفير جميع المبيعات بنجاح' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -211,6 +263,23 @@ const getAllGames = async (req, res) => {
     }
 };
 
+// @desc    Reset all users data
+// @route   DELETE /api/admin/users/reset
+// @access  Private/Admin
+const resetUsers = async (req, res) => {
+    try {
+        // Delete all users except admins
+        await User.destroy({ 
+            where: { 
+                role: { [Op.ne]: 'admin' } 
+            } 
+        });
+        res.json({ message: 'تم تصفير جميع المستخدمين (باستثناء الإدارة) بنجاح' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     loginAdmin,
     getDashboardStats,
@@ -222,5 +291,7 @@ module.exports = {
     createGame,
     updateGame,
     deleteGame,
-    getAllGames
+    getAllGames,
+    resetSales,
+    resetUsers
 };
