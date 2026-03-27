@@ -131,7 +131,7 @@ const translations = {
         footer_sup3: "Legal Notice",
         footer_sup4: "Privacy Policy",
         footer_desc: "An independent platform acting as a mediator in digital gaming services. We facilitate the process of obtaining PlayStation Plus subscriptions, digital games, and accounts through official and certified channels.",
-        footer_founded: "Founded in 2024",
+        footer_founded: "Founded in 2018",
         footer_disclaimer: "Red Zone is not officially affiliated with or endorsed by Sony Interactive Entertainment or any hardware/software manufacturer. All mentioned trademarks belong to their respective owners.",
         footer_copyright: "\u00a9 Red Zone 2026. All Rights Reserved.",
         // Policy Page Full Content
@@ -479,7 +479,7 @@ const translations = {
         footer_sup3: "الإشعار القانوني",
         footer_sup4: "سياسة الخصوصية",
         footer_desc: "منصة مستقلة تعمل كوسيط في مجال الخدمات الرقمية للألعاب، ونقوم بتسهيل عملية الحصول على اشتراكات PlayStation Plus، الألعاب الرقمية، والحسابات، من خلال قنوات شراء وشحن رسمية ومعتمدة.",
-        footer_founded: "تأسست في 2024",
+        footer_founded: "تأسست في 2018",
         footer_disclaimer: "Red Zone لا تمثل أو ترتبط رسميًا بشركة Sony Interactive Entertainment أو أي جهة مصنعة للأجهزة أو الألعاب. جميع العلامات التجارية المذكورة هي ملك لأصحابها الشرعيين.",
         footer_copyright: "© Red Zone 2026. جميع الحقوق محفوظة.",
         policy_hero_badge: "إشعار قانوني",
