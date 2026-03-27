@@ -471,7 +471,7 @@ async function loadOrders() {
                 <tr>
                     <td>#${(order.id || order._id).toString().slice(-6)}</td>
                     <td>${order.userId?.email || order.User?.email || 'N/A'}</td>
-                    <td>${order.orderItems ? order.orderItems.map(i => i.title).join(', ') : 'N/A'}</td>
+                    <td>${order.items && order.items.length > 0 ? order.items.map(i => `${i.title}${i.variant && i.variant !== 'Standard' ? ' (' + i.variant + ')' : ''}`).join(', ') : 'N/A'}</td>
                     <td>${order.totalPrice.toLocaleString()} ج.م</td>
                     <td><span class="status-badge ${order.status}">${getStatusArabic(order.status)}</span></td>
                     <td>${formatDate(order.createdAt)}</td>
