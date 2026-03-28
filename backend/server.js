@@ -73,18 +73,22 @@ const startServer = async () => {
 
         // Ensure Admin exists on startup
         const User = require('./models/User');
-        const adminEmail = process.env.ADMIN_EMAIL || 'admin@redzone.com';
-        const adminPass = process.env.ADMIN_PASSWORD || 'redzoneaa3692053';
+        const adminEmail = process.env.ADMIN_EMAIL;
+        const adminPass = process.env.ADMIN_PASSWORD;
 
-        const [adminUser, adminCreated] = await User.findOrCreate({
-            where: { role: 'admin' }, // Check by role so email can change without creating new admins
-            defaults: { email: adminEmail, password: adminPass, username: 'Red Zone Admin', role: 'admin' }
-        });
-        
-        if (adminCreated) {
-            logger.info(`✅ Admin credentials created for: ${adminEmail}`);
+        if (adminEmail && adminPass) {
+            const [adminUser, adminCreated] = await User.findOrCreate({
+                where: { role: 'admin' }, // Check by role so email can change without creating new admins
+                defaults: { email: adminEmail, password: adminPass, username: 'Red Zone Admin', role: 'admin' }
+            });
+            
+            if (adminCreated) {
+                logger.info(`✅ Admin credentials created for: ${adminEmail}`);
+            } else {
+                logger.info(`✅ Admin account exists. Access preserved.`);
+            }
         } else {
-            logger.info(`✅ Admin account exists. Access preserved.`);
+            logger.warn('⚠️ ADMIN_EMAIL or ADMIN_PASSWORD not found in .env. Skipping default admin creation.');
         }
 
         // Auto-Seed: Update games/prices on server start

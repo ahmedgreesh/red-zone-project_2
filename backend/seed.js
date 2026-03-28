@@ -885,11 +885,14 @@ const seedDB = async (isManual = false) => {
         console.log(`✅ ${games.length} Games Inserted/Updated`);
 
         // Production Admin Account Reset
-        const adminEmail = process.env.ADMIN_EMAIL || 'admin@redzone.com';
-        const adminPass = process.env.ADMIN_PASSWORD || 'redzoneaa3692053';
+        const adminEmail = process.env.ADMIN_EMAIL;
+        const adminPass = process.env.ADMIN_PASSWORD;
 
-        // Check if admin exists by role (so it doesn't create duplicate if email changes)
-        const admin = await User.findOne({ where: { role: 'admin' } });
+        if (!adminEmail || !adminPass) {
+            console.log('⚠️ [SEED] ADMIN_EMAIL or ADMIN_PASSWORD not found in .env. Skipping admin creation.');
+        } else {
+            // Check if admin exists by role (so it doesn't create duplicate if email changes)
+            const admin = await User.findOne({ where: { role: 'admin' } });
 
         if (!admin) {
             console.log(`[SEED] Creating production admin account: ${adminEmail}`);
@@ -904,6 +907,7 @@ const seedDB = async (isManual = false) => {
             console.log(`[SEED] Admin account exists. Preserving current password.`);
             // Removed the password overwrite block.
         }
+        } // End of outer else
 
         // Close connection ONLY if run directly
         if (require.main === module) {
