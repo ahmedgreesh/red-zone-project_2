@@ -22,7 +22,7 @@ const allowedOrigins = [process.env.FRONTEND_URL || 'http://localhost:3000', 'ht
 
 app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development') {
+        if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
@@ -68,8 +68,12 @@ const startServer = async () => {
         await sequelize.authenticate();
         logger.info('✅ Database Connected successfully.');
 
-        // Sync models (Using alter: true to preserve data and update schema safely)
-        await sequelize.sync({ alter: true });
+        // Sync models (conditional sync for production safety)
+        if (process.env.NODE_ENV !== 'production') {
+            await sequelize.sync({ alter: true });
+        } else {
+            await sequelize.sync();
+        }
         logger.info('✅ Models synced with database.');
 
         // Ensure Admin exists on startup

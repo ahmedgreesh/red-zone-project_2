@@ -1,4 +1,5 @@
 const Game = require('../models/Game');
+const logger = require('../utils/logger');
 
 // @desc    Get all games
 // @route   GET /api/games
@@ -8,7 +9,8 @@ const getGames = async (req, res) => {
         const games = await Game.findAll();
         res.json(games);
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        logger.error('[getGames] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -24,7 +26,8 @@ const getGameById = async (req, res) => {
             res.status(404).json({ message: 'Game not found' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        logger.error('[getGameById] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -36,6 +39,7 @@ const createGame = async (req, res) => {
         const game = await Game.create(req.body);
         res.status(201).json(game);
     } catch (error) {
+        logger.error('[createGame] Error: %O', error);
         res.status(400).json({ message: 'Invalid game data' });
     }
 };

@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const { generateToken, generateRefreshToken } = require('../utils/generateToken');
+const logger = require('../utils/logger');
 
 // @desc    Register a new user
 // @route   POST /api/users/register
@@ -41,7 +42,8 @@ const registerUser = async (req, res) => {
             res.status(400).json({ message: 'Invalid user data' });
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[registerUser] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -50,8 +52,6 @@ const registerUser = async (req, res) => {
 // @access  Public
 const loginUser = async (req, res) => {
     let { email, password } = req.body || {};
-
-    console.log("LOGIN ATTEMPT RECEIVED BODY:", req.body);
 
     if (!email || !password) {
         return res.status(400).json({ message: 'الرجاء إدخال البريد الإلكتروني وكلمة المرور' });
@@ -71,11 +71,11 @@ const loginUser = async (req, res) => {
         const isMatch = await user.comparePassword(password);
 
         if (!isMatch) {
-            console.log(`[AUTH] Failed login attempt for ${email}. Password mismatch.`);
+            logger.warn('[AUTH] Failed login attempt due to password mismatch.');
             return res.status(401).json({ message: 'كلمة السر غير صحيحة (Wrong password)' });
         }
 
-        console.log(`[AUTH] User ${email} logged in successfully.`);
+        logger.info('[AUTH] User authenticated successfully.');
 
         const token = generateToken(user.id);
         res.cookie('token', token, {
@@ -93,8 +93,8 @@ const loginUser = async (req, res) => {
             token: token
         });
     } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ message: error.message });
+        logger.error('[loginUser] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -113,7 +113,9 @@ const logoutUser = async (req, res) => {
 // @access  Private
 const getUserProfile = async (req, res) => {
     try {
-        const user = await User.findByPk(req.user.id);
+        const user = await User.findByPk(req.user.id, {
+            attributes: { exclude: ['password'] }
+        });
 
         if (user) {
             res.json({
@@ -129,7 +131,8 @@ const getUserProfile = async (req, res) => {
             res.status(404).json({ message: 'User not found' });
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[getUserProfile] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -166,7 +169,8 @@ const updateWishlist = async (req, res) => {
             res.status(404).json({ message: 'User not found' });
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[updateWishlist] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -200,7 +204,8 @@ const updateUserProfile = async (req, res) => {
             res.status(404).json({ message: 'User not found' });
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[updateUserProfile] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 

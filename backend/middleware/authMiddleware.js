@@ -52,12 +52,6 @@ const protect = async (req, res, next) => {
     }
 
     try {
-        // Handle the static admin token (id === 'admin-static')
-        if (decoded.id === 'admin-static' && decoded.role === 'admin') {
-            req.user = { id: 'admin-static', role: 'admin', email: 'admin@redzone.com' };
-            return next();
-        }
-
         // Fetch full user from DB (exclude password)
         const user = await User.findByPk(decoded.id, {
             attributes: { exclude: ['password'] }

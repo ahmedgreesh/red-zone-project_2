@@ -62,7 +62,8 @@ const getDashboardStats = async (req, res) => {
             recentOrders
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[getDashboardStats] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -111,7 +112,8 @@ const resetSales = async (req, res) => {
         await Order.destroy({ where: {} });
         res.json({ message: 'تم تصفير جميع المبيعات بنجاح' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[resetSales] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -120,13 +122,19 @@ const resetSales = async (req, res) => {
 // @access  Private/Admin
 const getAllUsers = async (req, res) => {
     try {
+        const limit = parseInt(req.query.limit) || 50;
+        const offset = parseInt(req.query.offset) || 0;
+
         const users = await User.findAll({
             attributes: { exclude: ['password'] },
-            order: [['createdAt', 'DESC']]
+            order: [['createdAt', 'DESC']],
+            limit,
+            offset
         });
         res.json(users);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[getAllUsers] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -142,16 +150,21 @@ const deleteUser = async (req, res) => {
         await user.destroy();
         res.json({ message: 'User deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[deleteUser] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
-
 // @desc    Update user role
 // @route   PUT /api/admin/users/:id/role
 // @access  Private/Admin
 const updateUserRole = async (req, res) => {
     try {
         const { role } = req.body;
+        
+        if (!['user', 'admin'].includes(role)) {
+            return res.status(400).json({ message: 'Invalid role provided' });
+        }
+
         const user = await User.findByPk(req.params.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -160,7 +173,8 @@ const updateUserRole = async (req, res) => {
         await user.save();
         res.json({ message: 'User role updated', user });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[updateUserRole] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -169,13 +183,19 @@ const updateUserRole = async (req, res) => {
 // @access  Private/Admin
 const getAllOrders = async (req, res) => {
     try {
+        const limit = parseInt(req.query.limit) || 50;
+        const offset = parseInt(req.query.offset) || 0;
+
         const orders = await Order.findAll({
             include: [{ model: User, attributes: ['email'] }],
-            order: [['createdAt', 'DESC']]
+            order: [['createdAt', 'DESC']],
+            limit,
+            offset
         });
         res.json(orders);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[getAllOrders] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -226,11 +246,27 @@ const updateGame = async (req, res) => {
             return res.status(404).json({ message: 'Game not found' });
         }
 
-        Object.assign(game, req.body);
+        const { title, price, description, styles, tags, playStyle, playTime, difficulty, image, category, platform, rating, prices } = req.body;
+        
+        if (title !== undefined) game.title = title;
+        if (price !== undefined) game.price = price;
+        if (description !== undefined) game.description = description;
+        if (styles !== undefined) game.styles = styles;
+        if (tags !== undefined) game.tags = tags;
+        if (playStyle !== undefined) game.playStyle = playStyle;
+        if (playTime !== undefined) game.playTime = playTime;
+        if (difficulty !== undefined) game.difficulty = difficulty;
+        if (image !== undefined) game.image = image;
+        if (category !== undefined) game.category = category;
+        if (platform !== undefined) game.platform = platform;
+        if (rating !== undefined) game.rating = rating;
+        if (prices !== undefined) game.prices = prices;
+
         await game.save();
         res.json(game);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[updateGame] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -246,7 +282,8 @@ const deleteGame = async (req, res) => {
         await game.destroy();
         res.json({ message: 'Game deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[deleteGame] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -255,10 +292,18 @@ const deleteGame = async (req, res) => {
 // @access  Private/Admin
 const getAllGames = async (req, res) => {
     try {
-        const games = await Game.findAll({ order: [['id', 'ASC']] });
+        const limit = parseInt(req.query.limit) || 50;
+        const offset = parseInt(req.query.offset) || 0;
+
+        const games = await Game.findAll({ 
+            order: [['id', 'ASC']],
+            limit,
+            offset
+        });
         res.json(games);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[getAllGames] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -278,7 +323,7 @@ const getAdminProfile = async (req, res) => {
         res.json(user);
     } catch (error) {
         logger.error('[getAdminProfile] Error: %O', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -310,7 +355,7 @@ const updateAdminProfile = async (req, res) => {
         });
     } catch (error) {
         logger.error('[updateAdminProfile] Error: %O', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 
@@ -327,7 +372,8 @@ const resetUsers = async (req, res) => {
         });
         res.json({ message: 'تم تصفير جميع المستخدمين (باستثناء الإدارة) بنجاح' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[resetUsers] Error: %O', error);
+        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
 

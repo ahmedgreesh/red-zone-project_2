@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const logger = require('../utils/logger');
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -19,7 +20,8 @@ const addOrderItems = async (req, res) => {
             });
             res.status(201).json(order);
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            logger.error('[addOrderItems] Error: %O', error);
+            res.status(400).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
         }
     }
 };

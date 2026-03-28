@@ -874,7 +874,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // TODO: Replace 'redzone-backend.onrender.com' with your actual Render URL after deployment
     const PRODUCTION_API_URL = 'https://redzone-backend.onrender.com/api';
-    const LOCAL_API_URL = `http://${window.location.hostname || '127.0.0.1'}:5000/api`;
+    const LOCAL_API_URL = `http://${window.location.hostname || '127.0.0.1'}:5001/api`;
 
     // Auto-detect environment: Use production URL if not on localhost or running from a file
     const API_URL = isDevelopment ? LOCAL_API_URL : PRODUCTION_API_URL;
@@ -895,7 +895,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error('Rate limit exceeded');
                 }
 
-                if (res.status === 401) {
+                if (res.status === 401 && !endpoint.includes('login')) {
                     logout();
                     showToast("انتهت الجلسة أو الحساب غير موجود. يرجى تسجيل الدخول مجدداً.", true);
                     openModal(loginModal);
@@ -935,7 +935,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(`Invalid JSON response: ${res.status}`);
                 }
 
-                if (res.status === 401) {
+                if (res.status === 401 && !endpoint.includes('login')) {
                     logout();
                     showToast("انتهت الجلسة أو الحساب غير موجود. يرجى تسجيل الدخول مجدداً.", true);
                     openModal(loginModal);
@@ -968,7 +968,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error('Rate limit exceeded');
                 }
 
-                if (res.status === 401) {
+                if (res.status === 401 && !endpoint.includes('login')) {
                     logout();
                     showToast("Session expired. Please log in again.", true);
                     openModal(loginModal);
