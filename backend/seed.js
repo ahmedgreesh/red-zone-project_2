@@ -885,26 +885,24 @@ const seedDB = async (isManual = false) => {
         console.log(`✅ ${games.length} Games Inserted/Updated`);
 
         // Production Admin Account Reset
-        const adminEmail = 'admin@redzone.com'.trim();
-        const adminOriginalPass = 'redzoneaa3692053'.trim();
+        const adminEmail = process.env.ADMIN_EMAIL || 'admin@redzone.com';
+        const adminPass = process.env.ADMIN_PASSWORD || 'redzoneaa3692053';
 
-        // Check if admin exists
-        const admin = await User.findOne({ where: { email: adminEmail } });
+        // Check if admin exists by role (so it doesn't create duplicate if email changes)
+        const admin = await User.findOne({ where: { role: 'admin' } });
 
         if (!admin) {
             console.log(`[SEED] Creating production admin account: ${adminEmail}`);
             await User.create({
                 email: adminEmail,
-                password: adminOriginalPass,
+                password: adminPass,
                 role: 'admin',
                 username: 'Admin'
             });
             console.log(`✅ Admin account CREATED.`);
         } else {
-            console.log(`[SEED] Admin account exists. Updating password to ensure access.`);
-            admin.password = adminOriginalPass;
-            await admin.save();
-            console.log(`✅ Admin account UPDATED.`);
+            console.log(`[SEED] Admin account exists. Preserving current password.`);
+            // Removed the password overwrite block.
         }
 
         // Close connection ONLY if run directly

@@ -2,7 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
+const helmet = require('helmet');
 const { sequelize } = require('./config/db');
+const logger = require('./utils/logger');
 
 // Load environment variables
 dotenv.config();
@@ -16,12 +18,23 @@ const app = express();
 app.set('trust proxy', 1);
 
 // Middleware - Enhanced CORS Configuration
+const allowedOrigins = [process.env.FRONTEND_URL || 'http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5500', 'http://127.0.0.1:5500'];
+
 app.use(cors({
-    origin: true,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development') {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
+
+// Add Helmet for HTTP header security
+app.use(helmet());
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
@@ -52,49 +65,51 @@ const startServer = async () => {
     try {
         // Authenticate connection
         await sequelize.authenticate();
-        console.log('✅ Database Connected successfully.');
+        logger.info('✅ Database Connected successfully.');
 
         // Sync models (Using alter: true to preserve data and update schema safely)
         await sequelize.sync({ alter: true });
-        console.log('✅ Models synced with database.');
+        logger.info('✅ Models synced with database.');
 
         // Ensure Admin exists on startup
         const User = require('./models/User');
+        const adminEmail = process.env.ADMIN_EMAIL || 'admin@redzone.com';
+        const adminPass = process.env.ADMIN_PASSWORD || 'redzoneaa3692053';
+
         const [adminUser, adminCreated] = await User.findOrCreate({
-            where: { email: 'admin@redzone.com' },
-            defaults: { email: 'admin@redzone.com', password: 'redzoneaa3692053', username: 'Red Zone Admin', role: 'admin' }
+            where: { role: 'admin' }, // Check by role so email can change without creating new admins
+            defaults: { email: adminEmail, password: adminPass, username: 'Red Zone Admin', role: 'admin' }
         });
         
-        if (!adminCreated) {
-            adminUser.password = 'redzoneaa3692053';
-            adminUser.role = 'admin';
-            await adminUser.save();
+        if (adminCreated) {
+            logger.info(`✅ Admin credentials created for: ${adminEmail}`);
+        } else {
+            logger.info(`✅ Admin account exists. Access preserved.`);
         }
-        console.log('✅ Admin credentials ensured: redzoneaa3692053');
 
         // Auto-Seed: Update games/prices on server start
         // This ensures the DB is always up-to-date without manual scripts
-        console.log('🔄 Checking for new game data...');
+        logger.info('🔄 Checking for new game data...');
         await seedDB();
 
         // Start listening
         app.listen(PORT, '0.0.0.0', () => {
-            console.log(`🚀 Server running on port ${PORT}`);
+            logger.info(`🚀 Server running on port ${PORT}`);
         });
     } catch (error) {
-        console.error('❌ Server Startup Error:', error);
+        logger.error('❌ Server Startup Error: %O', error);
         process.exit(1);
     }
 };
 
 // Global Error Handlers to prevent server crash
 process.on('unhandledRejection', (reason, promise) => {
-    console.error('⚠️ Unhandled Rejection at:', promise, 'reason:', reason);
+    logger.error('⚠️ Unhandled Rejection at: %O, reason: %O', promise, reason);
     // Don't exit the process
 });
 
 process.on('uncaughtException', (error) => {
-    console.error('❌ Uncaught Exception:', error);
+    logger.error('❌ Uncaught Exception: %O', error);
     // Optional: exit if the error is critical, but logging helps debug
 });
 

@@ -67,19 +67,7 @@ const getDashboardStats = async (req, res) => {
 };
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// STATIC ADMIN CREDENTIALS
-// ─────────────────────────────────────────────────────────────────────────────
-// These are used for local development.
-// HOW TO UPGRADE:
-//   1. Move credentials to DB (User table already has them).
-//   2. Remove the STATIC_ADMIN block below.
-//   3. Keep only the "Check Database" path.
-// ─────────────────────────────────────────────────────────────────────────────
-const STATIC_ADMIN = {
-    email: 'admin@redzone.com',
-    password: 'redzoneaa3692053'
-};
+const logger = require('../utils/logger');
 
 // @desc    Admin Login
 // @route   POST /api/admin/login
@@ -92,23 +80,7 @@ const loginAdmin = async (req, res) => {
             return res.status(400).json({ message: 'Email and password are required' });
         }
 
-        // ── 1. Static Admin Credentials (local dev) ──────────────────────────
-        if (email.trim() === STATIC_ADMIN.email && password.trim() === STATIC_ADMIN.password) {
-            const token = generateToken('admin-static', 'admin');
-            return res.cookie('token', token, {
-                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-                httpOnly: true,
-                secure: false, // Force false for local dev to avoid HTTPS requirements
-                sameSite: 'Lax',
-                path: '/' // Ensure cookie is available for all routes
-            }).json({
-                role: 'admin',
-                email: STATIC_ADMIN.email,
-                token: token
-            });
-        }
-
-        // ── 2. Database Admin Check (for production / migrated accounts) ─────
+        // Database Admin Check
         const user = await User.findOne({ where: { email: email.trim() } });
         if (user && user.role === 'admin') {
             const isMatch = await user.comparePassword(password.trim());
@@ -117,7 +89,7 @@ const loginAdmin = async (req, res) => {
                 return res.cookie('token', token, {
                     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
                     httpOnly: true,
-                    secure: false, // Force false for local dev
+                    secure: process.env.NODE_ENV === 'production',
                     sameSite: 'Lax',
                     path: '/'
                 }).json({ role: 'admin', email: user.email, token: token });
@@ -126,8 +98,8 @@ const loginAdmin = async (req, res) => {
 
         return res.status(401).json({ message: 'البريد أو كلمة المرور غير صحيحة' });
     } catch (error) {
-        console.error('[loginAdmin] Error:', error);
-        res.status(500).json({ message: error.message });
+        logger.error('[loginAdmin] Error: %O', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
 
@@ -295,15 +267,6 @@ const getAllGames = async (req, res) => {
 // @access  Private/Admin
 const getAdminProfile = async (req, res) => {
     try {
-        // Handle static admin case
-        if (req.user.id === 'admin-static') {
-            return res.json({
-                id: 'admin-static',
-                email: STATIC_ADMIN.email,
-                role: 'admin'
-            });
-        }
-
         const user = await User.findByPk(req.user.id, {
             attributes: ['id', 'email', 'role']
         });
@@ -314,7 +277,8 @@ const getAdminProfile = async (req, res) => {
 
         res.json(user);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[getAdminProfile] Error: %O', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
 
@@ -325,24 +289,7 @@ const updateAdminProfile = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // If it was the static admin, we need to find or create a DB record to persist changes
-        let user;
-        if (req.user.id === 'admin-static') {
-            // Check if a DB user with this email already exists (maybe previously migrated)
-            user = await User.findOne({ where: { role: 'admin' } });
-            
-            if (!user) {
-                // Create the first real DB admin if it doesn't exist
-                user = await User.create({
-                    email: email || STATIC_ADMIN.email,
-                    password: password || STATIC_ADMIN.password,
-                    role: 'admin',
-                    username: 'Admin'
-                });
-            }
-        } else {
-            user = await User.findByPk(req.user.id);
-        }
+        const user = await User.findByPk(req.user.id);
 
         if (!user) {
             return res.status(404).json({ message: 'Admin user not found' });
@@ -362,7 +309,8 @@ const updateAdminProfile = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        logger.error('[updateAdminProfile] Error: %O', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
 

@@ -5,6 +5,5 @@ const { protect, admin } = require('../middleware/authMiddleware');
 
 router.get('/', getGames);
 router.get('/:id', getGameById);
-router.post('/', protect, admin, createGame);
 
 module.exports = router;

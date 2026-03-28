@@ -11,6 +11,7 @@
 
 const { verifyToken } = require('../utils/simpleToken');
 const User = require('../models/User');
+const logger = require('../utils/logger');
 
 /**
  * protect — Authentication middleware
@@ -22,7 +23,7 @@ const User = require('../models/User');
 const protect = async (req, res, next) => {
     // [Auth Debug] Log incoming cookies to help diagnose session issues
     if (process.env.NODE_ENV === 'development') {
-        console.log('[Auth Debug] Cookies Received:', req.cookies);
+        logger.debug('[Auth Debug] Cookies Received: %O', req.cookies);
     }
     
     let token;
@@ -35,7 +36,7 @@ const protect = async (req, res, next) => {
     else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
         token = req.headers.authorization.split(' ')[1];
         if (process.env.NODE_ENV === 'development') {
-            console.log('[Auth Debug] Falling back to Authorization header token');
+            logger.debug('[Auth Debug] Falling back to Authorization header token');
         }
     }
 
@@ -69,7 +70,7 @@ const protect = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        console.error('[Auth Middleware] Error:', error);
+        logger.error('[Auth Middleware] Error: %O', error);
         return res.status(401).json({ message: 'Not authorized, token verification failed' });
     }
 };

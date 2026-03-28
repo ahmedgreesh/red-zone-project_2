@@ -14,8 +14,7 @@ const jwt = require('jsonwebtoken');
  */
 function generateToken(userId, role) {
     if (!process.env.JWT_SECRET) {
-        console.warn('⚠️ WARNING: JWT_SECRET is not defined in .env! Using legacy logic.');
-        return `rz-${role}-${userId}`;
+        throw new Error('JWT_SECRET is not defined in environment variables');
     }
     return jwt.sign({ id: userId, role }, process.env.JWT_SECRET, { expiresIn: '7d' });
 }
@@ -29,22 +28,12 @@ function generateToken(userId, role) {
 function verifyToken(token) {
     if (!token || typeof token !== 'string') return null;
 
-    // For smooth transition: handle legacy string-based tokens if they don't look like JWTs
-    if (!token.includes('.')) {
-        const parts = token.split('-');
-        if (parts.length >= 3 && parts[0] === 'rz') {
-            const role = parts[1];
-            const id = parts.slice(2).join('-');
-            return { id, role };
-        }
-        return null;
-    }
-
     try {
         if (!process.env.JWT_SECRET) return null;
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         return { id: decoded.id, role: decoded.role };
     } catch (e) {
+        // Optional: log to a file instead, or use winston if imported
         console.error('[Token Verify] Token is invalid or expired:', e.message);
         return null;
     }

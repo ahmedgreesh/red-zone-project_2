@@ -19,10 +19,21 @@ const {
     updateAdminProfile
 } = require('../controllers/adminController');
 
+const { body, validationResult } = require('express-validator');
+
 // ─── Public Routes ────────────────────────────────────────────────────────────
 
 // Admin login — returns a token if credentials are valid
-router.post('/login', loginAdmin);
+router.post('/login', [
+    body('email').isEmail().withMessage('يجب إدخال بريد إلكتروني صحيح').normalizeEmail(),
+    body('password').notEmpty().withMessage('كلمة المرور مطلوبة')
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ message: errors.array()[0].msg, errors: errors.array() });
+    }
+    next();
+}, loginAdmin);
 
 // ─── Protected Routes (require valid token + admin role) ──────────────────────
 
