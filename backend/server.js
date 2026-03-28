@@ -22,9 +22,18 @@ const allowedOrigins = [process.env.FRONTEND_URL || 'http://localhost:3000', 'ht
 
 app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
+        // Allow mobile testing on local network and any localhost port
+        const isLocalDevelopment = origin && (
+            origin.startsWith('http://localhost:') || 
+            origin.startsWith('http://127.0.0.1:') || 
+            origin.startsWith('http://192.168.') || 
+            origin.startsWith('http://10.0.')
+        );
+
+        if (!origin || origin === 'null' || allowedOrigins.includes(origin) || (isLocalDevelopment && process.env.NODE_ENV !== 'production')) {
             callback(null, true);
         } else {
+            console.error(`[CORS REJECT] Origin blocked: ${origin}`);
             callback(new Error('Not allowed by CORS'));
         }
     },

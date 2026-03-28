@@ -3,6 +3,7 @@ const Game = require('../models/Game');
 const Order = require('../models/Order');
 const { Op } = require('sequelize');
 const { generateToken } = require('../utils/simpleToken');
+const logger = require('../utils/logger');
 
 // @desc    Get dashboard statistics
 // @route   GET /api/admin/stats
@@ -66,9 +67,6 @@ const getDashboardStats = async (req, res) => {
         res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
     }
 };
-
-
-const logger = require('../utils/logger');
 
 // @desc    Admin Login
 // @route   POST /api/admin/login
