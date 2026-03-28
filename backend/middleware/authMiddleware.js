@@ -1,51 +1,77 @@
-const jwt = require('jsonwebtoken');
+/**
+ * authMiddleware.js
+ *
+ * Two middleware functions:
+ *   protect   — validates any token and attaches req.user
+ *   adminOnly — allows access only when req.user.role === 'admin'
+ *
+ * Currently uses simpleToken (no JWT dependency).
+ * To switch to JWT: update utils/simpleToken.js only.
+ */
+
+const { verifyToken } = require('../utils/simpleToken');
 const User = require('../models/User');
 
+/**
+ * protect — Authentication middleware
+ *
+ * Reads the Bearer token from the Authorization header,
+ * verifies it, looks up the user from the DB, and attaches
+ * the user object to req.user so downstream handlers can use it.
+ */
 const protect = async (req, res, next) => {
-    let token;
+    const authHeader = req.headers.authorization;
 
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        try {
-            // Get token from header
-            token = req.headers.authorization.split(' ')[1];
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: 'Not authorized, no token' });
+    }
 
-            // Verify token
-            const secret = process.env.JWT_SECRET || 'temporary_secret_key_123';
-            const decoded = jwt.verify(token, secret);
+    const token = authHeader.split(' ')[1];
 
-            // Handle temporary admin token
-            if (decoded.id === 'admin_temp' && decoded.role === 'admin') {
-                req.user = { id: 'admin_temp', role: 'admin', email: 'admin' };
-                return next();
-            }
+    // verifyToken returns { id, role } or null
+    const decoded = verifyToken(token);
 
-            // Get user from the token
-            req.user = await User.findByPk(decoded.id, {
-                attributes: { exclude: ['password'] }
-            });
+    if (!decoded) {
+        return res.status(401).json({ message: 'Not authorized, token is invalid' });
+    }
 
-            if (!req.user) {
-                return res.status(401).json({ message: 'User not found, please log in again.' });
-            }
-
-            next();
-        } catch (error) {
-            console.error(error);
-            res.status(401).json({ message: 'Not authorized, token failed' });
+    try {
+        // Handle the static admin token (id === 'admin-static')
+        if (decoded.id === 'admin-static' && decoded.role === 'admin') {
+            req.user = { id: 'admin-static', role: 'admin', email: 'admin@redzone.com' };
+            return next();
         }
-    }
 
-    if (!token) {
-        res.status(401).json({ message: 'Not authorized, no token' });
-    }
-};
+        // Fetch full user from DB (exclude password)
+        const user = await User.findByPk(decoded.id, {
+            attributes: { exclude: ['password'] }
+        });
 
-const admin = (req, res, next) => {
-    if (req.user && req.user.role === 'admin') {
+        if (!user) {
+            return res.status(401).json({ message: 'User not found, please log in again' });
+        }
+
+        req.user = user;
         next();
-    } else {
-        res.status(403).json({ message: 'Restricted to administrators only' });
+    } catch (error) {
+        console.error('[Auth Middleware] Error:', error);
+        return res.status(401).json({ message: 'Not authorized, token verification failed' });
     }
 };
 
-module.exports = { protect, admin };
+/**
+ * adminOnly — Authorization middleware
+ *
+ * Must be used AFTER protect.
+ * Allows the request to proceed only if req.user.role === 'admin'.
+ * Returns 403 Forbidden otherwise.
+ */
+const adminOnly = (req, res, next) => {
+    if (req.user && req.user.role === 'admin') {
+        return next();
+    }
+    return res.status(403).json({ message: 'Forbidden: Admin access required' });
+};
+
+// Keep legacy export name "admin" for backward compatibility with existing routes
+module.exports = { protect, admin: adminOnly, adminOnly };

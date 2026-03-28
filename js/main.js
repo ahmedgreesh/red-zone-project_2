@@ -2047,13 +2047,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 profileIconContainer.innerHTML = `<i class="fas fa-${avatarIcon}" style="font-size: 4rem; color: var(--accent-red); margin-bottom: 20px;"></i>`;
             }
 
-            // Show Admin Dashboard button if user is admin or using admin email/username
+            // Show Admin Dashboard button ONLY if the SERVER says role === 'admin'
+            // DO NOT use email/username checks — those can be faked client-side
             const adminDashboardBtn = document.getElementById('admin-dashboard-btn');
             if (adminDashboardBtn) {
-                const isAdmin = (user.role && user.role.toLowerCase() === 'admin') || 
-                                (user.email && user.email.toLowerCase().includes('admin')) ||
-                                (user.username && user.username.toLowerCase() === 'admin');
-                
+                const isAdmin = user.role && user.role.toLowerCase() === 'admin';
+
                 if (isAdmin) {
                     adminDashboardBtn.style.setProperty('display', 'block', 'important');
                     adminDashboardBtn.onclick = (e) => {

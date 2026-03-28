@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { protect, admin } = require('../middleware/authMiddleware');
+const { protect, adminOnly } = require('../middleware/authMiddleware');
 const {
     loginAdmin,
     getDashboardStats,
@@ -17,14 +17,36 @@ const {
     resetUsers
 } = require('../controllers/adminController');
 
-// Public route for Admin login
+// ─── Public Routes ────────────────────────────────────────────────────────────
+
+// Admin login — returns a token if credentials are valid
 router.post('/login', loginAdmin);
 
-// All other routes are protected and require admin role
-router.use(protect);
-router.use(admin);
+// ─── Protected Routes (require valid token + admin role) ──────────────────────
 
-// Dashboard
+router.use(protect);
+router.use(adminOnly);
+
+/**
+ * GET /api/admin/dashboard
+ *
+ * This is the GATE that the frontend uses on page load to verify
+ * the user is a real admin (not just someone who edited localStorage).
+ * Returns 401 if no/bad token, 403 if token is valid but not admin.
+ */
+router.get('/dashboard', (req, res) => {
+    res.json({
+        ok: true,
+        message: 'Welcome to the Red Zone Admin Dashboard',
+        user: {
+            id: req.user.id,
+            email: req.user.email,
+            role: req.user.role
+        }
+    });
+});
+
+// Dashboard stats
 router.get('/stats', getDashboardStats);
 router.delete('/sales/reset', resetSales);
 
@@ -45,3 +67,4 @@ router.put('/games/:id', updateGame);
 router.delete('/games/:id', deleteGame);
 
 module.exports = router;
+

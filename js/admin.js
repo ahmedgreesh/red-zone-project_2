@@ -38,16 +38,73 @@ const toastMessage = document.getElementById('toastMessage');
 let authToken = localStorage.getItem('token');
 let currentUser = JSON.parse(localStorage.getItem('adminUser') || 'null');
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    if (authToken && currentUser && currentUser.role === 'admin') {
+// ─── Page Guard ───────────────────────────────────────────────────────────────
+//
+// On every page load we verify authorization with the SERVER.
+// localStorage is only used to read the token — the server decides if it's valid.
+// A 401 (no/bad token) or 403 (not admin) both redirect to the login screen.
+//
+document.addEventListener('DOMContentLoaded', async () => {
+    // Step 1: Try to verify with the server
+    const verified = await verifyAdminAccess();
+
+    if (verified) {
+        // Access granted — show dashboard
         showDashboard();
     } else {
+        // Not authorized — show login only
         showLogin();
     }
 
     setupEventListeners();
 });
+
+/**
+ * Calls GET /admin/dashboard to verify the stored token is valid AND admin.
+ * Returns true if access is granted, false otherwise.
+ */
+async function verifyAdminAccess() {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        console.warn('[Admin] No token found — redirecting to login');
+        return false;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/admin/dashboard`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            // Update currentUser from server response (authoritative source)
+            if (data.user) {
+                currentUser = { ...currentUser, ...data.user };
+                authToken = token;
+            }
+            return true;
+        }
+
+        // 401 = bad/expired token, 403 = not admin
+        console.warn(`[Admin] Access denied (HTTP ${response.status}) — clearing session`);
+        localStorage.removeItem('token');
+        localStorage.removeItem('adminUser');
+        authToken = null;
+        currentUser = null;
+        return false;
+
+    } catch (error) {
+        console.error('[Admin] Server verification failed:', error);
+        // If server is unreachable, deny access (fail secure)
+        return false;
+    }
+}
+
 
 // Event Listeners
 function setupEventListeners() {

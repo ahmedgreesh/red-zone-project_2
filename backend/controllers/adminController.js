@@ -2,7 +2,7 @@ const User = require('../models/User');
 const Game = require('../models/Game');
 const Order = require('../models/Order');
 const { Op } = require('sequelize');
-const jwt = require('jsonwebtoken');
+const { generateToken } = require('../utils/simpleToken');
 
 // @desc    Get dashboard statistics
 // @route   GET /api/admin/stats
@@ -67,6 +67,20 @@ const getDashboardStats = async (req, res) => {
 };
 
 
+// ─────────────────────────────────────────────────────────────────────────────
+// STATIC ADMIN CREDENTIALS
+// ─────────────────────────────────────────────────────────────────────────────
+// These are used for local development.
+// HOW TO UPGRADE:
+//   1. Move credentials to DB (User table already has them).
+//   2. Remove the STATIC_ADMIN block below.
+//   3. Keep only the "Check Database" path.
+// ─────────────────────────────────────────────────────────────────────────────
+const STATIC_ADMIN = {
+    email: 'admin@redzone.com',
+    password: 'redzoneaa3692053'
+};
+
 // @desc    Admin Login
 // @route   POST /api/admin/login
 // @access  Public
@@ -74,32 +88,34 @@ const loginAdmin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // 1. Check Database first
-        const user = await User.findOne({ where: { email } });
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required' });
+        }
+
+        // ── 1. Static Admin Credentials (local dev) ──────────────────────────
+        if (email.trim() === STATIC_ADMIN.email && password.trim() === STATIC_ADMIN.password) {
+            // generateToken(userId, role)  →  'rz-admin-admin-static'
+            const token = generateToken('admin-static', 'admin');
+            return res.json({
+                token,
+                role: 'admin',
+                email: STATIC_ADMIN.email
+            });
+        }
+
+        // ── 2. Database Admin Check (for production / migrated accounts) ─────
+        const user = await User.findOne({ where: { email: email.trim() } });
         if (user && user.role === 'admin') {
-            const isMatch = await user.comparePassword(password);
+            const isMatch = await user.comparePassword(password.trim());
             if (isMatch) {
-                const token = jwt.sign(
-                    { id: user.id, role: 'admin' }, 
-                    process.env.JWT_SECRET || 'temporary_secret_key_123', 
-                    { expiresIn: '1d' }
-                );
+                const token = generateToken(user.id, 'admin');
                 return res.json({ token, role: 'admin', email: user.email });
             }
         }
 
-        // 2. Emergency/Temporary Fallback (email: admin@redzone.com, pass: redzoneaa3692053)
-        if ((email === 'admin' || email === 'admin@redzone.com') && password === 'redzoneaa3692053') {
-            const token = jwt.sign(
-                { id: 'admin_temp', role: 'admin' }, 
-                process.env.JWT_SECRET || 'temporary_secret_key_123', 
-                { expiresIn: '1d' }
-            );
-            return res.json({ token, role: 'admin', email: 'admin@redzone.com' });
-        }
-
         return res.status(401).json({ message: 'البريد أو كلمة المرور غير صحيحة' });
     } catch (error) {
+        console.error('[loginAdmin] Error:', error);
         res.status(500).json({ message: error.message });
     }
 };
