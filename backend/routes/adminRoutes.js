@@ -14,7 +14,9 @@ const {
     deleteGame,
     getAllGames,
     resetSales,
-    resetUsers
+    resetUsers,
+    getAdminProfile,
+    updateAdminProfile
 } = require('../controllers/adminController');
 
 // ─── Public Routes ────────────────────────────────────────────────────────────
@@ -65,6 +67,10 @@ router.get('/games', getAllGames);
 router.post('/games', createGame);
 router.put('/games/:id', updateGame);
 router.delete('/games/:id', deleteGame);
+
+// Profile management
+router.get('/profile', getAdminProfile);
+router.put('/profile', updateAdminProfile);
 
 module.exports = router;
 

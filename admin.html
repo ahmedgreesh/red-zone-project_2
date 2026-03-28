@@ -64,6 +64,10 @@
                     <i class="fas fa-shopping-cart"></i>
                     <span>الطلبات</span>
                 </a>
+                <a href="#" class="nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>الإعدادات</span>
+                </a>
             </nav>
             <div class="sidebar-footer">
                 <button class="logout-btn" id="logoutBtn">
@@ -273,6 +277,38 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="content-section" id="settingsSection">
+                <div class="section-header">
+                    <h2><i class="fas fa-cog"></i> إعدادات الحساب</h2>
+                </div>
+                
+                <div class="settings-container" style="max-width: 600px; margin: 20px auto; background: var(--bg-dark); padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <form id="settingsForm">
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="adminNewEmail" style="display: block; margin-bottom: 8px; color: var(--text-muted);"><i class="fas fa-envelope"></i> البريد الإلكتروني الجديد</label>
+                            <input type="email" id="adminNewEmail" placeholder="admin@example.com" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="adminNewPassword" style="display: block; margin-bottom: 8px; color: var(--text-muted);"><i class="fas fa-lock"></i> كلمة المرور الجديدة</label>
+                            <input type="password" id="adminNewPassword" placeholder="••••••••" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 30px;">
+                            <label for="adminConfirmPassword" style="display: block; margin-bottom: 8px; color: var(--text-muted);"><i class="fas fa-check-double"></i> تأكيد كلمة المرور</label>
+                            <input type="password" id="adminConfirmPassword" placeholder="••••••••" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
+                        </div>
+
+                        <button type="submit" class="primary-btn" style="width: 100%; padding: 15px; font-weight: 700;">
+                            <i class="fas fa-save"></i> حفظ التغييرات الحصينة
+                        </button>
+                    </form>
+
+                    <div id="settingsMessage" style="margin-top: 20px; text-align: center; font-size: 0.9rem;"></div>
                 </div>
             </section>
         </main>

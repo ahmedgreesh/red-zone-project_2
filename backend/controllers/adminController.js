@@ -290,6 +290,82 @@ const getAllGames = async (req, res) => {
     }
 };
 
+// @desc    Get admin profile
+// @route   GET /api/admin/profile
+// @access  Private/Admin
+const getAdminProfile = async (req, res) => {
+    try {
+        // Handle static admin case
+        if (req.user.id === 'admin-static') {
+            return res.json({
+                id: 'admin-static',
+                email: STATIC_ADMIN.email,
+                role: 'admin'
+            });
+        }
+
+        const user = await User.findByPk(req.user.id, {
+            attributes: ['id', 'email', 'role']
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Admin user not found' });
+        }
+
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Update admin profile
+// @route   PUT /api/admin/profile
+// @access  Private/Admin
+const updateAdminProfile = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // If it was the static admin, we need to find or create a DB record to persist changes
+        let user;
+        if (req.user.id === 'admin-static') {
+            // Check if a DB user with this email already exists (maybe previously migrated)
+            user = await User.findOne({ where: { role: 'admin' } });
+            
+            if (!user) {
+                // Create the first real DB admin if it doesn't exist
+                user = await User.create({
+                    email: email || STATIC_ADMIN.email,
+                    password: password || STATIC_ADMIN.password,
+                    role: 'admin',
+                    username: 'Admin'
+                });
+            }
+        } else {
+            user = await User.findByPk(req.user.id);
+        }
+
+        if (!user) {
+            return res.status(404).json({ message: 'Admin user not found' });
+        }
+
+        if (email) user.email = email;
+        if (password) user.password = password;
+
+        await user.save();
+
+        res.json({
+            message: 'تم تحديث البيانات بنجاح',
+            user: {
+                id: user.id,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // @desc    Reset all users data
 // @route   DELETE /api/admin/users/reset
 // @access  Private/Admin
@@ -310,6 +386,8 @@ const resetUsers = async (req, res) => {
 module.exports = {
     loginAdmin,
     getDashboardStats,
+    getAdminProfile,
+    updateAdminProfile,
     getAllUsers,
     deleteUser,
     updateUserRole,

@@ -118,6 +118,10 @@ function setupEventListeners() {
     if (gameForm) gameForm.addEventListener('submit', handleGameSubmit);
     if (addPriceBtn) addPriceBtn.addEventListener('click', addPriceRow);
 
+    // Settings
+    const settingsForm = document.getElementById('settingsForm');
+    if (settingsForm) settingsForm.addEventListener('submit', handleSettingsSubmit);
+
     // Price row remove
     if (pricesContainer) {
         pricesContainer.addEventListener('click', (e) => {
@@ -219,7 +223,8 @@ function switchSection(sectionName) {
         overview: 'نظرة عامة',
         games: 'إدارة الألعاب',
         users: 'إدارة المستخدمين',
-        orders: 'إدارة الطلبات'
+        orders: 'إدارة الطلبات',
+        settings: 'إعدادات الحساب'
     };
     if (pageTitle) pageTitle.textContent = titles[sectionName];
 
@@ -236,6 +241,9 @@ function switchSection(sectionName) {
             break;
         case 'orders':
             loadOrders();
+            break;
+        case 'settings':
+            loadSettings();
             break;
     }
 }
@@ -636,3 +644,69 @@ if (resetUsersBtn) {
 
 window.deleteUser = deleteUser;
 window.updateOrderStatus = updateOrderStatus;
+
+// Settings Management
+async function loadSettings() {
+    try {
+        const adminData = await apiRequest('/admin/profile');
+        const emailInput = document.getElementById('adminNewEmail');
+        if (emailInput && adminData.email) {
+            emailInput.value = adminData.email;
+        }
+    } catch (error) {
+        console.error('Error loading settings:', error);
+    }
+}
+
+async function handleSettingsSubmit(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('adminNewEmail').value.trim();
+    const password = document.getElementById('adminNewPassword').value;
+    const confirmPassword = document.getElementById('adminConfirmPassword').value;
+    const messageEl = document.getElementById('settingsMessage');
+
+    if (password && password !== confirmPassword) {
+        if (messageEl) {
+            messageEl.textContent = 'كلمات المرور غير متطابقة';
+            messageEl.style.color = 'var(--accent-red)';
+        }
+        showToast('كلمات المرور غير متطابقة', true);
+        return;
+    }
+
+    try {
+        const payload = {};
+        if (email) payload.email = email;
+        if (password) payload.password = password;
+
+        await apiRequest('/admin/profile', {
+            method: 'PUT',
+            body: JSON.stringify(payload)
+        });
+
+        if (messageEl) {
+            messageEl.textContent = 'تم تحديث البيانات بنجاح';
+            messageEl.style.color = '#4CAF50';
+        }
+        showToast('تم تحديث بياناتك الحصينة بنجاح');
+        
+        // Update stored email if changed
+        if (email && currentUser) {
+            currentUser.email = email;
+            localStorage.setItem('adminUser', JSON.stringify(currentUser));
+            if (adminEmail) adminEmail.textContent = email;
+        }
+
+        // Clear password fields
+        document.getElementById('adminNewPassword').value = '';
+        document.getElementById('adminConfirmPassword').value = '';
+
+    } catch (error) {
+        if (messageEl) {
+            messageEl.textContent = error.message || 'حدث خطأ أثناء التحديث';
+            messageEl.style.color = 'var(--accent-red)';
+        }
+        showToast('حدث خطأ أثناء التحديث', true);
+    }
+}
