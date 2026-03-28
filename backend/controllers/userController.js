@@ -20,16 +20,23 @@ const registerUser = async (req, res) => {
         });
 
         if (user) {
-            res.status(201).json({
-                _id: user.id,
-                id: user.id,
-                email: user.email,
-                username: user.username,
-                avatar: user.avatar,
-                role: user.role,
-                token: generateToken(user.id),
-                refreshToken: generateRefreshToken(user.id)
-            });
+            const token = generateToken(user.id);
+            res.status(201)
+                .cookie('token', token, {
+                    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'Lax'
+                })
+                .json({
+                    _id: user.id,
+                    id: user.id,
+                    email: user.email,
+                    username: user.username,
+                    avatar: user.avatar,
+                    role: user.role,
+                    token: token
+                });
         } else {
             res.status(400).json({ message: 'Invalid user data' });
         }
@@ -70,20 +77,35 @@ const loginUser = async (req, res) => {
 
         console.log(`[AUTH] User ${email} logged in successfully.`);
 
-        res.json({
+        const token = generateToken(user.id);
+        res.cookie('token', token, {
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Lax'
+        }).json({
             _id: user.id,
             id: user.id,
             email: user.email,
             username: user.username,
             avatar: user.avatar,
             role: user.role,
-            token: generateToken(user.id),
-            refreshToken: generateRefreshToken(user.id)
+            token: token
         });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: error.message });
     }
+};
+
+// @desc    Logout user & clear cookie
+// @route   POST /api/users/logout
+// @access  Public
+const logoutUser = async (req, res) => {
+    res.cookie('token', '', {
+        expires: new Date(0),
+        httpOnly: true
+    }).json({ message: 'Logged out successfully' });
 };
 
 // @desc    Get user profile
@@ -185,6 +207,7 @@ const updateUserProfile = async (req, res) => {
 module.exports = {
     registerUser,
     loginUser,
+    logoutUser,
     getUserProfile,
     updateWishlist,
     updateUserProfile

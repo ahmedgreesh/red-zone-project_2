@@ -881,13 +881,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const api = {
         async get(endpoint) {
-            const token = localStorage.getItem('token');
             try {
+                const token = localStorage.getItem('token');
                 const res = await fetch(`${API_URL}${endpoint}`, {
+                    credentials: 'include',
                     headers: {
-                        'Authorization': token ? `Bearer ${token}` : ''
+                        'Authorization': `Bearer ${token}`
                     }
                 });
+
+                if (res.status === 429) {
+                    showToast("Too many requests. Please wait a few minutes and try again.", true);
+                    throw new Error('Rate limit exceeded');
+                }
+
                 if (res.status === 401) {
                     logout();
                     showToast("انتهت الجلسة أو الحساب غير موجود. يرجى تسجيل الدخول مجدداً.", true);
@@ -897,21 +904,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!res.ok) throw new Error(`API Error: ${res.status}`);
                 return res.json();
             } catch (err) {
-                showToast("GET Network Error: " + err.message + " - URL: " + API_URL + endpoint, true);
+                if (err.message !== 'Rate limit exceeded') {
+                    showToast("GET Network Error: " + err.message, true);
+                }
                 throw err;
             }
         },
         async post(endpoint, body) {
-            const token = localStorage.getItem('token');
             try {
+                const token = localStorage.getItem('token');
                 const res = await fetch(`${API_URL}${endpoint}`, {
                     method: 'POST',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': token ? `Bearer ${token}` : ''
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(body)
                 });
+
+                if (res.status === 429) {
+                    showToast("Too many requests. Please wait a few minutes and try again.", true);
+                    throw new Error('Rate limit exceeded');
+                }
 
                 let data;
                 try {
@@ -931,33 +946,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 return data;
             } catch (err) {
-                // VERY EXPLICIT ALERT
-                showToast("POST Failed! Error: " + err.message + "\nURL: " + API_URL + endpoint + "\nPlease check if server is running on 5001.", true);
-                console.error("Fetch full error:", err);
+                if (err.message !== 'Rate limit exceeded') {
+                    showToast("Request Failed: " + err.message, true);
+                }
                 throw err;
             }
         },
         async put(endpoint, body) {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`${API_URL}${endpoint}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': token ? `Bearer ${token}` : ''
-                },
-                body: JSON.stringify(body)
-            });
-            if (res.status === 401) {
-                logout();
-                showToast("Session expired. Please log in again.", true);
-                openModal(loginModal);
-                throw new Error('Unauthorized');
+            try {
+                const res = await fetch(`${API_URL}${endpoint}`, {
+                    method: 'PUT',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                if (res.status === 429) {
+                    showToast("Too many requests. Please wait a few minutes and try again.", true);
+                    throw new Error('Rate limit exceeded');
+                }
+
+                if (res.status === 401) {
+                    logout();
+                    showToast("Session expired. Please log in again.", true);
+                    openModal(loginModal);
+                    throw new Error('Unauthorized');
+                }
+                if (!res.ok) {
+                    const error = await res.json();
+                    throw new Error(error.message || `API Error: ${res.status}`);
+                }
+                return res.json();
+            } catch (err) {
+                if (err.message !== 'Rate limit exceeded') {
+                    showToast("Update Failed: " + err.message, true);
+                }
+                throw err;
             }
-            if (!res.ok) {
-                const error = await res.json();
-                throw new Error(error.message || `API Error: ${res.status}`);
-            }
-            return res.json();
         },
         async delete(endpoint) {
             const token = localStorage.getItem('token');
@@ -1838,7 +1865,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadGamesFromServer() {
         try {
-            const response = await fetch(`${API_URL}/games`);
+            const response = await fetch(`${API_URL}/games`, {
+                credentials: 'include'
+            });
             if (response.ok) {
                 const data = await response.json();
                 if (data && data.length > 0) {
@@ -2014,6 +2043,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Current User Session
     function setCurrentUser(user) {
         localStorage.setItem('currentUser', JSON.stringify(user));
+        if (user && user.token) {
+            localStorage.setItem('token', user.token);
+        }
         updateAuthUI(user);
     }
 
@@ -2021,9 +2053,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return JSON.parse(localStorage.getItem('currentUser'));
     }
 
-    function logout() {
+    async function logout() {
+        try {
+            await api.post('/users/logout', {});
+        } catch (err) {
+            console.error('Logout error:', err);
+        }
         localStorage.removeItem('currentUser');
         localStorage.removeItem('token');
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
         updateAuthUI(null);
         showToast('You have been logged out.');
     }
@@ -2642,11 +2681,9 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const data = await api.post('/users/login', { email, password });
                 if (data) {
-                    localStorage.setItem('token', data.token);
                     setCurrentUser(data);
 
                     if (data.role === 'admin') {
-                        localStorage.setItem('adminToken', data.token);
                         localStorage.setItem('adminUser', JSON.stringify(data));
                         window.location.href = 'admin.html';
                         return;
@@ -2693,7 +2730,6 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const data = await api.post('/users/register', { email, password });
                 if (data) {
-                    localStorage.setItem('token', data.token);
                     setCurrentUser(data);
                     showToast(`Welcome to Red Zone, ${sanitizeHTML(email.split('@')[0])}!`);
                     closeModal(loginModal);
@@ -2881,7 +2917,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (data) {
-                localStorage.setItem('token', data.token);
                 setCurrentUser(data);
                 // Last small delay for effect
                 await new Promise(resolve => setTimeout(resolve, 500));

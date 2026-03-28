@@ -35,7 +35,6 @@ const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
 
 // Auth State
-let authToken = localStorage.getItem('token');
 let currentUser = JSON.parse(localStorage.getItem('adminUser') || 'null');
 
 // ─── Page Guard ───────────────────────────────────────────────────────────────
@@ -64,43 +63,32 @@ document.addEventListener('DOMContentLoaded', async () => {
  * Returns true if access is granted, false otherwise.
  */
 async function verifyAdminAccess() {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-        console.warn('[Admin] No token found — redirecting to login');
-        return false;
-    }
-
     try {
+        const token = localStorage.getItem('token');
+        
         const response = await fetch(`${API_URL}/admin/dashboard`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Authorization': `Bearer ${token}`
             }
         });
 
         if (response.ok) {
             const data = await response.json();
-            // Update currentUser from server response (authoritative source)
             if (data.user) {
                 currentUser = { ...currentUser, ...data.user };
-                authToken = token;
             }
             return true;
         }
 
-        // 401 = bad/expired token, 403 = not admin
-        console.warn(`[Admin] Access denied (HTTP ${response.status}) — clearing session`);
-        localStorage.removeItem('token');
-        localStorage.removeItem('adminUser');
-        authToken = null;
-        currentUser = null;
+        if (response.status === 401 || response.status === 403) {
+            localStorage.removeItem('adminUser');
+            currentUser = null;
+        }
         return false;
-
     } catch (error) {
         console.error('[Admin] Server verification failed:', error);
-        // If server is unreachable, deny access (fail secure)
         return false;
     }
 }
@@ -152,6 +140,7 @@ async function handleLogin(e) {
         
         const response = await fetch(`${API_URL}/admin/login`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -159,6 +148,10 @@ async function handleLogin(e) {
         });
         
         const data = await response.json();
+
+        if (response.status === 429) {
+            throw new Error('محاولات كثيرة جداً. يرجى الانتظار قليلاً.');
+        }
 
         if (!response.ok) {
             throw new Error(data.message || 'Login failed');
@@ -169,13 +162,16 @@ async function handleLogin(e) {
         }
 
         // Success
-        authToken = data.token;
         currentUser = data;
-
-        localStorage.setItem('token', authToken);
         localStorage.setItem('adminUser', JSON.stringify(currentUser));
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+        }
 
-        showDashboard();
+        // Let the cookie/localStorage settle
+        setTimeout(() => {
+            showDashboard();
+        }, 100);
         
         if (loginError) loginError.textContent = '';
         
@@ -184,11 +180,13 @@ async function handleLogin(e) {
     }
 }
 
-function handleLogout() {
-    authToken = null;
+async function handleLogout() {
+    try {
+        await fetch(`${API_URL}/users/logout`, { method: 'POST', credentials: 'include' });
+    } catch (err) { }
     currentUser = null;
-    localStorage.removeItem('token');
     localStorage.removeItem('adminUser');
+    localStorage.removeItem('token');
     showLogin();
 }
 
@@ -244,36 +242,42 @@ function switchSection(sectionName) {
 
 // API Helpers
 async function apiRequest(endpoint, options = {}) {
-    const defaultHeaders = {
-        'Content-Type': 'application/json'
-    };
-
-    if (authToken) {
-        defaultHeaders['Authorization'] = `Bearer ${authToken}`;
-    }
-
+    const token = localStorage.getItem('token');
     const config = {
         ...options,
+        credentials: 'include',
         headers: {
-            ...defaultHeaders,
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
             ...options.headers
         }
     };
 
     try {
         const response = await fetch(`${API_URL}${endpoint}`, config);
+        
+        if (response.status === 429) {
+            showToast('محاولات كثيرة جداً. يرجى المحاولة لاحقاً.', true);
+            throw new Error('Rate limit exceeded');
+        }
+
         const data = await response.json();
 
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
-                handleLogout(); // Token expired or invalid
+                // Only logout if we are not in the middle of a manual login process
+                // Or if it's a repeated failure
+                console.warn('[Admin] Auth failure:', response.status);
+                handleLogout(); 
             }
             throw new Error(data.message || 'مشكلة في الاتصال بالخادم');
         }
 
         return data;
     } catch (error) {
-        console.error(`API Error on ${endpoint}:`, error);
+        if (error.message !== 'Rate limit exceeded') {
+            console.error(`API Error on ${endpoint}:`, error);
+        }
         throw error;
     }
 }

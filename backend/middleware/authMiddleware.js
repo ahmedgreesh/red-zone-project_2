@@ -20,13 +20,28 @@ const User = require('../models/User');
  * the user object to req.user so downstream handlers can use it.
  */
 const protect = async (req, res, next) => {
-    const authHeader = req.headers.authorization;
+    // [Auth Debug] Log incoming cookies to help diagnose session issues
+    if (process.env.NODE_ENV === 'development') {
+        console.log('[Auth Debug] Cookies Received:', req.cookies);
+    }
+    
+    let token;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ message: 'Not authorized, no token' });
+    // 1. Check HttpOnly cookie (Primary method)
+    if (req.cookies && req.cookies.token) {
+        token = req.cookies.token;
+    } 
+    // 2. Check Authorization header (Fallback for testing/local cross-origin issues)
+    else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        token = req.headers.authorization.split(' ')[1];
+        if (process.env.NODE_ENV === 'development') {
+            console.log('[Auth Debug] Falling back to Authorization header token');
+        }
     }
 
-    const token = authHeader.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: 'Not authorized, no token found' });
+    }
 
     // verifyToken returns { id, role } or null
     const decoded = verifyToken(token);

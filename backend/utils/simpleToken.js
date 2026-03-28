@@ -1,59 +1,54 @@
 /**
- * simpleToken.js — Lightweight token system (JWT-ready)
+ * simpleToken.js — Upgraded to JWT
  *
- * HOW TO UPGRADE TO JWT LATER:
- *   1. npm install jsonwebtoken
- *   2. Replace the body of generateToken() and verifyToken() below
- *      with jwt.sign() / jwt.verify() calls.
- *   3. Nothing else in the project needs to change.
- *
- * Token format right now:  "rz-<role>-<userId>"
- * Example admin token:     "rz-admin-42"
- * Example user token:      "rz-user-7"
+ * This file handles signed token generation and verification using jsonwebtoken.
  */
 
+const jwt = require('jsonwebtoken');
+
 /**
- * Generate a simple token that encodes the role and user id.
+ * Generate a signed JWT token.
  * @param {string|number} userId
  * @param {string} role  "admin" | "user"
  * @returns {string}
  */
 function generateToken(userId, role) {
-    // ── JWT UPGRADE POINT ──────────────────────────────────────────────────
-    // const jwt = require('jsonwebtoken');
-    // return jwt.sign({ id: userId, role }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    // ────────────────────────────────────────────────────────────────────────
-    return `rz-${role}-${userId}`;
+    if (!process.env.JWT_SECRET) {
+        console.warn('⚠️ WARNING: JWT_SECRET is not defined in .env! Using legacy logic.');
+        return `rz-${role}-${userId}`;
+    }
+    return jwt.sign({ id: userId, role }, process.env.JWT_SECRET, { expiresIn: '7d' });
 }
 
 /**
- * Decode and validate a simple token.
+ * Decode and validate a JWT token.
  * Returns { id, role } on success, null on failure.
  * @param {string} token
  * @returns {{ id: string, role: string } | null}
  */
 function verifyToken(token) {
-    // ── JWT UPGRADE POINT ──────────────────────────────────────────────────
-    // const jwt = require('jsonwebtoken');
-    // try {
-    //     return jwt.verify(token, process.env.JWT_SECRET); // returns { id, role, ... }
-    // } catch (e) {
-    //     return null;
-    // }
-    // ────────────────────────────────────────────────────────────────────────
-
     if (!token || typeof token !== 'string') return null;
 
-    const parts = token.split('-');
-    // Expected: ["rz", "<role>", "<userId>"]
-    if (parts.length < 3 || parts[0] !== 'rz') return null;
+    // For smooth transition: handle legacy string-based tokens if they don't look like JWTs
+    if (!token.includes('.')) {
+        const parts = token.split('-');
+        if (parts.length >= 3 && parts[0] === 'rz') {
+            const role = parts[1];
+            const id = parts.slice(2).join('-');
+            return { id, role };
+        }
+        return null;
+    }
 
-    const role = parts[1];           // "admin" or "user"
-    const id   = parts.slice(2).join('-'); // handle UUIDs that contain "-"
-
-    if (!role || !id) return null;
-
-    return { id, role };
+    try {
+        if (!process.env.JWT_SECRET) return null;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        return { id: decoded.id, role: decoded.role };
+    } catch (e) {
+        console.error('[Token Verify] Token is invalid or expired:', e.message);
+        return null;
+    }
 }
 
 module.exports = { generateToken, verifyToken };
+

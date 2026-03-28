@@ -94,12 +94,17 @@ const loginAdmin = async (req, res) => {
 
         // ── 1. Static Admin Credentials (local dev) ──────────────────────────
         if (email.trim() === STATIC_ADMIN.email && password.trim() === STATIC_ADMIN.password) {
-            // generateToken(userId, role)  →  'rz-admin-admin-static'
             const token = generateToken('admin-static', 'admin');
-            return res.json({
-                token,
+            return res.cookie('token', token, {
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                httpOnly: true,
+                secure: false, // Force false for local dev to avoid HTTPS requirements
+                sameSite: 'Lax',
+                path: '/' // Ensure cookie is available for all routes
+            }).json({
                 role: 'admin',
-                email: STATIC_ADMIN.email
+                email: STATIC_ADMIN.email,
+                token: token
             });
         }
 
@@ -109,7 +114,13 @@ const loginAdmin = async (req, res) => {
             const isMatch = await user.comparePassword(password.trim());
             if (isMatch) {
                 const token = generateToken(user.id, 'admin');
-                return res.json({ token, role: 'admin', email: user.email });
+                return res.cookie('token', token, {
+                    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                    httpOnly: true,
+                    secure: false, // Force false for local dev
+                    sameSite: 'Lax',
+                    path: '/'
+                }).json({ role: 'admin', email: user.email, token: token });
             }
         }
 

@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const { sequelize } = require('./config/db');
 
@@ -11,15 +12,25 @@ require('./models');
 
 const app = express();
 
+// Trust Proxy (Essential for Rate Limiting in Production behind Render/Vercel)
+app.set('trust proxy', 1);
+
 // Middleware - Enhanced CORS Configuration
 app.use(cors({
-    origin: '*',
+    origin: true,
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(cookieParser());
+
+// Rate Limiting
+const { apiLimiter, authLimiter } = require('./middleware/rateLimiter');
+app.use('/api/', apiLimiter);
+app.use(['/api/users/login', '/api/users/register', '/api/admin/login'], authLimiter);
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
