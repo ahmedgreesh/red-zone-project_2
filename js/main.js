@@ -322,7 +322,7 @@ const translations = {
         // Plus Page
         plus_back: "Back to Store",
         plus_hero_title: "RED ZONE <span>PLUS</span> TIERS",
-        plus_hero_desc: "Choose the membership that's right for you. Change or cancel anytime.",
+        plus_hero_desc: "Choose the membership that's right for you.",
         plus_view_price: "VIEW REGIONAL PRICE",
         plus_btn_view: "View Price",
         plus_t1_badge: "The Core Experience",
@@ -670,7 +670,7 @@ const translations = {
         // Plus Page
         plus_back: "العودة للمتجر",
         plus_hero_title: "باقات ريد زون <span>بلس</span>",
-        plus_hero_desc: "اختر العضوية التي تناسبك. يمكنك التغيير أو الإلغاء في أي وقت.",
+        plus_hero_desc: "اختر العضوية التي تناسبك.",
         plus_view_price: "عرض السعر المحلي",
         plus_btn_view: "عرض السعر",
         plus_t1_badge: "التجربة الأساسية",
