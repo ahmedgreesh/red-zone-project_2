@@ -5,8 +5,8 @@ const { protect } = require('../middleware/authMiddleware');
 
 const { body, validationResult } = require('express-validator');
 
-// Validation & Sanitization middleware
-const validateAuth = [
+// Validation & Sanitization middleware (Registration)
+const validateRegister = [
     body('email')
         .isEmail().withMessage('يجب إدخال بريد إلكتروني صحيح')
         .normalizeEmail()
@@ -22,6 +22,17 @@ const validateAuth = [
         .escape()
 ];
 
+// Validation (Login) - Only basic format and presence
+const validateLogin = [
+    body('email')
+        .isEmail().withMessage('يجب إدخال بريد إلكتروني صحيح')
+        .normalizeEmail()
+        .trim(),
+    body('password')
+        .notEmpty().withMessage('كلمة المرور مطلوبة')
+        .trim()
+];
+
 const checkValidation = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -31,8 +42,8 @@ const checkValidation = (req, res, next) => {
     next();
 };
 
-router.post('/register', validateAuth, checkValidation, registerUser);
-router.post('/login', validateAuth, checkValidation, loginUser);
+router.post('/register', validateRegister, checkValidation, registerUser);
+router.post('/login', validateLogin, checkValidation, loginUser);
 router.post('/logout', logoutUser);
 router.get('/profile', protect, getUserProfile);
 router.put('/profile', protect, updateUserProfile);

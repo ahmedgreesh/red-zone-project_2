@@ -347,6 +347,11 @@ async function loadGames() {
                     <td>${game.platform}</td>
                     <td>${game.prices ? (Array.isArray(game.prices) ? game.prices.map(p => `${p.label}: ${p.value}`).join('<br>') : JSON.stringify(game.prices)) : 'N/A'}</td>
                     <td>
+                        <span class="status-badge ${game.isAvailable !== false ? 'paid' : 'canceled'}">
+                            ${game.isAvailable !== false ? 'In Stock' : 'Out of Stock'}
+                        </span>
+                    </td>
+                    <td>
                         <div class="action-btns">
                             <button class="action-btn edit" onclick="editGame(${game.id})">
                                 <i class="fas fa-edit"></i>
@@ -385,6 +390,7 @@ async function editGame(gameId) {
         document.getElementById('gameDiscount').value = game.discount || 0;
         document.getElementById('gameImage').value = game.image || '';
         document.getElementById('gameDesc').value = game.desc || '';
+        document.getElementById('gameStockStatus').value = game.isAvailable !== false ? 'true' : 'false';
 
         // Load prices
         pricesContainer.innerHTML = '';
@@ -419,6 +425,7 @@ function openGameModal() {
     if (gameForm) gameForm.reset();
     document.getElementById('gameId').value = '';
     document.getElementById('gameDiscount').value = '0';
+    document.getElementById('gameStockStatus').value = 'true';
     if (pricesContainer) {
         pricesContainer.innerHTML = '';
         addPriceRow();
@@ -464,6 +471,7 @@ async function handleGameSubmit(e) {
         discount: parseInt(document.getElementById('gameDiscount').value) || 0,
         image: document.getElementById('gameImage').value,
         desc: document.getElementById('gameDesc').value,
+        isAvailable: document.getElementById('gameStockStatus').value === 'true',
         prices: prices
     };
 

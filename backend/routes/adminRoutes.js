@@ -68,7 +68,7 @@ router.put('/orders/:id', [
 // Games management
 const gameValidation = [
     body('title').notEmpty().withMessage('العنوان مطلوب').trim().escape(),
-    body('price').isNumeric().withMessage('السعر يجب أن يكون رقماً'),
+    body('prices').isArray({ min: 1 }).withMessage('يجب إضافة سعر واحد على الأقل'),
     body('category').notEmpty().withMessage('التصنيف مطلوب').trim().escape(),
     body('platform').notEmpty().withMessage('المنصة مطلوبة').trim().escape(),
     body('discount').optional().isInt({ min: 0, max: 100 }).withMessage('الخصم يجب أن يكون بين 0 و 100')

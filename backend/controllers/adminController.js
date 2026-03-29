@@ -244,7 +244,7 @@ const updateGame = async (req, res) => {
             return res.status(404).json({ message: 'Game not found' });
         }
 
-        const { title, price, description, styles, tags, playStyle, playTime, difficulty, image, category, platform, rating, prices, discount } = req.body;
+        const { title, price, description, styles, tags, playStyle, playTime, difficulty, image, category, platform, rating, prices, discount, isAvailable } = req.body;
         
         if (title !== undefined) game.title = title;
         if (price !== undefined) game.price = price;
@@ -260,6 +260,7 @@ const updateGame = async (req, res) => {
         if (rating !== undefined) game.rating = rating;
         if (prices !== undefined) game.prices = prices;
         if (discount !== undefined) game.discount = discount;
+        if (isAvailable !== undefined) game.isAvailable = isAvailable;
 
         await game.save();
         res.json(game);

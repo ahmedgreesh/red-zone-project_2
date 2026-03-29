@@ -214,6 +214,7 @@
                                 <th>التصنيف</th>
                                 <th>المنصة</th>
                                 <th>الأسعار</th>
+                                <th>الحالة</th>
                                 <th>إجراءات</th>
                             </tr>
                         </thead>
@@ -356,6 +357,13 @@
                     <div class="form-group">
                         <label for="gameDiscount">نسبة الخصم (اختياري %)</label>
                         <input type="number" id="gameDiscount" placeholder="0" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="gameStockStatus">حالة التوفر</label>
+                        <select id="gameStockStatus">
+                            <option value="true">In Stock (متوفر)</option>
+                            <option value="false">Out of Stock (نفذت الكمية)</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">

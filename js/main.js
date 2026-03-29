@@ -3097,6 +3097,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const isWishlisted = wishlist.includes(game.id);
             const heartIconClass = isWishlisted ? 'fas fa-heart' : 'far fa-heart';
             const heartColor = isWishlisted ? 'var(--accent-red)' : '';
+            const isOutOfStock = game.isAvailable === false;
+            if (isOutOfStock) card.classList.add('sold-out');
 
             // Rating Stars
             const starCount = game.rating || 5;
@@ -3121,6 +3123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <img src="${game.image}" alt="${sanitizeHTML(game.title)}" loading="lazy" onerror="this.src='assets/images/cover-action.png'">
                     ${styleTag}
                     ${discountBadge}
+                    ${isOutOfStock ? '<div class="sold-out-badge">Sold Out</div>' : ''}
                 </div>
                 <div class="card-content">
                     <span class="game-platform">${sanitizeHTML(game.platform)}</span>
@@ -3132,8 +3135,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             <button class="wishlist-btn" onclick="toggleWishlist(${game.id}, event)" style="color: ${heartColor}">
                                 <i class="${heartIconClass}"></i>
                             </button>
-                            <button class="add-cart-btn" onclick="openGameModal(${game.id}, event)">
-                                View Game
+                            <button class="add-cart-btn" onclick="openGameModal(${game.id}, event)" ${isOutOfStock ? 'disabled' : ''}>
+                                ${isOutOfStock ? 'Sold Out' : 'View Game'}
                             </button>
                         </div>
                     </div>
@@ -3327,6 +3330,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('modal-title').innerText = game.title;
         document.getElementById('modal-desc').innerHTML = game.desc || "Experience this amazing title on PS5.";
 
+        const isOutOfStock = game.isAvailable === false;
         const priceTag = document.getElementById('modal-price');
         // Clear previous selector if any
         const existingSelector = document.getElementById('game-price-selector');
@@ -3365,6 +3369,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } else {
             priceTag.innerText = (game.price === 0 || game.price === undefined ? '👁️ View Price' : game.price + ' EGP');
+        }
+
+        if (isOutOfStock) {
+            priceTag.innerText = 'Out of Stock';
+            priceTag.style.color = '#888';
+            confirmBuyBtn.disabled = true;
+            confirmBuyBtn.innerText = 'Sold Out';
+            confirmBuyBtn.style.opacity = '0.5';
+            confirmBuyBtn.style.cursor = 'not-allowed';
+        } else {
+            priceTag.style.color = 'var(--accent-red)';
+            confirmBuyBtn.disabled = false;
+            confirmBuyBtn.innerText = 'Buy Now'; // Or whatever the original text was
+            confirmBuyBtn.style.opacity = '1';
+            confirmBuyBtn.style.cursor = 'pointer';
         }
 
         // Update Add to Cart action in Modal

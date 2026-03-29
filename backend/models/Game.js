@@ -83,6 +83,10 @@ const Game = sequelize.define('Game', {
         type: DataTypes.INTEGER,
         defaultValue: 10
     },
+    isAvailable: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
     discount: {
         type: DataTypes.INTEGER,
         defaultValue: 0
