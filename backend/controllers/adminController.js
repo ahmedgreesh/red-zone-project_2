@@ -120,7 +120,7 @@ const resetSales = async (req, res) => {
 // @access  Private/Admin
 const getAllUsers = async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 50;
+        const limit = parseInt(req.query.limit) || 1000;
         const offset = parseInt(req.query.offset) || 0;
 
         const users = await User.findAll({
@@ -181,7 +181,7 @@ const updateUserRole = async (req, res) => {
 // @access  Private/Admin
 const getAllOrders = async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 50;
+        const limit = parseInt(req.query.limit) || 1000;
         const offset = parseInt(req.query.offset) || 0;
 
         const orders = await Order.findAll({
@@ -290,7 +290,7 @@ const deleteGame = async (req, res) => {
 // @access  Private/Admin
 const getAllGames = async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 50;
+        const limit = parseInt(req.query.limit) || 1000;
         const offset = parseInt(req.query.offset) || 0;
 
         const games = await Game.findAll({ 

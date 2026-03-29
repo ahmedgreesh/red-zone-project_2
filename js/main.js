@@ -15,6 +15,9 @@ const translations = {
         filter_all: "All",
         filter_action: "Action",
         filter_sports: "Sports",
+        filter_racing: "Racing",
+        filter_fighting: "Fighting",
+        filter_adventure: "Adventure",
         smart_picker: "Help Me Choose a Game 🎮",
         search_placeholder: "Search games...",
         plus_tagline: "Elevate your gaming experience with premium access.",
@@ -359,6 +362,9 @@ const translations = {
         filter_all: "الكل",
         filter_action: "أكشن",
         filter_sports: "رياضة",
+        filter_racing: "سباق",
+        filter_fighting: "قتال",
+        filter_adventure: "مغامرات",
         smart_picker: "ساعدني في اختيار لعبة 🎮",
         search_placeholder: "ابحث عن الألعاب...",
         plus_tagline: "ارتقِ بتجربة اللعب الخاصة بك مع الدخول المميز.",
@@ -874,6 +880,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Global
 
+    const categoryMap = {
+        "Racing": ["Forza", "Need for Speed", "Gran Turismo", "The Crew", "F1", "Dirt", "WRC"],
+        "Fighting": ["Mortal Kombat", "UFC", "WWE", "Tekken", "Street Fighter"],
+        "Adventure": ["God of War", "Red Dead", "Ghost of", "Last of", "Resident Evil", "Spider-Man", "Assassin's Creed", "Elden Ring", "Hogwarts", "Uncharted", "It Takes Two"]
+    };
+
     function applyAllFilters() {
         const platform = platformFilter ? platformFilter.value : 'All';
         const maxPrice = priceFilter ? parseInt(priceFilter.value) : 3000;
@@ -881,7 +893,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchTerm = document.querySelector('.search-input')?.value.toLowerCase() || '';
 
         const filtered = games.filter(game => {
-            const matchesCategory = category === 'All' || game.category === category;
+            let derivedCategory = game.category;
+            for (const [cat, keywords] of Object.entries(categoryMap)) {
+                if (keywords.some(kw => game.title.toLowerCase().includes(kw.toLowerCase()))) {
+                    derivedCategory = cat;
+                    break;
+                }
+            }
+            if (derivedCategory === game.category && game.tags) {
+                if (game.tags.includes('Racing')) derivedCategory = 'Racing';
+                else if (game.tags.includes('Fighting')) derivedCategory = 'Fighting';
+                else if (game.tags.includes('Adventure')) derivedCategory = 'Adventure';
+            }
+
+            const matchesCategory = category === 'All' || derivedCategory === category || game.category === category;
             const matchesPlatform = platform === 'All' || game.platform.includes(platform);
             const matchesSearch = game.title.toLowerCase().includes(searchTerm);
 
@@ -3189,6 +3214,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedPlatform = platformFilter ? platformFilter.value : 'All';
         const maxPrice = priceFilter ? parseInt(priceFilter.value) : 3000;
 
+        const categoryMap = {
+            "Racing": ["Forza", "Need for Speed", "Gran Turismo", "The Crew", "F1", "Dirt", "WRC"],
+            "Fighting": ["Mortal Kombat", "UFC", "WWE", "Tekken", "Street Fighter", "Dragon Ball"],
+            "Adventure": ["God of War", "Red Dead", "Ghost of", "Last of", "Resident Evil", "Spider-Man", "Assassin's Creed", "Elden Ring", "Hogwarts", "Uncharted", "It Takes Two"]
+        };
+
         const filtered = games.filter(game => {
             const matchesSearch = game.title.toLowerCase().includes(term);
             const normalizedGameCat = game.category.toUpperCase();
@@ -3197,7 +3228,20 @@ document.addEventListener('DOMContentLoaded', () => {
             // EXCLUDE SUBSCRIPTIONS FROM HOME GRID
             if (normalizedGameCat === 'SUBSCRIPTION') return false;
 
-            const matchesCategory = category === '' || category === 'All' || normalizedFilter === 'ALL' || normalizedGameCat === normalizedFilter;
+            let derivedCategory = game.category;
+            for (const [cat, keywords] of Object.entries(categoryMap)) {
+                if (keywords.some(kw => game.title.toLowerCase().includes(kw.toLowerCase()))) {
+                    derivedCategory = cat;
+                    break;
+                }
+            }
+            if (derivedCategory === game.category && game.tags) {
+                if (game.tags.includes('Racing')) derivedCategory = 'Racing';
+                else if (game.tags.includes('Fighting')) derivedCategory = 'Fighting';
+                else if (game.tags.includes('Adventure')) derivedCategory = 'Adventure';
+            }
+
+            const matchesCategory = category === '' || category === 'All' || normalizedFilter === 'ALL' || normalizedGameCat === normalizedFilter || derivedCategory.toUpperCase() === normalizedFilter;
 
             // Platform
             let matchesPlatform = true;
