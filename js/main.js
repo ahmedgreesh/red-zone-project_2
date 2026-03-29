@@ -1912,6 +1912,867 @@ document.addEventListener('DOMContentLoaded', () => {
             playStyle: ["Solo"],
             playTime: "3+",
             difficulty: "Normal"
+        },
+        {
+            id: 44,
+            title: "Marathon",
+            price: 0,
+            image: "assets/images/marathon.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Online", "Action"],
+            desc: "A sci-fi extraction shooter where players compete as cybernetic mercenaries known as Runners. From Bungie, the masters of the genre.",
+            prices: [
+                { label: "Primary PS5", value: 1199 },
+                { label: "Secondary", value: 799 }
+            ],
+            tags: ["Action", "Sci-Fi", "Online"],
+            playStyle: ["Online", "Co-op"],
+            playTime: "3+",
+            difficulty: "Hard"
+        },
+        {
+            id: 45,
+            title: "Cronos: The New Dawn",
+            price: 0,
+            image: "assets/images/cronos.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Story", "Horror"],
+            desc: "Experience a twisted time-travel horror story set in a grim-future Poland. Scavenge for essence and survive the unimaginable.",
+            prices: [
+                { label: "Primary PS5", value: 1199 },
+                { label: "Secondary", value: 699 }
+            ],
+            tags: ["Action", "Story", "Horror"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Hard"
+        },
+        {
+            id: 46,
+            title: "Dispatch",
+            price: 0,
+            image: "assets/images/dispatch.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Story", "Action"],
+            desc: "A high-stakes narrative action-adventure where every choice matters. Survive a world on the brink of chaos with unique stylized combat.",
+            prices: [
+                { label: "Primary PS5", value: 849 },
+                { label: "Secondary", value: 549 }
+            ],
+            tags: ["Action", "Story", "Indie"],
+            playStyle: ["Solo"],
+            playTime: "1-3",
+            difficulty: "Normal"
+        },
+        {
+            id: 47,
+            title: "Crimson Desert",
+            price: 0,
+            image: "assets/images/crimson_desert.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Story", "Open World"],
+            desc: "A stunning open-world action RPG following mercenaries fighting for survival on the continent of Pywel. Next-gen combat and visuals.",
+            prices: [
+                { label: "Primary PS5", value: 1899 },
+                { label: "Secondary", value: 1349 }
+            ],
+            tags: ["Action", "Story", "RPG", "Open World"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Hard"
+        },
+        {
+            id: 48,
+            title: "Resident Evil Requiem",
+            price: 0,
+            image: "assets/images/re_requiem.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Story", "Horror"],
+            desc: "The nightmare returns. Experience the next evolution of survival horror with intense atmosphere, terrifying creatures, and deep narrative.",
+            prices: [
+                { label: "Primary PS5", value: 1925 },
+                { label: "Secondary", value: 1399 }
+            ],
+            tags: ["Action", "Story", "Horror"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 49,
+            title: "WWE 2K26",
+            price: 0,
+            image: "assets/images/wwe2k26.jpg",
+            category: "Sports",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Sports", "Competitive"],
+            desc: "The most authentic WWE experience ever. Step into the ring with the biggest superstars and legends.",
+            prices: [
+                { label: "Primary PS5", value: 1949 },
+                { label: "Secondary", value: 1449 }
+            ],
+            tags: ["Sports", "Competitive", "Action"],
+            playStyle: ["Solo", "Online", "Co-op"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 50,
+            title: "Borderlands 4",
+            price: 0,
+            image: "assets/images/borderlands4.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Story", "Action"],
+            desc: "The next chapter in the legendary looter-shooter franchise. New Vault Hunters, new worlds, and billions of guns.",
+            prices: [
+                { label: "Primary PS5", value: 1549 },
+                { label: "Secondary", value: 1049 }
+            ],
+            tags: ["Action", "Looter-Shooter", "RPG"],
+            playStyle: ["Solo", "Online", "Co-op"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 51,
+            title: "Reanimal",
+            price: 0,
+            image: "assets/images/reanimal.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Story", "Horror"],
+            desc: "A dark, atmospheric adventure from the creators of Little Nightmares. Face your deepest fears.",
+            prices: [
+                { label: "Primary PS5", value: 1125 },
+                { label: "Secondary", value: 775 }
+            ],
+            tags: ["Action", "Horror", "Indie"],
+            playStyle: ["Solo", "Co-op"],
+            playTime: "1-3",
+            difficulty: "Hard"
+        },
+        {
+            id: 52,
+            title: "Indiana Jones and the Great Circle",
+            price: 0,
+            image: "assets/images/indiana_jones.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Story", "Adventure"],
+            desc: "Become the legendary archaeologist in this first-person adventure set between the films.",
+            prices: [
+                { label: "Primary PS5", value: 1599 },
+                { label: "Secondary", value: 1199 }
+            ],
+            tags: ["Action", "Adventure", "Story"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 53,
+            title: "The Last of Us Part II Remastered",
+            price: 0,
+            image: "assets/images/tlou2_remastered.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Story", "Action"],
+            desc: "Experience the definitive version of the multi-award-winning story with enhanced visuals and new modes.",
+            prices: [
+                { label: "Primary PS5", value: 899 },
+                { label: "Secondary", value: 649 }
+            ],
+            tags: ["Action", "Story", "Adventure"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Hard"
+        },
+        {
+            id: 54,
+            title: "Clair Obscur: Expedition 33",
+            price: 0,
+            image: "assets/images/expedition33.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Story", "RPG"],
+            desc: "A reactive turn-based RPG with stunning realism. Lead the Expedition 33 to destroy the Paintress and end her cycle of death.",
+            prices: [
+                { label: "Primary PS5", value: 1249 },
+                { label: "Secondary", value: 749 }
+            ],
+            tags: ["Action", "RPG", "Story"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 55,
+            title: "Resident Evil Remake Trilogy",
+            price: 0,
+            image: "assets/images/re_trilogy.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Story", "Horror"],
+            desc: "The ultimate survival horror collection. Includes Resident Evil 2, 3, and 4 Remakes in one terrifying package.",
+            prices: [
+                { label: "Primary PS5", value: 899 },
+                { label: "Primary PS4", value: 449 },
+                { label: "Secondary", value: 499 }
+            ],
+            tags: ["Action", "Horror", "Bundle"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Hard"
+        },
+        {
+            id: 56,
+            title: "Elden Ring Nightreign",
+            price: 0,
+            image: "assets/images/nightreign.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Story", "Action"],
+            desc: "An expansion to the legend. Discover the secrets of the Nightreign in the Lands Between with new bosses and powers.",
+            prices: [
+                { label: "Primary PS5", value: 849 },
+                { label: "Primary PS4", value: 399 },
+                { label: "Secondary", value: 479 }
+            ],
+            tags: ["Action", "RPG", "Open World"],
+            playStyle: ["Solo", "Online"],
+            playTime: "3+",
+            difficulty: "Hard"
+        },
+        {
+            id: 57,
+            title: "Dying Light: The Beast",
+            price: 0,
+            image: "assets/images/dying_light_beast.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Action", "Horror"],
+            desc: "A standalone zombie adventure. Play as Kyle Crane and unleash the beast within in a new open-world region.",
+            prices: [
+                { label: "Primary PS5", value: 1349 },
+                { label: "Secondary", value: 899 }
+            ],
+            tags: ["Action", "Zombies", "Parkour"],
+            playStyle: ["Solo", "Co-op"],
+            playTime: "3+",
+            difficulty: "Hard"
+        },
+        {
+            id: 58,
+            title: "A Plague Tale: Innocence",
+            price: 0,
+            image: "assets/images/plague_tale.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Story", "Action"],
+            desc: "Follow the grim tale of young Amicia and her little brother Hugo, in a heart-rending journey through the darkest hours of history.",
+            prices: [
+                { label: "Primary PS5", value: 279 },
+                { label: "Primary PS4", value: 249 },
+                { label: "Secondary", value: 179 }
+            ],
+            tags: ["Action", "Adventure", "Story"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 59,
+            title: "A Plague Tale: Requiem",
+            price: 0,
+            image: "assets/images/plague_tale_requiem.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Story", "Action"],
+            desc: "The heart-rending journey continues. Face the cost of saving those you love in a desperate struggle for survival.",
+            prices: [
+                { label: "Primary PS5", value: 599 },
+                { label: "Primary PS4", value: 349 },
+                { label: "Secondary", value: 329 }
+            ],
+            tags: ["Action", "Adventure", "Story"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 60,
+            title: "Cyberpunk 2077: Phantom Liberty",
+            price: 0,
+            image: "assets/images/phantom_liberty.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Action", "RPG"],
+            desc: "*Note: This is an expansion (DLC) / ملحوظة: دي الإضافة الخاصة باللعبة.* Become a secret agent in a spy-thriller expansion for the open-world RPG.",
+            prices: [
+                { label: "Primary PS5", value: 1049 },
+                { label: "Secondary", value: 749 }
+            ],
+            tags: ["Action", "RPG", "DLC"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 61,
+            title: "The Witcher 3: Wild Hunt (Complete Edition)",
+            price: 0,
+            image: "assets/images/witcher3.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Story", "RPG"],
+            desc: "Become a professional monster slayer and embark on an adventure of epic proportions in a vast open world.",
+            prices: [
+                { label: "Primary PS5", value: 329 },
+                { label: "Primary PS4", value: 159 },
+                { label: "Secondary", value: 189 }
+            ],
+            tags: ["Action", "RPG", "Open World"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 62,
+            title: "Days Gone Remastered",
+            price: 0,
+            image: "assets/images/days_gone_remastered.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Action", "Horror"],
+            desc: "Ride into a desperate world and survive as a drifter and bounty hunter who rides the broken road.",
+            prices: [
+                { label: "Primary PS5", value: 1199 },
+                { label: "Secondary", value: 799 }
+            ],
+            tags: ["Action", "Zombies", "Open World"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 63,
+            title: "Tomb Raider: Definitive Survivor Trilogy",
+            price: 0,
+            image: "assets/images/tomb_raider_trilogy.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Story", "Action"],
+            desc: "Experience the complete origin story of Lara Croft in this definitive collection of three award-winning titles.",
+            prices: [
+                { label: "Primary PS5", value: 295 },
+                { label: "Primary PS4", value: 295 },
+                { label: "Secondary", value: 195 }
+            ],
+            tags: ["Action", "Adventure", "Bundle"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 64,
+            title: "Mafia: Trilogy",
+            price: 0,
+            image: "assets/images/mafia_trilogy.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Story", "Action"],
+            desc: "Live the life of a gangster across three distinct eras of organized crime in America.",
+            prices: [
+                { label: "Primary PS5", value: 299 },
+                { label: "Primary PS4", value: 279 },
+                { label: "Secondary", value: 179 }
+            ],
+            tags: ["Action", "Crime", "Open World"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 65,
+            title: "Uncharted 4: A Thief's End",
+            price: 0,
+            image: "assets/images/uncharted4.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Story", "Action"],
+            desc: "Join Nathan Drake on his final globe-trotting adventure in search of lost pirate treasure.",
+            prices: [
+                { label: "Primary PS5", value: 249 },
+                { label: "Primary PS4", value: 279 },
+                { label: "Secondary", value: 179 }
+            ],
+            tags: ["Action", "Adventure", "Story"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 66,
+            title: "Uncharted: Legacy of Thieves Collection",
+            price: 0,
+            image: "assets/images/uncharted_legacy.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Story", "Action"],
+            desc: "Experience the award-winning cinematic storytelling from Naughty Dog in this remastered collection.",
+            prices: [
+                { label: "Primary PS5", value: 649 },
+                { label: "Secondary", value: 379 }
+            ],
+            tags: ["Action", "Adventure", "Remastered"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 67,
+            title: "Silent Hill f",
+            price: 0,
+            image: "assets/images/silent_hill_f.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Horror", "Action"],
+            desc: "A completely new story set in 1960s Japan featuring a beautiful, yet horrifying world.",
+            prices: [
+                { label: "Primary PS5", value: 1299 },
+                { label: "Secondary", value: 749 }
+            ],
+            tags: ["Horror", "Survival", "Story"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Hard"
+        },
+        {
+            id: 68,
+            title: "Minecraft",
+            price: 0,
+            image: "assets/images/minecraft.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Sandbox", "Action"],
+            desc: "Build anything you can imagine in a world that is limited only by your imagination.",
+            prices: [
+                { label: "Primary PS5", value: 599 },
+                { label: "Primary PS4", value: 499 },
+                { label: "Secondary", value: 479 }
+            ],
+            tags: ["Sandbox", "Building", "Survival"],
+            playStyle: ["Solo", "Co-op"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 69,
+            title: "Call of Duty: Black Ops III",
+            price: 0,
+            image: "assets/images/black_ops_3.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "Shooter"],
+            desc: "Combining three unique game modes: Campaign, Multiplayer and Zombies.",
+            prices: [
+                { label: "Primary PS5", value: 479 },
+                { label: "Primary PS4", value: 379 },
+                { label: "Secondary", value: 299 }
+            ],
+            tags: ["Action", "FPS", "Zombies"],
+            playStyle: ["Solo", "Co-op", "Multiplayer"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 70,
+            title: "Need for Speed Unbound",
+            price: 0,
+            image: "assets/images/nfs_unbound.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Action", "Racing"],
+            desc: "Race against the clock, outsmart the cops, and take on weekly qualifiers to reach The Grand.",
+            prices: [
+                { label: "Primary PS5", value: 479 },
+                { label: "Secondary", value: 249 }
+            ],
+            tags: ["Racing", "Action", "Cars"],
+            playStyle: ["Solo", "Multiplayer"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 71,
+            title: "Tekken 8",
+            price: 0,
+            image: "assets/images/tekken8.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Action", "Fighting"],
+            desc: "The fist meets fate in the latest installment of the legendary fighting game series.",
+            prices: [
+                { label: "Primary PS5", value: 799 },
+                { label: "Secondary", value: 529 }
+            ],
+            tags: ["Action", "Fighting", "Competitive"],
+            playStyle: ["Solo", "Multiplayer"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 72,
+            title: "Sonic Frontiers",
+            price: 0,
+            image: "assets/images/sonic_frontiers.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "Adventure"],
+            desc: "Sonic's newest high-speed, open-zone adventure across the Starfall Islands.",
+            prices: [
+                { label: "Primary PS5", value: 589 },
+                { label: "Primary PS4", value: 249 },
+                { label: "Secondary", value: 299 }
+            ],
+            tags: ["Action", "Adventure", "Platformer"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 73,
+            title: "Sonic x Shadow Generations",
+            price: 0,
+            image: "assets/images/sonic_shadow.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "Adventure"],
+            desc: "Play as Shadow in a brand-new story campaign featuring never-before-seen abilities.",
+            prices: [
+                { label: "Primary PS5", value: 689 },
+                { label: "Primary PS4", value: 289 },
+                { label: "Secondary", value: 389 }
+            ],
+            tags: ["Action", "Platformer", "Speed"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 74,
+            title: "Sonic Racing Cross Worlds",
+            price: 0,
+            image: "assets/images/sonic_racing.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "Racing"],
+            desc: "The ultimate high-speed racing experience across multiple dimensions.",
+            prices: [
+                { label: "Primary PS5", value: 949 },
+                { label: "Primary PS4", value: 549 },
+                { label: "Secondary", value: 569 }
+            ],
+            tags: ["Racing", "Action", "Multiplayer"],
+            playStyle: ["Solo", "Multiplayer"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 75,
+            title: "NBA 2K26",
+            price: 0,
+            image: "assets/images/nba2k26.jpg",
+            category: "Sports",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Sports", "Simulation"],
+            desc: "Experience the next level of basketball simulation with updated rosters and improved gameplay.",
+            prices: [
+                { label: "Primary PS5", value: 599 },
+                { label: "Primary PS4", value: 248 },
+                { label: "Secondary", value: 349 }
+            ],
+            tags: ["Sports", "Basketball", "Multiplayer"],
+            playStyle: ["Solo", "Multiplayer"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 76,
+            title: "Far Cry 6",
+            price: 0,
+            image: "assets/images/farcry6.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "Adventure"],
+            desc: "Ignite the revolution and take down the modern-day dictator Anton Castillo.",
+            prices: [
+                { label: "Primary PS5", value: 279 },
+                { label: "Primary PS4", value: 199 },
+                { label: "Secondary", value: 169 }
+            ],
+            tags: ["Action", "Open World", "Shooter"],
+            playStyle: ["Solo", "Co-op"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 77,
+            title: "Assassin's Creed Origins",
+            price: 0,
+            image: "assets/images/ac_origins.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "RPG"],
+            desc: "Explore Ancient Egypt and discover the origin story of the Assassin's Brotherhood.",
+            prices: [
+                { label: "Primary PS5", value: 279 },
+                { label: "Primary PS4", value: 250 },
+                { label: "Secondary", value: 189 }
+            ],
+            tags: ["Action", "Open World", "Assassin"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 78,
+            title: "Assassin's Creed® Odyssey",
+            price: 0,
+            image: "assets/images/ac_odyssey.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "RPG"],
+            desc: "Write your own epic odyssey and become a legendary Spartan hero in Ancient Greece.",
+            prices: [
+                { label: "Primary PS5", value: 279 },
+                { label: "Primary PS4", value: 250 },
+                { label: "Secondary", value: 189 }
+            ],
+            tags: ["Action", "Open World", "RPG"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 79,
+            title: "Kingdom Come: Deliverance II",
+            price: 0,
+            image: "assets/images/kcd2.jpg",
+            category: "Action",
+            platform: "PS5",
+            rating: 5,
+            styles: ["Action", "RPG"],
+            desc: "A thrilling Action RPG, set amidst the chaos of a civil war in 15th Century Bohemia.",
+            prices: [
+                { label: "Primary PS5", value: 1049 },
+                { label: "Secondary", value: 749 }
+            ],
+            tags: ["Action", "RPG", "Medieval"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Hard"
+        },
+        {
+            id: 80,
+            title: "Gang Beasts",
+            price: 0,
+            image: "assets/images/gang_beasts.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "Party"],
+            desc: "A silly multiplayer party game with surly gelatinous characters and brutal slapstick fight sequences.",
+            prices: [
+                { label: "Primary PS5", value: 279 },
+                { label: "Primary PS4", value: 199 },
+                { label: "Secondary", value: 189 }
+            ],
+            tags: ["Action", "Party", "Multiplayer"],
+            playStyle: ["Solo", "Multiplayer"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 81,
+            title: "Dying Light 2: Stay Human",
+            price: 0,
+            image: "assets/images/dying_light2.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "Horror"],
+            desc: "The virus won and civilization has fallen back into the Dark Ages. Stay human.",
+            prices: [
+                { label: "Primary PS5", value: 599 },
+                { label: "Primary PS4", value: 349 },
+                { label: "Secondary", value: 399 }
+            ],
+            tags: ["Action", "Parkour", "Zombies"],
+            playStyle: ["Solo", "Co-op"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 82,
+            title: "Little Nightmares III",
+            price: 0,
+            image: "assets/images/little_nightmares3.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Horror", "Puzzle"],
+            desc: "Embark on a new adventure in the unique world of Little Nightmares. Face your childhood fears together.",
+            prices: [
+                { label: "Primary PS5", value: 849 },
+                { label: "Primary PS4", value: 399 },
+                { label: "Secondary", value: 499 }
+            ],
+            tags: ["Horror", "Puzzle", "Adventure"],
+            playStyle: ["Solo", "Co-op"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 83,
+            title: "Marvel's Spider-Man 1",
+            price: 0,
+            image: "assets/images/spiderman1.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "Adventure"],
+            desc: "Be greater and explore a new chapter in Marvel's Spider-Man universe as a more experienced Peter Parker.",
+            prices: [
+                { label: "Primary PS5", value: 449 },
+                { label: "Primary PS4", value: 399 },
+                { label: "Secondary", value: 349 }
+            ],
+            tags: ["Action", "Superhero", "Open World"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 84,
+            title: "Lies of P",
+            price: 0,
+            image: "assets/images/lies_of_p.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "RPG"],
+            desc: "A thrilling soulslike that takes the story of Pinocchio, turns it on its head, and sets it against the darkly elegant backdrop of the Belle Epoque era.",
+            prices: [
+                { label: "Primary PS5", value: 799 },
+                { label: "Primary PS4", value: 449 },
+                { label: "Secondary", value: 499 }
+            ],
+            tags: ["Action", "Soulslike", "RPG"],
+            playStyle: ["Solo"],
+            playTime: "3+",
+            difficulty: "Hard"
+        },
+        {
+            id: 85,
+            title: "Sackboy™: A Big Adventure",
+            price: 0,
+            image: "assets/images/sackboy.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Platformer", "Adventure"],
+            desc: "Iconic PlayStation hero Sackboy bursts back into breathtaking action with a huge, fun and frantic 3D multiplayer platforming adventure.",
+            prices: [
+                { label: "Primary PS5", value: 599 },
+                { label: "Primary PS4", value: 349 },
+                { label: "Secondary", value: 299 }
+            ],
+            tags: ["Platformer", "Adventure", "Multiplayer"],
+            playStyle: ["Solo", "Multiplayer"],
+            playTime: "3+",
+            difficulty: "Normal"
+        },
+        {
+            id: 86,
+            title: "Cuphead",
+            price: 0,
+            image: "assets/images/cuphead.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Action", "Platformer"],
+            desc: "A classic run and gun action game heavily focused on boss battles, inspired by cartoons of the 1930s.",
+            prices: [
+                { label: "Primary PS5", value: 449 },
+                { label: "Primary PS4", value: 199 },
+                { label: "Secondary", value: 199 }
+            ],
+            tags: ["Action", "Platformer", "Hard"],
+            playStyle: ["Solo", "Co-op"],
+            playTime: "3+",
+            difficulty: "Hard"
+        },
+        {
+            id: 87,
+            title: "Unravel Two",
+            price: 0,
+            image: "assets/images/unravel2.jpg",
+            category: "Action",
+            platform: "PS5/PS4",
+            rating: 5,
+            styles: ["Platformer", "Puzzle"],
+            desc: "Build a relationship with other Yarnys in local co-op or as a single player, fostering friendship and support as you journey together.",
+            prices: [
+                { label: "Primary PS5", value: 199 },
+                { label: "Primary PS4", value: 149 },
+                { label: "Secondary", value: 139 }
+            ],
+            tags: ["Platformer", "Puzzle", "Co-op"],
+            playStyle: ["Solo", "Co-op"],
+            playTime: "3+",
+            difficulty: "Normal"
         }
     ];
 
@@ -1923,7 +2784,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 const data = await response.json();
                 if (data && data.length > 0) {
-                    games = data;
+                    // Combine server games with local games, avoiding duplicates by ID
+                    const serverIds = new Set(data.map(g => g.id));
+                    games = [...games.filter(g => !serverIds.has(g.id)), ...data];
                 }
             }
         } catch (error) {
