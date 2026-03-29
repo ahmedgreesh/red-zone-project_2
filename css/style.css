@@ -2714,20 +2714,14 @@ footer {
         font-size: 0.6rem;
     }
 
-    /* Horizontal Scroll for Filters */
+    /* Grid Layout for Filters on Tiny Screens */
     .filter-tabs {
-        overflow-x: auto;
-        white-space: nowrap;
         padding-bottom: 8px;
         width: 100%;
         display: flex;
-        -webkit-overflow-scrolling: touch;
-        gap: 8px;
-        scrollbar-width: none;
-    }
-
-    .filter-tabs::-webkit-scrollbar {
-        display: none;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
     }
 
     .filters-bar {
