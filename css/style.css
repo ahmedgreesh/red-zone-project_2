@@ -971,9 +971,18 @@ header {
 
     .filter-tabs {
         width: 100%;
-        overflow-x: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
         padding-bottom: 5px;
-        justify-content: flex-start;
+    }
+
+    .filter-tabs .cta-btn {
+        flex: 1 1 auto;
+        text-align: center;
+        padding: 8px 12px;
+        font-size: 0.75rem;
     }
 }
 
