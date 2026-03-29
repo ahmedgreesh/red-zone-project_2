@@ -298,6 +298,36 @@ header {
     box-shadow: 0 0 10px var(--accent-red);
 }
 
+/* Logo Plus Badge */
+.logo-plus-badge {
+    background: linear-gradient(135deg, #00439c, #0072ce);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 3px 6px;
+    border-radius: 6px;
+    margin-left: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    top: -5px;
+    box-shadow: 0 0 10px rgba(0, 114, 206, 0.5);
+    text-decoration: none;
+    transition: var(--transition-fast);
+    animation: plusPulseSmall 3s infinite;
+}
+
+.logo-plus-badge:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 114, 206, 0.8);
+    color: white;
+}
+
+@keyframes plusPulseSmall {
+    0%, 100% { box-shadow: 0 0 8px rgba(0, 114, 206, 0.4); transform: scale(1); }
+    50% { box-shadow: 0 0 15px rgba(0, 114, 206, 0.8); transform: scale(1.05); }
+}
+
 /* Nav Links */
 .nav-links {
     display: flex;
