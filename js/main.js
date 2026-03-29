@@ -1105,8 +1105,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tags: ["Action", "Story"],
             playStyle: ["Solo"],
             playTime: "3+",
-            difficulty: "Hard",
-            discount: 15
+            difficulty: "Hard"
         },
         {
             id: 2,
@@ -1146,8 +1145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tags: ["Action", "Story"],
             playStyle: ["Solo"],
             playTime: "3+",
-            difficulty: "Normal",
-            discount: 25
+            difficulty: "Normal"
         },
         {
             id: 4,
@@ -1167,8 +1165,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tags: ["Story", "Open World"],
             playStyle: ["Solo", "Online"],
             playTime: "3+",
-            difficulty: "Normal",
-            discount: 40
+            difficulty: "Normal"
         },
         {
             id: 5,
