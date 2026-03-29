@@ -1184,6 +1184,47 @@ header {
     filter: brightness(1.1);
 }
 
+/* --- Discount Badge Styles --- */
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(45deg, #ff123f, #ff4d4d);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    z-index: 15;
+    box-shadow: 0 4px 15px rgba(255, 18, 63, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    animation: discountPulse 2s infinite ease-in-out;
+    letter-spacing: 0.5px;
+}
+
+@keyframes discountPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(255, 18, 63, 0.5);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(255, 18, 63, 0.7);
+    }
+}
+
+/* Mobile Adjustments for Discount Badge */
+@media (max-width: 768px) {
+    .discount-badge {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        top: 8px;
+        right: 8px;
+    }
+}
+
 /* Overlay on Hover (Optional Polish) */
 .card-image::after {
     content: '';

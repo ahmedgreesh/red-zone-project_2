@@ -382,6 +382,7 @@ async function editGame(gameId) {
         document.getElementById('gameCategory').value = game.category;
         document.getElementById('gamePlatform').value = game.platform;
         document.getElementById('gameRating').value = game.rating || 5;
+        document.getElementById('gameDiscount').value = game.discount || 0;
         document.getElementById('gameImage').value = game.image || '';
         document.getElementById('gameDesc').value = game.desc || '';
 
@@ -417,6 +418,7 @@ function openGameModal() {
     if (pageTitle) document.getElementById('gameModalTitle').textContent = 'إضافة لعبة جديدة';
     if (gameForm) gameForm.reset();
     document.getElementById('gameId').value = '';
+    document.getElementById('gameDiscount').value = '0';
     if (pricesContainer) {
         pricesContainer.innerHTML = '';
         addPriceRow();
@@ -459,6 +461,7 @@ async function handleGameSubmit(e) {
         category: document.getElementById('gameCategory').value,
         platform: document.getElementById('gamePlatform').value,
         rating: parseInt(document.getElementById('gameRating').value),
+        discount: parseInt(document.getElementById('gameDiscount').value) || 0,
         image: document.getElementById('gameImage').value,
         desc: document.getElementById('gameDesc').value,
         prices: prices

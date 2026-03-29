@@ -20,7 +20,8 @@ const games = [
         tags: ["Action", "Story"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 2,
@@ -39,7 +40,8 @@ const games = [
         tags: ["Action", "Competitive", "Story"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 3,
@@ -58,7 +60,8 @@ const games = [
         tags: ["Action", "Story"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 4,
@@ -77,7 +80,8 @@ const games = [
         tags: ["Story", "Open World"],
         playStyle: ["Solo", "Online"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 5,
@@ -95,7 +99,8 @@ const games = [
         tags: ["Action", "Competitive"],
         playStyle: ["Online", "Co-op"],
         playTime: "1-3",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 6,
@@ -113,7 +118,8 @@ const games = [
         tags: ["Action", "Story"],
         playStyle: ["Solo"],
         playTime: "1-3",
-        difficulty: "Easy"
+        difficulty: "Easy",
+            discount: 0
     },
     {
         id: 7,
@@ -131,7 +137,8 @@ const games = [
         tags: ["Story"],
         playStyle: ["Solo"],
         playTime: "1-3",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 8,
@@ -149,7 +156,8 @@ const games = [
         tags: ["Story", "Open World"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 9,
@@ -168,7 +176,8 @@ const games = [
         tags: ["Action", "Story", "Open World"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 10,
@@ -186,7 +195,8 @@ const games = [
         tags: ["Action", "Open World", "Story"],
         playStyle: ["Solo"],
         playTime: "1-3",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 11,
@@ -205,7 +215,8 @@ const games = [
         tags: ["Competitive"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "Less than 1",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 12,
@@ -224,7 +235,8 @@ const games = [
         tags: ["Competitive"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "Less than 1",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 13,
@@ -243,7 +255,8 @@ const games = [
         tags: ["Competitive"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "Less than 1",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 14,
@@ -261,7 +274,8 @@ const games = [
         tags: ["Competitive"],
         playStyle: ["Solo", "Online"],
         playTime: "Less than 1",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 15,
@@ -280,7 +294,8 @@ const games = [
         tags: ["Action", "Competitive"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 16,
@@ -297,7 +312,8 @@ const games = [
         tags: ["Competitive"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "Less than 1",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 17,
@@ -317,7 +333,8 @@ const games = [
         tags: ["Competitive"],
         playStyle: ["Solo", "Online"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 18,
@@ -336,7 +353,8 @@ const games = [
         tags: ["Action", "Story"],
         playStyle: ["Solo"],
         playTime: "1-3",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 19,
@@ -355,7 +373,8 @@ const games = [
         tags: ["Action", "Story", "Open World"],
         playStyle: ["Solo", "Online"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 20,
@@ -374,7 +393,8 @@ const games = [
         tags: ["Action", "Story", "Open World"],
         playStyle: ["Solo", "Online"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 21,
@@ -393,7 +413,8 @@ const games = [
         tags: ["Action", "Competitive", "FPS"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 22,
@@ -412,7 +433,8 @@ const games = [
         tags: ["Sports", "Competitive"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "Less than 1",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 23,
@@ -431,7 +453,8 @@ const games = [
         tags: ["Action", "Story", "Open World"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 24,
@@ -450,7 +473,8 @@ const games = [
         tags: ["Action", "Competitive", "FPS"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 25,
@@ -469,7 +493,8 @@ const games = [
         tags: ["Sports", "Competitive", "Racing"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 26,
@@ -488,7 +513,8 @@ const games = [
         tags: ["Action", "Classic", "Bundle"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "100+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 27,
@@ -507,7 +533,8 @@ const games = [
         tags: ["Sports", "Racing", "Open World"],
         playStyle: ["Solo", "Online"],
         playTime: "50+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 28,
@@ -526,7 +553,8 @@ const games = [
         tags: ["Action", "Story", "Open World"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 29,
@@ -546,7 +574,8 @@ const games = [
         tags: ["Action", "Story", "Horror", "Arabic"],
         playStyle: ["Solo"],
         playTime: "1-3",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 30,
@@ -565,7 +594,8 @@ const games = [
         tags: ["Action", "Story", "Stealth"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 31,
@@ -584,7 +614,8 @@ const games = [
         tags: ["Action", "Story", "Co-op"],
         playStyle: ["Co-op", "Online"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 32,
@@ -602,7 +633,8 @@ const games = [
         tags: ["Action", "Story", "Open World"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 33,
@@ -620,7 +652,8 @@ const games = [
         tags: ["Action", "Story", "Adventure"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 34,
@@ -638,7 +671,8 @@ const games = [
         tags: ["Action", "Competitive", "Fighting"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "1-3",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 35,
@@ -657,7 +691,8 @@ const games = [
         tags: ["Action", "Open World", "Story", "RPG"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 36,
@@ -675,7 +710,8 @@ const games = [
         tags: ["Action", "Story", "Horror", "Mystery"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 37,
@@ -694,7 +730,8 @@ const games = [
         tags: ["Action", "Story", "Adventure", "Sci-Fi"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 38,
@@ -713,7 +750,8 @@ const games = [
         tags: ["Action", "Story", "Adventure", "Gore"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 39,
@@ -732,7 +770,8 @@ const games = [
         tags: ["Action", "Story", "Indie"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 40,
@@ -751,7 +790,8 @@ const games = [
         tags: ["Action", "Adventure", "Superhero", "Arabic"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 41,
@@ -770,7 +810,8 @@ const games = [
         tags: ["Racing", "Open World", "Action"],
         playStyle: ["Solo", "Online"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 42,
@@ -789,7 +830,8 @@ const games = [
         tags: ["Action", "Hard", "Souls-like"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 43,
@@ -807,7 +849,8 @@ const games = [
         tags: ["Action", "Story", "Crime"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 44,
@@ -825,7 +868,8 @@ const games = [
         tags: ["Action", "Sci-Fi", "Online"],
         playStyle: ["Online", "Co-op"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 45,
@@ -843,7 +887,8 @@ const games = [
         tags: ["Action", "Story", "Horror"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 46,
@@ -861,7 +906,8 @@ const games = [
         tags: ["Action", "Story", "Indie"],
         playStyle: ["Solo"],
         playTime: "1-3",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 47,
@@ -879,7 +925,8 @@ const games = [
         tags: ["Action", "Story", "RPG", "Open World"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 48,
@@ -897,7 +944,8 @@ const games = [
         tags: ["Action", "Story", "Horror"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 49,
@@ -915,7 +963,8 @@ const games = [
         tags: ["Sports", "Competitive", "Action"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 50,
@@ -933,7 +982,8 @@ const games = [
         tags: ["Action", "Looter-Shooter", "RPG"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 51,
@@ -951,7 +1001,8 @@ const games = [
         tags: ["Action", "Horror", "Indie"],
         playStyle: ["Solo", "Co-op"],
         playTime: "1-3",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 52,
@@ -969,7 +1020,8 @@ const games = [
         tags: ["Action", "Adventure", "Story"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 53,
@@ -987,7 +1039,8 @@ const games = [
         tags: ["Action", "Story", "Adventure"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 54,
@@ -1005,7 +1058,8 @@ const games = [
         tags: ["Action", "RPG", "Story"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 55,
@@ -1024,7 +1078,8 @@ const games = [
         tags: ["Action", "Horror", "Bundle"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 56,
@@ -1043,7 +1098,8 @@ const games = [
         tags: ["Action", "RPG", "Open World"],
         playStyle: ["Solo", "Online"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 57,
@@ -1061,7 +1117,8 @@ const games = [
         tags: ["Action", "Zombies", "Parkour"],
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 58,
@@ -1080,7 +1137,8 @@ const games = [
         tags: ["Action", "Adventure", "Story"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 59,
@@ -1099,7 +1157,8 @@ const games = [
         tags: ["Action", "Adventure", "Story"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 60,
@@ -1117,7 +1176,8 @@ const games = [
         tags: ["Action", "RPG", "DLC"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 61,
@@ -1136,7 +1196,8 @@ const games = [
         tags: ["Action", "RPG", "Open World"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 62,
@@ -1154,7 +1215,8 @@ const games = [
         tags: ["Action", "Zombies", "Open World"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 63,
@@ -1173,7 +1235,8 @@ const games = [
         tags: ["Action", "Adventure", "Bundle"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 64,
@@ -1192,7 +1255,8 @@ const games = [
         tags: ["Action", "Crime", "Open World"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 65,
@@ -1211,7 +1275,8 @@ const games = [
         tags: ["Action", "Adventure", "Story"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 66,
@@ -1229,7 +1294,8 @@ const games = [
         tags: ["Action", "Adventure", "Remastered"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 67,
@@ -1247,7 +1313,8 @@ const games = [
         tags: ["Horror", "Survival", "Story"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 68,
@@ -1266,7 +1333,8 @@ const games = [
         tags: ["Sandbox", "Building", "Survival"],
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 69,
@@ -1285,7 +1353,8 @@ const games = [
         tags: ["Action", "FPS", "Zombies"],
         playStyle: ["Solo", "Co-op", "Multiplayer"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 70,
@@ -1303,7 +1372,8 @@ const games = [
         tags: ["Racing", "Action", "Cars"],
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 71,
@@ -1321,7 +1391,8 @@ const games = [
         tags: ["Action", "Fighting", "Competitive"],
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 72,
@@ -1340,7 +1411,8 @@ const games = [
         tags: ["Action", "Adventure", "Platformer"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 73,
@@ -1359,7 +1431,8 @@ const games = [
         tags: ["Action", "Platformer", "Speed"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 74,
@@ -1378,7 +1451,8 @@ const games = [
         tags: ["Racing", "Action", "Multiplayer"],
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 75,
@@ -1397,7 +1471,8 @@ const games = [
         tags: ["Sports", "Basketball", "Multiplayer"],
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 76,
@@ -1416,7 +1491,8 @@ const games = [
         tags: ["Action", "Open World", "Shooter"],
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 77,
@@ -1435,7 +1511,8 @@ const games = [
         tags: ["Action", "Open World", "Assassin"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 78,
@@ -1454,7 +1531,8 @@ const games = [
         tags: ["Action", "Open World", "RPG"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 79,
@@ -1472,7 +1550,8 @@ const games = [
         tags: ["Action", "RPG", "Medieval"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 80,
@@ -1491,7 +1570,8 @@ const games = [
         tags: ["Action", "Party", "Multiplayer"],
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 81,
@@ -1510,7 +1590,8 @@ const games = [
         tags: ["Action", "Parkour", "Zombies"],
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 82,
@@ -1529,7 +1610,8 @@ const games = [
         tags: ["Horror", "Puzzle", "Adventure"],
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 83,
@@ -1548,7 +1630,8 @@ const games = [
         tags: ["Action", "Superhero", "Open World"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 84,
@@ -1567,7 +1650,8 @@ const games = [
         tags: ["Action", "Soulslike", "RPG"],
         playStyle: ["Solo"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 85,
@@ -1586,7 +1670,8 @@ const games = [
         tags: ["Platformer", "Adventure", "Multiplayer"],
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     {
         id: 86,
@@ -1605,7 +1690,8 @@ const games = [
         tags: ["Action", "Platformer", "Hard"],
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
-        difficulty: "Hard"
+        difficulty: "Hard",
+            discount: 0
     },
     {
         id: 87,
@@ -1624,7 +1710,8 @@ const games = [
         tags: ["Platformer", "Puzzle", "Co-op"],
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
-        difficulty: "Normal"
+        difficulty: "Normal",
+            discount: 0
     },
     // --- SUBSCRIPTIONS ---
     {

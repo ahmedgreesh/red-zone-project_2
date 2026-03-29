@@ -1105,7 +1105,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tags: ["Action", "Story"],
             playStyle: ["Solo"],
             playTime: "3+",
-            difficulty: "Hard"
+            difficulty: "Hard",
+            discount: 15
         },
         {
             id: 2,
@@ -1145,7 +1146,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tags: ["Action", "Story"],
             playStyle: ["Solo"],
             playTime: "3+",
-            difficulty: "Normal"
+            difficulty: "Normal",
+            discount: 25
         },
         {
             id: 4,
@@ -1165,7 +1167,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tags: ["Story", "Open World"],
             playStyle: ["Solo", "Online"],
             playTime: "3+",
-            difficulty: "Normal"
+            difficulty: "Normal",
+            discount: 40
         },
         {
             id: 5,
@@ -3108,10 +3111,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? `<span class="game-price clickable" onclick="openGameModal(${game.id}, event)" style="font-size: 0.8rem; white-space: nowrap; cursor: pointer; text-decoration: underline;">👁️ View Price</span>`
                 : `<span class="game-price">$${game.price}</span>`;
 
+            // Discount Badge
+            const discountBadge = (game.discount && game.discount > 0)
+                ? `<div class="discount-badge">-${game.discount}%</div>`
+                : '';
+
             card.innerHTML = `
                 <div class="card-image" onclick="openGameModal(${game.id})">
                     <img src="${game.image}" alt="${sanitizeHTML(game.title)}" loading="lazy" onerror="this.src='assets/images/cover-action.png'">
                     ${styleTag}
+                    ${discountBadge}
                 </div>
                 <div class="card-content">
                     <span class="game-platform">${sanitizeHTML(game.platform)}</span>

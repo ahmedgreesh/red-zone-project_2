@@ -82,6 +82,10 @@ const Game = sequelize.define('Game', {
     stock: {
         type: DataTypes.INTEGER,
         defaultValue: 10
+    },
+    discount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
     }
 });
 
