@@ -1,6 +1,25 @@
+# Dependencies
 node_modules/
-.env
-database.sqlite
-.DS_Store
+backend/node_modules/
 
+# Environment Variables (SENSITIVE)
+.env
+.env.local
+.env.production
+backend/.env
+
+# Databases
+database.sqlite
+backend/database.sqlite
+*.db
+*.sqlite
+
+# OS Metadata
+.DS_Store
+Thumbs.db
+
+# Build/Tools
 .vercel
+.vscode/
+dist/
+build/
