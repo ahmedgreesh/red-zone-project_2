@@ -21,45 +21,33 @@ const {
 
 const { body, validationResult } = require('express-validator');
 
+// Validation middleware
+const validate = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ message: errors.array().map(e => e.msg).join(' - '), errors: errors.array() });
+    }
+    next();
+};
+
 // ─── Public Routes ────────────────────────────────────────────────────────────
 
 // Admin login — returns a token if credentials are valid
 router.post('/login', [
-    body('email').isEmail().withMessage('يجب إدخال بريد إلكتروني صحيح').normalizeEmail(),
-    body('password').notEmpty().withMessage('كلمة المرور مطلوبة')
-], (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ message: errors.array()[0].msg, errors: errors.array() });
-    }
-    next();
-}, loginAdmin);
+    body('email').isEmail().withMessage('يجب إدخال بريد إلكتروني صحيح').normalizeEmail().trim(),
+    body('password').notEmpty().withMessage('كلمة المرور مطلوبة').trim()
+], validate, loginAdmin);
 
 // ─── Protected Routes (require valid token + admin role) ──────────────────────
 
 router.use(protect);
 router.use(adminOnly);
 
-/**
- * GET /api/admin/dashboard
- *
- * This is the GATE that the frontend uses on page load to verify
- * the user is a real admin (not just someone who edited localStorage).
- * Returns 401 if no/bad token, 403 if token is valid but not admin.
- */
+// Dashboard stats
 router.get('/dashboard', (req, res) => {
-    res.json({
-        ok: true,
-        message: 'Welcome to the Red Zone Admin Dashboard',
-        user: {
-            id: req.user.id,
-            email: req.user.email,
-            role: req.user.role
-        }
-    });
+    res.json({ ok: true, user: { id: req.user.id, email: req.user.email, role: req.user.role } });
 });
 
-// Dashboard stats
 router.get('/stats', getDashboardStats);
 router.delete('/sales/reset', resetSales);
 
@@ -67,21 +55,35 @@ router.delete('/sales/reset', resetSales);
 router.delete('/users/reset', resetUsers);
 router.get('/users', getAllUsers);
 router.delete('/users/:id', deleteUser);
-router.put('/users/:id/role', updateUserRole);
+router.put('/users/:id/role', [
+    body('role').isIn(['user', 'admin']).withMessage('صلاحية غير صالحة')
+], validate, updateUserRole);
 
 // Orders management
 router.get('/orders', getAllOrders);
-router.put('/orders/:id', updateOrderStatus);
+router.put('/orders/:id', [
+    body('status').notEmpty().withMessage('الحالة مطلوبة').trim().escape()
+], validate, updateOrderStatus);
 
 // Games management
+const gameValidation = [
+    body('title').notEmpty().withMessage('العنوان مطلوب').trim().escape(),
+    body('price').isNumeric().withMessage('السعر يجب أن يكون رقماً'),
+    body('category').notEmpty().withMessage('التصنيف مطلوب').trim().escape(),
+    body('platform').notEmpty().withMessage('المنصة مطلوبة').trim().escape(),
+    body('discount').optional().isInt({ min: 0, max: 100 }).withMessage('الخصم يجب أن يكون بين 0 و 100')
+];
+
 router.get('/games', getAllGames);
-router.post('/games', createGame);
-router.put('/games/:id', updateGame);
+router.post('/games', gameValidation, validate, createGame);
+router.put('/games/:id', gameValidation, validate, updateGame);
 router.delete('/games/:id', deleteGame);
 
 // Profile management
 router.get('/profile', getAdminProfile);
-router.put('/profile', updateAdminProfile);
+router.put('/profile', [
+    body('username').optional().trim().escape(),
+    body('email').optional().isEmail().withMessage('بريد غير صالح').normalizeEmail().trim()
+], validate, updateAdminProfile);
 
 module.exports = router;
-

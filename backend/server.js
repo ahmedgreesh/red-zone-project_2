@@ -9,6 +9,12 @@ const logger = require('./utils/logger');
 // Load environment variables
 dotenv.config();
 
+// CRITICAL SECURITY CHECK: JWT_SECRET MUST BE DEFINED
+if (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'your_jwt_secret_here') {
+    logger.error('❌ FATAL: JWT_SECRET is missing or insecure. Server cannot start.');
+    process.exit(1);
+}
+
 // Import models to ensure relationships are established
 require('./models');
 
@@ -42,7 +48,11 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 
+// Robust Security Headers with Helmet
 app.use(helmet({
+    contentSecurityPolicy: false, // Disabled as requested for compatibility
+    frameguard: { action: 'deny' }, // X-Frame-Options: DENY (Prevents Clickjacking)
+    hidePoweredBy: true, // X-Powered-By removed
     crossOriginResourcePolicy: false,
 }));
 
@@ -50,10 +60,11 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
 
-// Rate Limiting
-const { apiLimiter, authLimiter } = require('./middleware/rateLimiter');
+// Rate Limiting Strategy
+const { apiLimiter, loginLimiter, adminLimiter } = require('./middleware/rateLimiter');
 app.use('/api/', apiLimiter);
-app.use(['/api/users/login', '/api/users/register', '/api/admin/login'], authLimiter);
+app.use(['/api/users/login', '/api/users/register', '/api/admin/login'], loginLimiter);
+app.use('/api/admin', adminLimiter);
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
@@ -85,28 +96,37 @@ const startServer = async () => {
         }
         logger.info('✅ Models synced with database.');
 
-        // Ensure Admin exists on startup
+        // Ensure Admin exists on startup (SECURE: Based on Email)
         const User = require('./models/User');
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPass = process.env.ADMIN_PASSWORD;
 
         if (adminEmail && adminPass) {
             const [adminUser, adminCreated] = await User.findOrCreate({
-                where: { role: 'admin' }, // Check by role so email can change without creating new admins
-                defaults: { email: adminEmail, password: adminPass, username: 'Red Zone Admin', role: 'admin' }
+                where: { email: adminEmail.trim() },
+                defaults: { 
+                    email: adminEmail.trim(), 
+                    password: adminPass.trim(), 
+                    username: 'Red Zone Admin', 
+                    role: 'admin',
+                    isActive: true
+                }
             });
             
             if (adminCreated) {
                 logger.info(`✅ Admin credentials created for: ${adminEmail}`);
             } else {
-                logger.info(`✅ Admin account exists. Access preserved.`);
+                // Ensure existing admin is active and role is correct
+                adminUser.role = 'admin';
+                adminUser.isActive = true;
+                await adminUser.save();
+                logger.info(`✅ Admin account verified. Access preserved.`);
             }
         } else {
             logger.warn('⚠️ ADMIN_EMAIL or ADMIN_PASSWORD not found in .env. Skipping default admin creation.');
         }
 
         // Auto-Seed: Update games/prices on server start
-        // This ensures the DB is always up-to-date without manual scripts
         logger.info('🔄 Checking for new game data...');
         await seedDB();
 

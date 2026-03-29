@@ -41,6 +41,10 @@ const User = sequelize.define('User', {
         set(value) {
             this.setDataValue('wishlist', JSON.stringify(value));
         }
+    },
+    isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 }, {
     hooks: {

@@ -58,7 +58,12 @@ const protect = async (req, res, next) => {
         });
 
         if (!user) {
-            return res.status(401).json({ message: 'User not found, please log in again' });
+            return res.status(401).json({ message: 'المستخدم غير موجود، يرجى تسجيل الدخول مرة أخرى' });
+        }
+
+        // CRITICAL: Check if user is active
+        if (user.isActive === false) {
+            return res.status(401).json({ message: 'هذا الحساب غير نشط حالياً، يرجى التواصل مع الإدارة' });
         }
 
         req.user = user;
