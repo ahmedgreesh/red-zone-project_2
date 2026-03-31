@@ -6,13 +6,36 @@ const logger = require('../utils/logger');
 // @access  Public
 const getGames = async (req, res) => {
     try {
-        const games = await Game.findAll();
-        res.json(games);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
+        const offset = (page - 1) * limit;
+
+        const { count, rows: games } = await Game.findAndCountAll({
+            limit,
+            offset,
+            order: [['createdAt', 'DESC']]
+        });
+
+        res.json({
+            success: true,
+            data: games,
+            pagination: {
+                total: count,
+                page,
+                limit,
+                lastPage: Math.ceil(count / limit)
+            }
+        });
     } catch (error) {
         logger.error('[getGames] Error: %O', error);
-        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
+        res.status(500).json({ 
+            success: false,
+            message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً',
+            error: error.message 
+        });
     }
 };
+
 
 // @desc    Get game by ID
 // @route   GET /api/games/:id

@@ -1,5 +1,9 @@
 const express = require('express');
+require('express-async-errors');
+const timeout = require('connect-timeout');
 const cors = require('cors');
+
+
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
@@ -20,7 +24,16 @@ require('./models');
 
 const app = express();
 
-// Trust Proxy (Essential for Rate Limiting in Production behind Render/Vercel)
+// Request Timeout (30 seconds)
+app.use(timeout('30s'));
+
+// Middleware to check for request timeout
+app.use((req, res, next) => {
+    if (!req.timedout) next();
+});
+
+// Trust Proxy
+
 app.set('trust proxy', 1);
 
 // Middleware - Enhanced CORS Configuration
@@ -60,11 +73,14 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
 
-// Rate Limiting Strategy
-const { apiLimiter, loginLimiter, adminLimiter } = require('./middleware/rateLimiter');
-app.use('/api/', apiLimiter);
+// Apply Global Rate Limiting to all routes
+const { globalLimiter, loginLimiter, adminLimiter } = require('./middleware/rateLimiter');
+app.use(globalLimiter);
+
+// Specific Rate Limiting Strategy for sensitive routes
 app.use(['/api/users/login', '/api/users/register', '/api/admin/login'], loginLimiter);
 app.use('/api/admin', adminLimiter);
+
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
@@ -72,7 +88,12 @@ app.use('/api/games', require('./routes/gameRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 
+// Global Error Handling Middleware (Must be after all routes)
+const errorMiddleware = require('./middleware/errorMiddleware');
+app.use(errorMiddleware);
+
 app.get('/', (req, res) => {
+
     res.send('Red Zone API is running...');
 });
 
@@ -131,7 +152,7 @@ const startServer = async () => {
         await seedDB();
 
         // Start listening
-        app.listen(PORT, '0.0.0.0', () => {
+        return app.listen(PORT, '0.0.0.0', () => {
             logger.info(`🚀 Server running on port ${PORT}`);
         });
     } catch (error) {
@@ -139,6 +160,7 @@ const startServer = async () => {
         process.exit(1);
     }
 };
+
 
 // Global Error Handlers to prevent server crash
 process.on('unhandledRejection', (reason, promise) => {
@@ -151,4 +173,38 @@ process.on('uncaughtException', (error) => {
     // Optional: exit if the error is critical, but logging helps debug
 });
 
-startServer();
+let server;
+startServer().then(s => server = s);
+
+// Graceful Shutdown Handler
+const gracefulShutdown = async (signal) => {
+    logger.info(`📡 ${signal} received. Starting graceful shutdown...`);
+    
+    if (server) {
+        server.close(async () => {
+            logger.info('🛑 HTTP server closed.');
+            
+            try {
+                await sequelize.close();
+                logger.info('🗄️ Database connection closed.');
+                process.exit(0);
+            } catch (err) {
+                logger.error('❌ Error during database closure: %O', err);
+                process.exit(1);
+            }
+        });
+        
+        // Force close after 10s if graceful shutdown fails
+        setTimeout(() => {
+            logger.error('⚠️ Could not close connections in time, forcefully shutting down');
+            process.exit(1);
+        }, 10000);
+    } else {
+        process.exit(0);
+    }
+};
+
+// Listen for termination signals
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+

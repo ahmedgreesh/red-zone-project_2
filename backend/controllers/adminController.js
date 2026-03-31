@@ -120,21 +120,37 @@ const resetSales = async (req, res) => {
 // @access  Private/Admin
 const getAllUsers = async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 1000;
-        const offset = parseInt(req.query.offset) || 0;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
+        const offset = (page - 1) * limit;
 
-        const users = await User.findAll({
+        const { count, rows: users } = await User.findAndCountAll({
             attributes: { exclude: ['password'] },
             order: [['createdAt', 'DESC']],
             limit,
             offset
         });
-        res.json(users);
+
+        res.json({
+            success: true,
+            data: users,
+            pagination: {
+                total: count,
+                page,
+                limit,
+                lastPage: Math.ceil(count / limit)
+            }
+        });
     } catch (error) {
         logger.error('[getAllUsers] Error: %O', error);
-        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
+        res.status(500).json({ 
+            success: false,
+            message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً',
+            error: error.message 
+        });
     }
 };
+
 
 // @desc    Delete user
 // @route   DELETE /api/admin/users/:id
@@ -181,21 +197,37 @@ const updateUserRole = async (req, res) => {
 // @access  Private/Admin
 const getAllOrders = async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 1000;
-        const offset = parseInt(req.query.offset) || 0;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
+        const offset = (page - 1) * limit;
 
-        const orders = await Order.findAll({
+        const { count, rows: orders } = await Order.findAndCountAll({
             include: [{ model: User, attributes: ['email'] }],
             order: [['createdAt', 'DESC']],
             limit,
             offset
         });
-        res.json(orders);
+        
+        res.json({
+            success: true,
+            data: orders,
+            pagination: {
+                total: count,
+                page,
+                limit,
+                lastPage: Math.ceil(count / limit)
+            }
+        });
     } catch (error) {
         logger.error('[getAllOrders] Error: %O', error);
-        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
+        res.status(500).json({ 
+            success: false,
+            message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً',
+            error: error.message 
+        });
     }
 };
+
 
 // @desc    Update order status
 // @route   PUT /api/admin/orders/:id
@@ -292,20 +324,36 @@ const deleteGame = async (req, res) => {
 // @access  Private/Admin
 const getAllGames = async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 1000;
-        const offset = parseInt(req.query.offset) || 0;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
+        const offset = (page - 1) * limit;
 
-        const games = await Game.findAll({ 
+        const { count, rows: games } = await Game.findAndCountAll({ 
             order: [['id', 'ASC']],
             limit,
             offset
         });
-        res.json(games);
+
+        res.json({
+            success: true,
+            data: games,
+            pagination: {
+                total: count,
+                page,
+                limit,
+                lastPage: Math.ceil(count / limit)
+            }
+        });
     } catch (error) {
         logger.error('[getAllGames] Error: %O', error);
-        res.status(500).json({ message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً' });
+        res.status(500).json({ 
+            success: false,
+            message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً',
+            error: error.message 
+        });
     }
 };
+
 
 // @desc    Get admin profile
 // @route   GET /api/admin/profile

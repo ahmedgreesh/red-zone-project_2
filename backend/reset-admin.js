@@ -7,8 +7,13 @@ async function forceResetAdmin() {
         await sequelize.authenticate();
         console.log('✅ Connected to database');
 
-        const adminEmail = 'admin@redzone.com';
-        const newPassword = 'redzoneaa3692053';
+        const adminEmail = process.env.ADMIN_EMAIL || 'admin@redzone.com';
+        const newPassword = process.env.ADMIN_PASSWORD;
+
+        if (!newPassword) {
+            console.log('❌ Error: ADMIN_PASSWORD is not set in your .env file.');
+            process.exit(1);
+        }
 
         let admin = await User.findOne({ where: { email: adminEmail } });
 
@@ -29,8 +34,9 @@ async function forceResetAdmin() {
         console.log('--------------------------------------------------');
         console.log('SUCCESS: Admin account ready!');
         console.log(`Email: ${adminEmail}`);
-        console.log(`Password: ${newPassword}`);
+        console.log(`Password: (See your .env file)`);
         console.log('--------------------------------------------------');
+
 
         await sequelize.close();
         process.exit(0);

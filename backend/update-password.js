@@ -9,7 +9,8 @@ async function updateAdminPassword() {
         console.log('✅ Connected to database');
 
         // Find admin user
-        const admin = await User.findOne({ where: { email: 'admin@redzone.com' } });
+        const adminEmail = process.env.ADMIN_EMAIL || 'admin@redzone.com';
+        const admin = await User.findOne({ where: { email: adminEmail } });
 
         if (!admin) {
             console.log('❌ Admin user not found');
@@ -17,13 +18,19 @@ async function updateAdminPassword() {
         }
 
         // Update password
-        const newPassword = 'redzoneaa3692053';
+        const newPassword = process.env.ADMIN_PASSWORD;
+        if (!newPassword) {
+            console.log('❌ ADMIN_PASSWORD not set in .env');
+            process.exit(1);
+        }
+        
         admin.password = newPassword; // Will be hashed by beforeSave hook
         await admin.save();
 
         console.log('✅ Admin password updated successfully!');
-        console.log(`   Email: admin@redzone.com`);
-        console.log(`   New Password: ${newPassword}`);
+        console.log(`   Email: ${adminEmail}`);
+        console.log(`   New Password: (Hidden for security)`);
+
 
         await sequelize.close();
         process.exit(0);

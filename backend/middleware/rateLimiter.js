@@ -7,17 +7,18 @@ const rateLimit = require('express-rate-limit');
  * Uses express-rate-limit.
  */
 
-// Global API Limiter: 100 requests per 15 minutes
-const apiLimiter = rateLimit({
+// Global Limiter: 100 requests per 15 minutes
+const globalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: process.env.NODE_ENV === 'development' ? 1000 : 100,
+    max: 100, // Limit each IP to 100 requests per windowMs
     message: {
-        status: 429,
-        message: 'عدد الطلبات كبير جداً، يرجى المحاولة لاحقاً'
+        success: false,
+        message: "Too many requests, please try again later"
     },
-    standardHeaders: true,
-    legacyHeaders: false
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
+
 
 // Stricter Auth/Login Limiter: 5 attempts per 1 minute
 const loginLimiter = rateLimit({
@@ -43,4 +44,4 @@ const adminLimiter = rateLimit({
     legacyHeaders: false
 });
 
-module.exports = { apiLimiter, authLimiter: loginLimiter, loginLimiter, adminLimiter };
+module.exports = { globalLimiter, apiLimiter: globalLimiter, authLimiter: loginLimiter, loginLimiter, adminLimiter };

@@ -21,7 +21,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 2,
@@ -34,14 +34,14 @@ const games = [
         desc: "Forced to go rogue. Hunted from within. This is Call of Duty: Black Ops 6.",
         prices: [
             { label: "Primary PS5", value: 799 },
-            { label: "Secondary", value: 549  },
-            { label: "Primary PS4", value: 449  }
+            { label: "Secondary", value: 549 },
+            { label: "Primary PS4", value: 449 }
         ],
         tags: ["Action", "Competitive", "Story"],
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 3,
@@ -61,7 +61,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 4,
@@ -81,7 +81,7 @@ const games = [
         playStyle: ["Solo", "Online"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 5,
@@ -100,7 +100,7 @@ const games = [
         playStyle: ["Online", "Co-op"],
         playTime: "1-3",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 6,
@@ -119,7 +119,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "1-3",
         difficulty: "Easy",
-            discount: 0
+        discount: 0
     },
     {
         id: 7,
@@ -138,7 +138,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "1-3",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 8,
@@ -157,7 +157,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 9,
@@ -177,7 +177,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 10,
@@ -196,7 +196,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "1-3",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 11,
@@ -216,7 +216,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "Less than 1",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 12,
@@ -236,7 +236,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "Less than 1",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 13,
@@ -256,7 +256,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "Less than 1",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 14,
@@ -275,7 +275,7 @@ const games = [
         playStyle: ["Solo", "Online"],
         playTime: "Less than 1",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 15,
@@ -295,7 +295,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 16,
@@ -313,7 +313,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "Less than 1",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 17,
@@ -334,7 +334,7 @@ const games = [
         playStyle: ["Solo", "Online"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 18,
@@ -354,7 +354,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "1-3",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 19,
@@ -374,7 +374,7 @@ const games = [
         playStyle: ["Solo", "Online"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 20,
@@ -394,7 +394,7 @@ const games = [
         playStyle: ["Solo", "Online"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 21,
@@ -414,7 +414,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 22,
@@ -434,7 +434,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "Less than 1",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 23,
@@ -454,7 +454,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 24,
@@ -474,7 +474,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 25,
@@ -494,7 +494,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 26,
@@ -514,7 +514,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "100+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 27,
@@ -534,7 +534,7 @@ const games = [
         playStyle: ["Solo", "Online"],
         playTime: "50+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 28,
@@ -554,7 +554,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 29,
@@ -575,7 +575,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "1-3",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 30,
@@ -595,7 +595,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 31,
@@ -615,7 +615,7 @@ const games = [
         playStyle: ["Co-op", "Online"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 32,
@@ -634,7 +634,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 33,
@@ -653,7 +653,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 34,
@@ -672,7 +672,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "1-3",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 35,
@@ -692,7 +692,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 36,
@@ -711,7 +711,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 37,
@@ -731,7 +731,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 38,
@@ -751,7 +751,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 39,
@@ -771,7 +771,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 40,
@@ -791,7 +791,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 41,
@@ -811,7 +811,7 @@ const games = [
         playStyle: ["Solo", "Online"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 42,
@@ -831,7 +831,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 43,
@@ -850,7 +850,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 44,
@@ -869,7 +869,7 @@ const games = [
         playStyle: ["Online", "Co-op"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 45,
@@ -888,7 +888,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 46,
@@ -907,7 +907,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "1-3",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 47,
@@ -926,7 +926,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 48,
@@ -945,7 +945,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 49,
@@ -964,7 +964,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 50,
@@ -983,7 +983,7 @@ const games = [
         playStyle: ["Solo", "Online", "Co-op"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 51,
@@ -1002,7 +1002,7 @@ const games = [
         playStyle: ["Solo", "Co-op"],
         playTime: "1-3",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 52,
@@ -1021,7 +1021,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 53,
@@ -1040,7 +1040,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 54,
@@ -1059,7 +1059,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 55,
@@ -1079,7 +1079,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 56,
@@ -1099,7 +1099,7 @@ const games = [
         playStyle: ["Solo", "Online"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 57,
@@ -1118,7 +1118,7 @@ const games = [
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 58,
@@ -1138,7 +1138,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 59,
@@ -1158,7 +1158,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 60,
@@ -1177,7 +1177,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 61,
@@ -1197,7 +1197,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 62,
@@ -1216,7 +1216,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 63,
@@ -1236,7 +1236,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 64,
@@ -1256,7 +1256,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 65,
@@ -1276,7 +1276,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 66,
@@ -1295,7 +1295,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 67,
@@ -1314,7 +1314,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 68,
@@ -1334,7 +1334,7 @@ const games = [
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 69,
@@ -1354,7 +1354,7 @@ const games = [
         playStyle: ["Solo", "Co-op", "Multiplayer"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 70,
@@ -1373,7 +1373,7 @@ const games = [
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 71,
@@ -1392,7 +1392,7 @@ const games = [
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 72,
@@ -1412,7 +1412,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 73,
@@ -1432,7 +1432,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 74,
@@ -1452,7 +1452,7 @@ const games = [
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 75,
@@ -1472,7 +1472,7 @@ const games = [
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 76,
@@ -1492,7 +1492,7 @@ const games = [
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 77,
@@ -1512,7 +1512,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 78,
@@ -1532,7 +1532,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 79,
@@ -1551,7 +1551,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 80,
@@ -1571,7 +1571,7 @@ const games = [
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 81,
@@ -1591,7 +1591,7 @@ const games = [
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 82,
@@ -1611,7 +1611,7 @@ const games = [
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 83,
@@ -1631,7 +1631,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 84,
@@ -1651,7 +1651,7 @@ const games = [
         playStyle: ["Solo"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 85,
@@ -1671,7 +1671,7 @@ const games = [
         playStyle: ["Solo", "Multiplayer"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
     {
         id: 86,
@@ -1691,7 +1691,7 @@ const games = [
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
         difficulty: "Hard",
-            discount: 0
+        discount: 0
     },
     {
         id: 87,
@@ -1711,8 +1711,9 @@ const games = [
         playStyle: ["Solo", "Co-op"],
         playTime: "3+",
         difficulty: "Normal",
-            discount: 0
+        discount: 0
     },
+    
     // --- SUBSCRIPTIONS ---
     {
         id: 101,
@@ -1774,57 +1775,60 @@ const seedDB = async (isManual = false) => {
     try {
         if (isManual) {
             await sequelize.authenticate();
-            console.log('✅ Base Connected');
+            console.log('✅ [DATABASE] Connected successfully.');
             await sequelize.sync({ alter: true });
-            console.log('✅ Database Synced (Data Preserved)');
+            console.log('✅ [DATABASE] Schema synced.');
         }
 
-        // Upsert games to avoid duplicates
-        console.log(`[SEED] Starting upsert for ${games.length} games...`);
-        for (let i = 0; i < games.length; i++) {
-            const game = games[i];
-            console.log(`[SEED] Upserting game ${i + 1}/${games.length}: ${game.title}`);
-            await Game.upsert(game);
+        console.log(`🚀 [SEED] Starting process for ${games.length} items...`);
+
+        let successCount = 0;
+        let errorCount = 0;
+
+        for (const game of games) {
+            try {
+                // Using upsert ensures we update existing games and create new ones
+                const [instance, created] = await Game.upsert(game);
+                successCount++;
+                if (isManual) {
+                    console.log(`   [${successCount}/${games.length}] ${created ? 'NEW' : 'UPDATED'}: ${game.title} (ID: ${game.id})`);
+                }
+            } catch (err) {
+                errorCount++;
+                console.error(`   ❌ ERROR on game ${game.id} (${game.title}):`, err.message);
+            }
         }
-        console.log(`✅ ${games.length} Games Inserted/Updated`);
+
+        console.log(`\n✨ [SEED] Completed! Total: ${games.length} | Success: ${successCount} | Failed: ${errorCount}`);
 
         // Production Admin Account Reset
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPass = process.env.ADMIN_PASSWORD;
 
-        if (!adminEmail || !adminPass) {
-            console.log('⚠️ [SEED] ADMIN_EMAIL or ADMIN_PASSWORD not found in .env. Skipping admin creation.');
-        } else {
-            // Check if admin exists by role (so it doesn't create duplicate if email changes)
+        if (adminEmail && adminPass) {
             const admin = await User.findOne({ where: { role: 'admin' } });
-
-        if (!admin) {
-            console.log(`[SEED] Creating production admin account: ${adminEmail}`);
-            await User.create({
-                email: adminEmail,
-                password: adminPass,
-                role: 'admin',
-                username: 'Admin'
-            });
-            console.log(`✅ Admin account CREATED.`);
-        } else {
-            console.log(`[SEED] Admin account exists. Preserving current password.`);
-            // Removed the password overwrite block.
+            if (!admin) {
+                console.log(`[SEED] Creating admin account: ${adminEmail}`);
+                await User.create({
+                    email: adminEmail,
+                    password: adminPass,
+                    role: 'admin',
+                    username: 'Admin'
+                });
+                console.log(`✅ Admin account created.`);
+            } else {
+                console.log(`[SEED] Admin account exists.`);
+            }
         }
-        } // End of outer else
 
-        // Close connection ONLY if run directly
         if (require.main === module) {
-            await sequelize.close();
+            console.log('👋 Seeding finished. Exiting...');
             process.exit(0);
         }
     } catch (error) {
-        console.error('❌ Seeding Error:', error);
-        if (require.main === module) {
-            process.exit(1);
-        } else {
-            throw error;
-        }
+        console.error('💥 CRITICAL Seeding Error:', error);
+        if (require.main === module) process.exit(1);
+        throw error;
     }
 };
 

@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { getGames, getGameById, createGame } = require('../controllers/gameController');
-const { protect, admin } = require('../middleware/authMiddleware');
+const { getGames, getGameById } = require('../controllers/gameController');
+const cacheMiddleware = require('../middleware/cacheMiddleware');
 
-router.get('/', getGames);
-router.get('/:id', getGameById);
+
+router.get('/', cacheMiddleware(60), getGames);
+router.get('/:id', cacheMiddleware(60), getGameById);
+
 
 module.exports = router;
