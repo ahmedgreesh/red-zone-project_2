@@ -1,7 +1,8 @@
 // Vercel Serverless Entry Point
-// This file exports the Express app for Vercel to handle as a serverless function.
-// The DB initialization (sequelize.sync, admin creation, seeding) runs automatically
-// when server.js is imported, via the conditional at the bottom of server.js.
+// Explicitly require pg/pg-hstore so Vercel's bundler (nft) includes them.
+// Sequelize loads these via dynamic require() which static analysis misses.
+require('pg');
+require('pg-hstore');
 
 const app = require('../backend/server');
 
