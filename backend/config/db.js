@@ -16,7 +16,10 @@ if (process.env.DATABASE_URL) {
     sequelize = new Sequelize(process.env.DATABASE_URL, {
         dialect: 'postgres',
         dialectOptions: {
-            ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+            ssl: { 
+                require: true,
+                rejectUnauthorized: false 
+            }
         },
         pool: poolConfig,
         logging: false

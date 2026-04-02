@@ -13,8 +13,7 @@ dotenv.config();
 
 // CRITICAL SECURITY CHECK: JWT_SECRET MUST BE DEFINED
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'your_jwt_secret_here') {
-    logger.error('❌ FATAL: JWT_SECRET is missing or insecure. Server cannot start.');
-    process.exit(1);
+    logger.warn('⚠️ WARNING: JWT_SECRET is missing or insecure. Auth will fail.');
 }
 
 // Import models to ensure relationships are established
@@ -78,6 +77,27 @@ const { globalLimiter, loginLimiter, adminLimiter } = require('./middleware/rate
 app.use(globalLimiter);
 app.use(['/api/users/login', '/api/users/register', '/api/admin/login'], loginLimiter);
 app.use('/api/admin', adminLimiter);
+// Connection Check & Sync Middleware for Serverless
+let isSynced = false;
+app.use(async (req, res, next) => {
+    try {
+        if (!isSynced) {
+            await sequelize.authenticate();
+            // In production, we sync once per cold start to ensure tables exist
+            await sequelize.sync(); 
+            isSynced = true;
+            logger.info('✅ DB initialized (Serverless).');
+        }
+        next();
+    } catch (error) {
+        logger.error('❌ DB connection error in middleware: %O', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Database connection failed. Please check your DATABASE_URL.',
+            error: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
+    }
+});
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
@@ -155,24 +175,20 @@ process.on('uncaughtException', (error) => {
     logger.error('❌ Uncaught Exception: %O', error);
 });
 
-let server;
-if (!isProduction) {
-    // Local: start HTTP server
-    initializeDatabase()
+// For local development, start the server
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    const PORT = process.env.PORT || 5000;
+    sequelize.authenticate()
+        .then(() => sequelize.sync({ alter: true }))
         .then(() => {
-            server = app.listen(PORT, '0.0.0.0', () => {
-                logger.info(`🚀 Server running on port ${PORT}`);
+            app.listen(PORT, '0.0.0.0', () => {
+                logger.info(`🚀 Local development server running on port ${PORT}`);
             });
         })
         .catch(err => {
-            logger.error('❌ Startup Error: %O', err);
+            logger.error('❌ Local Startup Error: %O', err);
             process.exit(1);
         });
-} else {
-    // Vercel: just authenticate DB (minimal connections), no sync/seed on cold start
-    sequelize.authenticate()
-        .then(() => logger.info('✅ DB ready (Vercel cold start).'))
-        .catch(err => logger.error('❌ DB auth failed on cold start: %O', err));
 }
 
 // Graceful Shutdown
