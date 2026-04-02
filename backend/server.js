@@ -41,15 +41,21 @@ const allowedOrigins = [process.env.FRONTEND_URL || 'http://localhost:3000', 'ht
 
 app.use(cors({
     origin: function (origin, callback) {
+        // Allow requests with no origin (mobile apps, Postman, server-to-server)
+        if (!origin || origin === 'null') return callback(null, true);
+
+        // Allow Vercel deployments
+        const isVercel = origin.endsWith('.vercel.app');
+
         // Allow mobile testing on local network and any localhost port
-        const isLocalDevelopment = origin && (
-            origin.startsWith('http://localhost:') || 
-            origin.startsWith('http://127.0.0.1:') || 
-            origin.startsWith('http://192.168.') || 
+        const isLocalDevelopment = (
+            origin.startsWith('http://localhost:') ||
+            origin.startsWith('http://127.0.0.1:') ||
+            origin.startsWith('http://192.168.') ||
             origin.startsWith('http://10.0.')
         );
 
-        if (!origin || origin === 'null' || allowedOrigins.includes(origin) || (isLocalDevelopment && process.env.NODE_ENV !== 'production')) {
+        if (allowedOrigins.includes(origin) || isVercel || isLocalDevelopment) {
             callback(null, true);
         } else {
             console.error(`[CORS REJECT] Origin blocked: ${origin}`);
@@ -125,15 +131,15 @@ const startServer = async () => {
         if (adminEmail && adminPass) {
             const [adminUser, adminCreated] = await User.findOrCreate({
                 where: { email: adminEmail.trim() },
-                defaults: { 
-                    email: adminEmail.trim(), 
-                    password: adminPass.trim(), 
-                    username: 'Red Zone Admin', 
+                defaults: {
+                    email: adminEmail.trim(),
+                    password: adminPass.trim(),
+                    username: 'Red Zone Admin',
                     role: 'admin',
                     isActive: true
                 }
             });
-            
+
             if (adminCreated) {
                 logger.info(`✅ Admin credentials created for: ${adminEmail}`);
             } else {
@@ -173,17 +179,82 @@ process.on('uncaughtException', (error) => {
     // Optional: exit if the error is critical, but logging helps debug
 });
 
+// Export the app for Vercel
+module.exports = app;
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Shared initialization: DB sync, admin creation, game seeding
+const initializeDatabase = async () => {
+    await sequelize.authenticate();
+    logger.info('✅ Database Connected successfully.');
+
+    if (isProduction) {
+        await sequelize.sync();
+    } else {
+        await sequelize.sync({ alter: true });
+    }
+    logger.info('✅ Models synced with database.');
+
+    // Ensure Admin exists
+    const User = require('./models/User');
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPass = process.env.ADMIN_PASSWORD;
+
+    if (adminEmail && adminPass) {
+        const [adminUser, adminCreated] = await User.findOrCreate({
+            where: { email: adminEmail.trim() },
+            defaults: {
+                email: adminEmail.trim(),
+                password: adminPass.trim(),
+                username: 'Red Zone Admin',
+                role: 'admin',
+                isActive: true
+            }
+        });
+        if (adminCreated) {
+            logger.info(`✅ Admin created for: ${adminEmail}`);
+        } else {
+            adminUser.role = 'admin';
+            adminUser.isActive = true;
+            await adminUser.save();
+            logger.info('✅ Admin account verified.');
+        }
+    }
+
+    // Seed games
+    logger.info('🔄 Checking for new game data...');
+    await seedDB();
+};
+
 let server;
-startServer().then(s => server = s);
+if (!isProduction) {
+    // Local development: full server with listen()
+    const startLocal = async () => {
+        try {
+            await initializeDatabase();
+            return app.listen(PORT, '0.0.0.0', () => {
+                logger.info(`🚀 Server running on port ${PORT}`);
+            });
+        } catch (error) {
+            logger.error('❌ Server Startup Error: %O', error);
+            process.exit(1);
+        }
+    };
+    startLocal().then(s => server = s);
+} else {
+    // Vercel: initialize DB without listen()
+    initializeDatabase().catch(err => logger.error('❌ Vercel DB Init Error: %O', err));
+}
 
 // Graceful Shutdown Handler
 const gracefulShutdown = async (signal) => {
     logger.info(`📡 ${signal} received. Starting graceful shutdown...`);
-    
+
     if (server) {
         server.close(async () => {
             logger.info('🛑 HTTP server closed.');
-            
+
             try {
                 await sequelize.close();
                 logger.info('🗄️ Database connection closed.');
@@ -193,7 +264,7 @@ const gracefulShutdown = async (signal) => {
                 process.exit(1);
             }
         });
-        
+
         // Force close after 10s if graceful shutdown fails
         setTimeout(() => {
             logger.error('⚠️ Could not close connections in time, forcefully shutting down');
