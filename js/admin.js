@@ -4,8 +4,14 @@
 const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '' || window.location.hostname.startsWith('192.168.');
 
 // Use relative path in production (frontend & backend on same Vercel domain)
-// Use localhost in development
-const PRODUCTION_API_URL = '/api';
+// Since the rewrite in vercel.json already points /api/* to the backend,
+// and admin.js calls `${API_URL}/admin/...`, we set this to empty or just '/api' carefully.
+// To get '/api/admin/...', and given API_URL is used as `${API_URL}/admin/login`:
+const PRODUCTION_API_URL = '/api'; // Wait, let's check how it's used.
+// If API_URL is '/api', then fetch(`${API_URL}/admin/login`) becomes '/api/admin/login' which is CORRECT.
+// Wait, then why was it empty in the screenshot? 
+// Maybe the previous 'onrender' fix didn't deploy yet or there is another issue.
+
 const LOCAL_API_URL = `http://${window.location.hostname || '127.0.0.1'}:5001/api`;
 
 // Auto-detect environment
@@ -335,10 +341,11 @@ async function loadDashboardData() {
 // Games Management
 async function loadGames() {
     try {
-        const games = await apiRequest('/admin/games');
+        const response = await apiRequest('/admin/games');
+        const games = response.data || response; // Handle both paginated and raw array responses
         const table = document.getElementById('gamesTable');
 
-        if (games && games.length > 0) {
+        if (games && Array.isArray(games) && games.length > 0) {
             table.innerHTML = games.map(game => `
                 <tr>
                     <td>${game.id}</td>
@@ -374,7 +381,8 @@ async function loadGames() {
 
 async function editGame(gameId) {
     try {
-        const games = await apiRequest('/admin/games');
+        const response = await apiRequest('/admin/games');
+        const games = response.data || response;
         const game = games.find(g => g.id === gameId);
 
         if (!game) {
@@ -501,10 +509,11 @@ async function handleGameSubmit(e) {
 // Users Management
 async function loadUsers() {
     try {
-        const users = await apiRequest('/admin/users');
+        const response = await apiRequest('/admin/users');
+        const users = response.data || response;
         const table = document.getElementById('usersTable');
 
-        if (users && users.length > 0) {
+        if (users && Array.isArray(users) && users.length > 0) {
             table.innerHTML = users.map(user => `
                 <tr>
                     <td>${user.email}</td>
@@ -544,10 +553,11 @@ async function deleteUser(userId) {
 // Orders Management
 async function loadOrders() {
     try {
-        const orders = await apiRequest('/admin/orders');
+        const response = await apiRequest('/admin/orders');
+        const orders = response.data || response;
         const table = document.getElementById('ordersTable');
 
-        if (orders && orders.length > 0) {
+        if (orders && Array.isArray(orders) && orders.length > 0) {
             table.innerHTML = orders.map(order => `
                 <tr>
                     <td>#${(order.id || order._id).toString().slice(-6)}</td>

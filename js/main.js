@@ -2807,8 +2807,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 credentials: 'include'
             });
             if (response.ok) {
-                const data = await response.json();
-                if (data && data.length > 0) {
+                const result = await response.json();
+                const data = result.data || result; // Handle both paginated and raw array responses
+                if (data && Array.isArray(data) && data.length > 0) {
                     // Combine server games with local games, avoiding duplicates by ID
                     const serverIds = new Set(data.map(g => g.id));
                     games = [...games.filter(g => !serverIds.has(g.id)), ...data];
