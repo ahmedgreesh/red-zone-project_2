@@ -2,8 +2,6 @@ const express = require('express');
 require('express-async-errors');
 const timeout = require('connect-timeout');
 const cors = require('cors');
-
-
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
@@ -26,39 +24,35 @@ const app = express();
 
 // Request Timeout (30 seconds)
 app.use(timeout('30s'));
-
-// Middleware to check for request timeout
 app.use((req, res, next) => {
     if (!req.timedout) next();
 });
 
-// Trust Proxy
-
+// Trust Proxy (required for rate limiting behind Vercel)
 app.set('trust proxy', 1);
 
-// Middleware - Enhanced CORS Configuration
-const allowedOrigins = [process.env.FRONTEND_URL || 'http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5500', 'http://127.0.0.1:5500'];
+// Enhanced CORS Configuration
+const allowedOrigins = [
+    process.env.FRONTEND_URL || 'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500'
+];
 
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (mobile apps, Postman, server-to-server)
         if (!origin || origin === 'null') return callback(null, true);
-
-        // Allow Vercel deployments
         const isVercel = origin.endsWith('.vercel.app');
-
-        // Allow mobile testing on local network and any localhost port
-        const isLocalDevelopment = (
+        const isLocal = (
             origin.startsWith('http://localhost:') ||
             origin.startsWith('http://127.0.0.1:') ||
             origin.startsWith('http://192.168.') ||
             origin.startsWith('http://10.0.')
         );
-
-        if (allowedOrigins.includes(origin) || isVercel || isLocalDevelopment) {
+        if (allowedOrigins.includes(origin) || isVercel || isLocal) {
             callback(null, true);
         } else {
-            console.error(`[CORS REJECT] Origin blocked: ${origin}`);
+            logger.warn(`[CORS REJECT] Origin blocked: ${origin}`);
             callback(new Error('Not allowed by CORS'));
         }
     },
@@ -67,11 +61,11 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 
-// Robust Security Headers with Helmet
+// Security Headers
 app.use(helmet({
-    contentSecurityPolicy: false, // Disabled as requested for compatibility
-    frameguard: { action: 'deny' }, // X-Frame-Options: DENY (Prevents Clickjacking)
-    hidePoweredBy: true, // X-Powered-By removed
+    contentSecurityPolicy: false,
+    frameguard: { action: 'deny' },
+    hidePoweredBy: true,
     crossOriginResourcePolicy: false,
 }));
 
@@ -79,14 +73,11 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
 
-// Apply Global Rate Limiting to all routes
+// Rate Limiting
 const { globalLimiter, loginLimiter, adminLimiter } = require('./middleware/rateLimiter');
 app.use(globalLimiter);
-
-// Specific Rate Limiting Strategy for sensitive routes
 app.use(['/api/users/login', '/api/users/register', '/api/admin/login'], loginLimiter);
 app.use('/api/admin', adminLimiter);
-
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
@@ -94,40 +85,35 @@ app.use('/api/games', require('./routes/gameRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 
-// Global Error Handling Middleware (Must be after all routes)
+// Global Error Handling
 const errorMiddleware = require('./middleware/errorMiddleware');
 app.use(errorMiddleware);
 
 app.get('/', (req, res) => {
-
     res.send('Red Zone API is running...');
 });
 
-// Port configuration
-const PORT = process.env.PORT || 5000;
+// Export app (for Vercel serverless)
+module.exports = app;
 
+// ---------- Initialization ----------
+const PORT = process.env.PORT || 5000;
+const isProduction = process.env.NODE_ENV === 'production';
 const { seedDB } = require('./seed');
 
-// Start server - this is the ONLY place that authenticates, syncs, and starts the server
-const startServer = async () => {
-    try {
-        // Authenticate connection
-        await sequelize.authenticate();
-        logger.info('✅ Database Connected successfully.');
+const initializeDatabase = async () => {
+    await sequelize.authenticate();
+    logger.info('✅ Database Connected.');
 
-        // Sync models (conditional sync for production safety)
-        if (process.env.NODE_ENV !== 'production') {
-            await sequelize.sync({ alter: true });
-        } else {
-            await sequelize.sync();
-        }
-        logger.info('✅ Models synced with database.');
+    if (!isProduction) {
+        // Local development: sync with alter to update schema
+        await sequelize.sync({ alter: true });
+        logger.info('✅ Models synced (dev).');
 
-        // Ensure Admin exists on startup (SECURE: Based on Email)
+        // Ensure Admin exists
         const User = require('./models/User');
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPass = process.env.ADMIN_PASSWORD;
-
         if (adminEmail && adminPass) {
             const [adminUser, adminCreated] = await User.findOrCreate({
                 where: { email: adminEmail.trim() },
@@ -139,143 +125,70 @@ const startServer = async () => {
                     isActive: true
                 }
             });
-
             if (adminCreated) {
-                logger.info(`✅ Admin credentials created for: ${adminEmail}`);
+                logger.info(`✅ Admin created for: ${adminEmail}`);
             } else {
-                // Ensure existing admin is active and role is correct
                 adminUser.role = 'admin';
                 adminUser.isActive = true;
                 await adminUser.save();
-                logger.info(`✅ Admin account verified. Access preserved.`);
+                logger.info('✅ Admin verified.');
             }
-        } else {
-            logger.warn('⚠️ ADMIN_EMAIL or ADMIN_PASSWORD not found in .env. Skipping default admin creation.');
         }
 
-        // Auto-Seed: Update games/prices on server start
-        logger.info('🔄 Checking for new game data...');
+        // Seed games in dev
+        logger.info('🔄 Seeding game data...');
         await seedDB();
-
-        // Start listening
-        return app.listen(PORT, '0.0.0.0', () => {
-            logger.info(`🚀 Server running on port ${PORT}`);
-        });
-    } catch (error) {
-        logger.error('❌ Server Startup Error: %O', error);
-        process.exit(1);
+        logger.info('✅ Seed complete.');
+    } else {
+        // Production (Vercel): only sync structure, no alter, no seed on cold start
+        // Tables already exist in Supabase. Minimal DB ops to preserve connections.
+        await sequelize.sync();
+        logger.info('✅ Models synced (prod).');
     }
 };
 
-
-// Global Error Handlers to prevent server crash
+// Global Error Handlers
 process.on('unhandledRejection', (reason, promise) => {
-    logger.error('⚠️ Unhandled Rejection at: %O, reason: %O', promise, reason);
-    // Don't exit the process
+    logger.error('⚠️ Unhandled Rejection: %O', reason);
 });
-
 process.on('uncaughtException', (error) => {
     logger.error('❌ Uncaught Exception: %O', error);
-    // Optional: exit if the error is critical, but logging helps debug
 });
-
-// Export the app for Vercel
-module.exports = app;
-
-const isProduction = process.env.NODE_ENV === 'production';
-
-// Shared initialization: DB sync, admin creation, game seeding
-const initializeDatabase = async () => {
-    await sequelize.authenticate();
-    logger.info('✅ Database Connected successfully.');
-
-    if (isProduction) {
-        await sequelize.sync();
-    } else {
-        await sequelize.sync({ alter: true });
-    }
-    logger.info('✅ Models synced with database.');
-
-    // Ensure Admin exists
-    const User = require('./models/User');
-    const adminEmail = process.env.ADMIN_EMAIL;
-    const adminPass = process.env.ADMIN_PASSWORD;
-
-    if (adminEmail && adminPass) {
-        const [adminUser, adminCreated] = await User.findOrCreate({
-            where: { email: adminEmail.trim() },
-            defaults: {
-                email: adminEmail.trim(),
-                password: adminPass.trim(),
-                username: 'Red Zone Admin',
-                role: 'admin',
-                isActive: true
-            }
-        });
-        if (adminCreated) {
-            logger.info(`✅ Admin created for: ${adminEmail}`);
-        } else {
-            adminUser.role = 'admin';
-            adminUser.isActive = true;
-            await adminUser.save();
-            logger.info('✅ Admin account verified.');
-        }
-    }
-
-    // Seed games
-    logger.info('🔄 Checking for new game data...');
-    await seedDB();
-};
 
 let server;
 if (!isProduction) {
-    // Local development: full server with listen()
-    const startLocal = async () => {
-        try {
-            await initializeDatabase();
-            return app.listen(PORT, '0.0.0.0', () => {
+    // Local: start HTTP server
+    initializeDatabase()
+        .then(() => {
+            server = app.listen(PORT, '0.0.0.0', () => {
                 logger.info(`🚀 Server running on port ${PORT}`);
             });
-        } catch (error) {
-            logger.error('❌ Server Startup Error: %O', error);
+        })
+        .catch(err => {
+            logger.error('❌ Startup Error: %O', err);
             process.exit(1);
-        }
-    };
-    startLocal().then(s => server = s);
+        });
 } else {
-    // Vercel: initialize DB without listen()
-    initializeDatabase().catch(err => logger.error('❌ Vercel DB Init Error: %O', err));
+    // Vercel: just authenticate DB (minimal connections), no sync/seed on cold start
+    sequelize.authenticate()
+        .then(() => logger.info('✅ DB ready (Vercel cold start).'))
+        .catch(err => logger.error('❌ DB auth failed on cold start: %O', err));
 }
 
-// Graceful Shutdown Handler
+// Graceful Shutdown
 const gracefulShutdown = async (signal) => {
-    logger.info(`📡 ${signal} received. Starting graceful shutdown...`);
-
+    logger.info(`📡 ${signal} received. Shutting down...`);
     if (server) {
         server.close(async () => {
-            logger.info('🛑 HTTP server closed.');
-
-            try {
-                await sequelize.close();
-                logger.info('🗄️ Database connection closed.');
-                process.exit(0);
-            } catch (err) {
-                logger.error('❌ Error during database closure: %O', err);
-                process.exit(1);
-            }
+            await sequelize.close().catch(err => logger.error('❌ DB close error: %O', err));
+            logger.info('🛑 Server shut down.');
+            process.exit(0);
         });
-
-        // Force close after 10s if graceful shutdown fails
-        setTimeout(() => {
-            logger.error('⚠️ Could not close connections in time, forcefully shutting down');
-            process.exit(1);
-        }, 10000);
+        setTimeout(() => process.exit(1), 10000);
     } else {
         process.exit(0);
     }
 };
 
-// Listen for termination signals
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-process.on('SIGINT', () => gracefulShutdown('SIGINT'));
-
+process.on('SIGINT',  () => gracefulShutdown('SIGINT'));
