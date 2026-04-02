@@ -87,6 +87,10 @@ const Game = sequelize.define('Game', {
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
+    price: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
     discount: {
         type: DataTypes.INTEGER,
         defaultValue: 0

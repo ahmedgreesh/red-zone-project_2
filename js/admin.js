@@ -478,6 +478,7 @@ async function handleGameSubmit(e) {
         platform: document.getElementById('gamePlatform').value,
         rating: parseInt(document.getElementById('gameRating').value),
         discount: parseInt(document.getElementById('gameDiscount').value) || 0,
+        price: prices.length > 0 ? prices[0].value : 0,
         image: document.getElementById('gameImage').value,
         desc: document.getElementById('gameDesc').value,
         isAvailable: document.getElementById('gameStockStatus').value === 'true',

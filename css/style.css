@@ -1254,6 +1254,31 @@ header {
     }
 }
 
+/* Discount Badge Styles */
+.discount-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: linear-gradient(135deg, var(--accent-red), #ff4d4d);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 900;
+    font-size: 0.85rem;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(255, 18, 63, 0.4);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    animation: badgePulse 2s infinite ease-in-out;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+}
+
+@keyframes badgePulse {
+    0% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 18, 63, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 4px 20px rgba(255, 18, 63, 0.6); }
+    100% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 18, 63, 0.4); }
+}
+
 /* Overlay on Hover (Optional Polish) */
 .card-image::after {
     content: '';

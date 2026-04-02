@@ -2803,7 +2803,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadGamesFromServer() {
         try {
-            const response = await fetch(`${API_URL}/games`, {
+            const response = await fetch(`${API_URL}/games?limit=250`, {
                 credentials: 'include'
             });
             if (response.ok) {
@@ -3107,9 +3107,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? `<span class="style-tag">${game.styles[0]}</span>`
                 : '';
 
-            const priceDisplay = (game.price === 0 || game.price === undefined)
+            // Price Display Logic: Prefer top-level price, fallback to first price option
+            const displayPrice = (game.price && game.price > 0) 
+                ? game.price 
+                : (game.prices && game.prices.length > 0 ? game.prices[0].value : 0);
+
+            const priceDisplay = (displayPrice === 0)
                 ? `<span class="game-price clickable" onclick="openGameModal(${game.id}, event)" style="font-size: 0.8rem; white-space: nowrap; cursor: pointer; text-decoration: underline;">👁️ View Price</span>`
-                : `<span class="game-price">$${game.price}</span>`;
+                : `<span class="game-price">${displayPrice} EGP</span>`;
 
             // Discount Badge
             const discountBadge = (game.discount && game.discount > 0)
@@ -3325,7 +3330,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!game) return;
 
         document.getElementById('modal-img').src = game.image;
-        document.getElementById('modal-title').innerText = game.title;
+        document.getElementById('modal-title').innerHTML = `${sanitizeHTML(game.title)} ${game.discount > 0 ? `<span class="discount-badge" style="position:relative; top:0; left:10px; display:inline-block; font-size:0.75rem; vertical-align:middle;">-${game.discount}% OFF</span>` : ''}`;
         document.getElementById('modal-desc').innerHTML = game.desc || "Experience this amazing title on PS5.";
 
         const isOutOfStock = game.isAvailable === false;
