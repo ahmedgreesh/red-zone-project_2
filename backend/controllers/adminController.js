@@ -324,24 +324,28 @@ const deleteGame = async (req, res) => {
 // @access  Private/Admin
 const getAllGames = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 20;
-        const offset = (page - 1) * limit;
+        // If limit is explicitly passed, use pagination; otherwise return all games for admin
+        const limitParam = req.query.limit ? parseInt(req.query.limit) : null;
 
-        const { count, rows: games } = await Game.findAndCountAll({ 
-            order: [['id', 'ASC']],
-            limit,
-            offset
-        });
+        let queryOptions = { order: [['id', 'ASC']] };
+
+        if (limitParam) {
+            const page = parseInt(req.query.page) || 1;
+            const offset = (page - 1) * limitParam;
+            queryOptions.limit = limitParam;
+            queryOptions.offset = offset;
+        }
+
+        const { count, rows: games } = await Game.findAndCountAll(queryOptions);
 
         res.json({
             success: true,
             data: games,
             pagination: {
                 total: count,
-                page,
-                limit,
-                lastPage: Math.ceil(count / limit)
+                page: limitParam ? parseInt(req.query.page) || 1 : 1,
+                limit: limitParam || count,
+                lastPage: 1
             }
         });
     } catch (error) {
